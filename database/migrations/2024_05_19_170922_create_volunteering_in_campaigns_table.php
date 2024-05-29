@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('reason_for_volunteering');
-            $table->enum('academic_level', ['الاعدادية', 'الثانوية', 'الجامعة', 'ماجستير']);
+            $table->enum('academic_level', ['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']);
             $table->foreignId('city_id')->constrained();
             $table->string('address');
             $table->enum('status', ['انتظار', 'مقبول', 'مرفوض', 'منتهى'])->default('انتظار');

@@ -17,8 +17,11 @@ class OldPeople extends Model
      */
     protected $fillable = [];
 
-    public function guarantee() :MorphMany
+
+    public function sponsership(): MorphMany
     {
-        return $this->morphMany(Guarantee::class, 'guaranteeable');
+        return $this->morphMany(SponsershipType::class,'sponsershipable');
     }
+
+
 }

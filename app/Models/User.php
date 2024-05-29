@@ -28,7 +28,10 @@ class User extends Authenticatable
         'email',
         'password',
         'birh_date',
+        'city_id',
+        'address',
         'image',
+        'deviceToken',
         'is_volunteer'
     ];
 
@@ -40,7 +43,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'notification_token'
+        'deviceToken'
     ];
 
     /**
@@ -57,9 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class);
     }
-    public function guarantee(): HasMany
+    public function sposership(): HasOne
     {
-        return $this->hasMany(Guarantee::class);
+        return $this->hasOne(Sponsership::class);
     }
 
     public function donation(): HasMany

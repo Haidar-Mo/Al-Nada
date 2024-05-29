@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->foreignId('city_id')->constrained();
             $table->string('address');
-            $table->enum('academic_level', ['الاعدادية', 'الثانوية', 'الجامعة', 'ماجستير']);
+            $table->enum('academic_level', ['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']);
             $table->string('academic_specialization')->default(' ');
             $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'ارمل']);
             $table->foreignId('section_id')->constrained();

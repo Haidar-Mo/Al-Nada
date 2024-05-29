@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guarantees', function (Blueprint $table) {
+        Schema::create('sponsership_types', function (Blueprint $table) {
             $table->id();
-            $table->morphs('guaranteeable');
+            $table->foreignId('sponsership_id')->constrained();
+            $table->morphs('sponsershipable');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->text('end_reasone')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guarantees');
+        Schema::dropIfExists('sponsership_types');
     }
 };

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guarantee;
+use App\Models\Sponsership;
 use Illuminate\Http\Request;
 
-class GuaranteesController extends Controller
+class SponsershipsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class GuaranteesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Guarantee $guarantees)
+    public function show(Sponsership $Sponserships)
     {
         //
     }
@@ -42,7 +42,7 @@ class GuaranteesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Guarantee $guarantees)
+    public function edit(Sponsership $Sponserships)
     {
         //
     }
@@ -50,7 +50,7 @@ class GuaranteesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Guarantee $guarantees)
+    public function update(Request $request, Sponsership $Sponserships)
     {
         //
     }
@@ -58,7 +58,7 @@ class GuaranteesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guarantee $guarantees)
+    public function destroy(Sponsership $Sponserships)
     {
         //
     }

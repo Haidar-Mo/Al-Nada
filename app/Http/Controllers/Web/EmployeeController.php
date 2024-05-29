@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateEmployeeRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,6 +34,8 @@ class EmployeeController extends Controller
             return response()->json($employee, 201);
         } catch (\Exception $e) {
             DB::rollBack();
+            if (Storage::exists("public/" . $path))
+                Storage::delete("public/" . $path);
             return response()->json($e->getMessage(), 500);
         }
     }

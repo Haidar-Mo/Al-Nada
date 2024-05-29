@@ -18,10 +18,7 @@ class Orphan extends Model
      */
     protected $fillable = [];
 
-    public function guarantee() :MorphMany
-    {
-        return $this->morphMany(Guarantee::class, 'guaranteeable');
-    }
+
 
     public function parents(): BelongsTo
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\MobileLoginRequest;
 use App\Http\Requests\Mobile\MobileRegisterRequest;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -20,6 +21,9 @@ class AuthController extends Controller
             $user = User::create($request->all());
             $wallet = $user->wallet()->create();
             DB::commit();
+
+            /* $notificatoin = new NotificationService;
+            $notificatoin->subscribeToTopic($user->deviceToken , 'mobile_user');*/
             return response()->json(['user' => $user, 'wallet' => $wallet], 201);
         } catch (\Exception $e) {
             DB::rollBack();

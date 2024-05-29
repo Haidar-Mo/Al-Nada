@@ -13,7 +13,6 @@ use App\Models\NewsImage;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use PhpParser\Node\Expr\Empty_;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -25,10 +24,7 @@ class DatabaseSeeder extends Seeder
             ['guard_name' => 'web', 'name' => 'super_admin', 'created_at' => now()],
             ['guard_name' => 'web', 'name' => 'admin', 'created_at' => now()],
             ['guard_name' => 'web', 'name' => 'employee', 'created_at' => now()]
-            /*  ['guard_name' => 'web', 'name' => 'media', 'created_at' => now()],
-            ['guard_name' => 'web', 'name' => 'financial', 'created_at' => now()],
-            ['guard_name' => 'web', 'name' => 'campaign', 'created_at' => now()],
-            ['guard_name' => 'web', 'name' => 'guarantee', 'created_at' => now()],*/
+
         ]);
     }
     private function section()

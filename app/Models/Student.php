@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+
 class Student extends Model
 {
     use HasFactory;
@@ -17,9 +18,8 @@ class Student extends Model
      */
     protected $fillable = [];
 
-
-    public function guarantee() :MorphMany
-    {
-        return $this->morphMany(Guarantee::class, 'guaranteeable');
-    }
+public function sponsership(): MorphMany
+{
+    return $this->morphMany(SponsershipType::class,'sponsershipable');
+}
 }

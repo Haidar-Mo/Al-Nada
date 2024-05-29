@@ -31,7 +31,7 @@ class EmployeeFactory extends Factory
             'birth_date' => $this->faker->date,
             'city_id' => $this->faker->unique()->randomElement($city_IDs),
             'address' => $this->faker->address(),
-            'academic_level' => $this->faker->randomElement(['الاعدادية', 'الثانوية', 'الجامعة', 'ماجستير']),
+            'academic_level' => $this->faker->randomElement(['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']),
             'academic_specialization' => $this->faker->word,
             'social_situation' => $this->faker->randomElement(['أعزب', 'متزوج', 'مطلق', 'ارمل']),
             'section_id' => fake()->randomElement($section_IDs),

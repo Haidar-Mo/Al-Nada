@@ -22,6 +22,7 @@ class Campaign extends Model
         'is_donateable',
         'is_volunteerable',
         'number_of_Beneficiary',
+        'image',
         'end_date',
         'start_date',
     ];

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\CreateCampaignRequest;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CampaignController extends Controller
 {
@@ -13,42 +16,93 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $is_donateable_campaigns = Campaign::where('is_donateable', 1)->where('end_date', '0000-00-00')->get();
-        $is_volunteerable_campaigns = Campaign::where('is_volunteerable', 1)->where('end_date', '0000-00-00')->get();
+        $is_donateable_campaigns = Campaign::where('is_donateable', 1)->where('end_date', null)->get();
+        $is_volunteerable_campaigns = Campaign::where('is_volunteerable', 1)->where('end_date', null)->get();
 
         return response()->json(['Donateable Campaign' => $is_donateable_campaigns, 'Volunteerable Campaign' => $is_volunteerable_campaigns], 200);
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created campaign in storage.
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateCampaignRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            if ($request->file('image')) {
+                $path = $request->file('image')->store('Employee', 'public');
+            }
+            $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
+            DB::commit();
+            return response()->json($campaign, 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            if (Storage::exists("public/" . $path))
+                Storage::delete("public/" . $path);
+            return response()->json($e->getMessage(), $e->getCode() ?: 500);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified campaign.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function show(Campaign $campaign)
+    public function show(string $id)
     {
-        //
+        $campaign = Campaign::findOrFail($id);
+        return response()->json($campaign, 200);
     }
 
     /**
      * Update the specified resource in storage.
+     * @param CreateCampaignRequest $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, Campaign $campaign)
+    public function update(CreateCampaignRequest $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $campaign = Campaign::findOrFail($id);
+            if ($request->file('image')) {
+                if ($campaign->image)
+                    if (Storage::exists("public/" . $campaign->image))
+                        Storage::delete("public/" . $campaign->image);
+                $path = $request->file('image')->store('Employee', 'public');
+            } else {
+                $path = $campaign->image;
+            }
+            $campaign->update(array_merge($request->all(), ['image' => $path]));
+            DB::commit();
+            return response()->json($campaign, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), $e->getCode() ?: 500);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified campaign from storage.
+     * @param string $id
+     * @return null
      */
-    public function destroy(Campaign $campaign)
+    public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $campaign = Campaign::findOrFail($id);
+            $path = $campaign->image;
+            $campaign->delete();
+            if (Storage::exists("public/" . $path))
+                Storage::delete("public/" . $path);
+            DB::commit();
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), $e->getCode() ?: 500);
+        }
     }
 }

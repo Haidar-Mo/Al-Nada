@@ -19,11 +19,13 @@ return new class extends Migration
             $table->string('id_serial_number')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('verification_code')->nullable();
             $table->string('password');
             $table->date('birth_date')->nullable();
             $table->foreignId('city_id')->nullable();
+            $table->string('address');
             $table->string('image')->nullable();
-            $table->string('notification_token')->unique();
+            $table->string('deviceToken')->unique();
             $table->boolean('is_volunteer');
             $table->rememberToken();
             $table->timestamps();

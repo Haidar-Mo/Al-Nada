@@ -17,9 +17,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('al-nada');
 });
-
-Route::get('test-noti', [NotificationController::class, 'sendNotification']);
-
-
-Route::post('subscribe-to-topic', [NotificationController::class, 'subscribeToTopic']);
-Route::post('send-topic-notification', [NotificationController::class, 'sendNotificationToTopic']);
