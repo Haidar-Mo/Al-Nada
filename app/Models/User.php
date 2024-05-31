@@ -27,13 +27,16 @@ class User extends Authenticatable
         'id_serial_number',
         'email',
         'password',
-        'birh_date',
+        'birth_date',
         'city_id',
         'address',
         'image',
+        'verification_code',
         'deviceToken',
         'is_volunteer'
     ];
+
+    protected $appends = ['wallet'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,7 +46,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'deviceToken'
+        'verificationCode',
+        'deviceToken',
     ];
 
     /**
@@ -54,11 +58,16 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
+        'birth_date' => 'date',
     ];
 
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);
+    }
+    public function getWalletAttribute()
+    {
+        return $this->wallet();
     }
     public function sposership(): HasOne
     {

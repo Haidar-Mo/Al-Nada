@@ -18,15 +18,15 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->string('id_serial_number')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('verification_code')->nullable();
+            $table->timestamp('email_verified_at')->nullable()->default(null);
             $table->string('password');
             $table->date('birth_date')->nullable();
             $table->foreignId('city_id')->nullable();
             $table->string('address');
             $table->string('image')->nullable();
             $table->string('deviceToken')->unique();
-            $table->boolean('is_volunteer');
+            $table->boolean('is_volunteer')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

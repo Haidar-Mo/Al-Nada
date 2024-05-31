@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\NotificationController;
+use App\Mail\ConfirmationEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('al-nada');
+});
+Route::get('/r', function () {
+    return rand(100000, 999999);
 });
