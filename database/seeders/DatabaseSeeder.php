@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'birth_date' => '2000-12-08',
             'city_id' => 1,
             'address' => 'بأخر الدنيا',
-            'academic_level' => 'الجامعة',
+            'academic_level' => 'جامعي',
             'academic_specialization' => 'الهندسة المعلوماتية',
             'social_situation' => 'أعزب',
             'section_id' => 1,

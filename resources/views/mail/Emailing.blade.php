@@ -59,7 +59,7 @@
     <div class="container">
         <div class="header">
 
-            <img src="https://images.app.goo.gl/nS9C8ZttdSyQbUbp8" alt="AL-Nada Association Logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIm-EY4NRgfMrybP7WfVBWPmvYj90uNlT3kZfxHVsnOMdvBpGdk5iCHIMy8opHiO9a0Ko&usqp=CAU" alt="AL-Nada Association Logo">
         </div>
         <div class="content">
             <p>Dear {{ $name }},</p>

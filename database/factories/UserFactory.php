@@ -25,8 +25,6 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone_number' => fake()->phoneNumber(),
             'id_serial_number' => fake()->randomNumber(9),
-            'city_id' => fake()->unique()->randomElement($city_IDs),
-            'address' => fake()->address(),
             'birth_date' => fake()->date(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'image' => 'User/user.png',
