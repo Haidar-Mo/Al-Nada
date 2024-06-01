@@ -22,9 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable()->default(null);
             $table->string('password');
             $table->date('birth_date')->nullable();
-            $table->foreignId('city_id')->nullable();
-            $table->string('address');
-            $table->string('image')->nullable();
+           $table->string('image')->nullable();
             $table->string('deviceToken')->unique();
             $table->boolean('is_volunteer')->default(0);
             $table->rememberToken();

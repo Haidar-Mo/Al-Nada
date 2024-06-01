@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('al-nada');
-});
-Route::get('/r', function () {
-    return rand(100000, 999999);
-});
+});*/
+

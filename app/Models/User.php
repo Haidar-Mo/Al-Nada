@@ -28,8 +28,6 @@ class User extends Authenticatable
         'email',
         'password',
         'birth_date',
-        'city_id',
-        'address',
         'image',
         'verification_code',
         'deviceToken',
@@ -46,7 +44,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'verificationCode',
+        'verification_code',
         'deviceToken',
     ];
 
@@ -67,7 +65,7 @@ class User extends Authenticatable
     }
     public function getWalletAttribute()
     {
-        return $this->wallet();
+        return $this->wallet()->get();
     }
     public function sposership(): HasOne
     {

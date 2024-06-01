@@ -11,15 +11,19 @@ use App\Traits\ConfirmationEmailTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     use ConfirmationEmailTrait;
+
+    /**
+     * Create new Account 
+     * @param MobileRegisterRequest $request
+     * @return JsonResponse
+     */
     public function register(MobileRegisterRequest $request)
     {
-
         DB::beginTransaction();
         try {
             $code = $this->generateVerificationCode();
@@ -30,7 +34,7 @@ class AuthController extends Controller
 
             /* $notificatoin = new NotificationService;
             $notificatoin->subscribeToTopic($user->deviceToken , 'mobile_user');*/
-            return response()->json(['message' => 'تم إنشاء الحساب بنجاح \n تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل', 'user' => $user], 201);
+            return response()->json(['message' => 'تم إنشاء الحساب بنجاح \\n تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل', 'user' => $user], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);
@@ -44,7 +48,7 @@ class AuthController extends Controller
 
         if (!Auth::guard('mobile')->attempt($credentials)) {
 
-            return response()->json(['message' => 'تحقق من الرقم أو كلمة المرور'], 401);
+            return response()->json(['message' => 'تحقق من البريد الألكتروني أو كلمة المرور'], 401);
         }
         $user = User::find(Auth::guard('mobile')->user()->id);
 
@@ -84,6 +88,8 @@ class AuthController extends Controller
     protected function activateAccount($id, Request $request)
     {
         $user = User::findOrFail($id);
+        if ($user->verification_code == null || $user->email_verified_at != null)
+            return response()->json(['message' => 'الحساب مفعل بالفعل'], 422);
         if ($user->verification_code == $request->code) {
             $user->email_verified_at = Carbon::now();
             $user->verification_code = null;
