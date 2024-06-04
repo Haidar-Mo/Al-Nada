@@ -68,12 +68,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-      //  $this->rolesAndPermissions();
-       // $this->section();
-        //City::factory(5)->create();
-        //$this->employee();
+        $this->rolesAndPermissions();
+        $this->section();
+        City::factory(5)->create();
+        $this->employee();
 
-     //   Administration::factory(1)->create();
+        Administration::factory(1)->create();
         News::factory(5)->create();
         NewsImage::factory(10)->create();
         Campaign::factory(4)->create();
