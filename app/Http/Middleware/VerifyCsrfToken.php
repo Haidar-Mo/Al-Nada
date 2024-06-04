@@ -12,6 +12,11 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
+<<<<<<< HEAD
         //
+=======
+        'subscribe-to-topic',
+        'send-topic-notification',
+>>>>>>> temp3
     ];
 }
