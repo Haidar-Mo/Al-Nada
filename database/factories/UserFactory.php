@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -17,11 +18,20 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $city_IDs = City::pluck('id')->toArray();
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'phone_number' => fake()->phoneNumber(),
+            'id_serial_number' => fake()->randomNumber(9),
+            'birth_date' => fake()->date(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'image' => 'User/user.png',
+            'deviceToken' => Str::random(50),
+            'is_volunteer' => 0,
+            'email_verified_at' => now(),
+            'verification_code' => null,
             'remember_token' => Str::random(10),
         ];
     }
