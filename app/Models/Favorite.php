@@ -18,6 +18,11 @@ class Favorite extends Model
         'campaign'
     ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function getCampaignAttribute()
     {
         return $this->campaign()->first();

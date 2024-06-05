@@ -42,6 +42,9 @@ class Administration extends Model
     protected $casts = [
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
+
     ];
 
     public function employee(): BelongsTo

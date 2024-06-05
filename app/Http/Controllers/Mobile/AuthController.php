@@ -34,7 +34,9 @@ class AuthController extends Controller
 
             /* $notificatoin = new NotificationService;
             $notificatoin->subscribeToTopic($user->deviceToken , 'mobile_user');*/
-            return response()->json(['message' => 'تم إنشاء الحساب بنجاح \\n تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل', 'user' => $user], 201);
+            return response()->json([
+                'message' => "تم إنشاء الحساب بنجاح \nتحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
+            ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);
@@ -74,9 +76,8 @@ class AuthController extends Controller
 
     public function profile()
     {
-
-        $user = User::findOrfail(Auth::user()->id);
-        return response()->json($user, 200);
+        $user = User::with(['wallet', 'sposership.target'])->findOrfail(Auth::user()->id);
+        return response()->json(array_merge([$user, 'total donation ' => $user->TotalDonations()]), 200);
     }
 
     /**

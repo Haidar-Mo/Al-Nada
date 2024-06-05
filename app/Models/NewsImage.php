@@ -19,6 +19,11 @@ class NewsImage extends Model
         'url'
     ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function news(): BelongsTo
     {
         return $this->belongsTo(News::class);

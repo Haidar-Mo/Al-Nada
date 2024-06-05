@@ -27,6 +27,11 @@ class Campaign extends Model
         'start_date',
     ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function volinteeringInCampaign(): HasMany
     {
         return $this->hasMany(volunteeringInCampaign::class);

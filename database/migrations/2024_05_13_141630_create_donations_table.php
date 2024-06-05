@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->enum('type', ['مالي', 'عيني']);
-            $table->bigInteger('amount');
-            $table->text('discreption');
+            $table->bigInteger('amount')->nullable();
+            $table->text('description')->nullable();
             $table->enum('deliver_type', ['مندوب توصيل', 'يدوي', 'الكتروني']);
-            $table->string('target_name');
+            $table->string('target_name')->nullable();
             $table->timestamps();
         });
     }

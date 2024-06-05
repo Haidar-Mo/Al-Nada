@@ -15,11 +15,24 @@ class Donation extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'user_id',
+        'type',
+        'amount',
+        'description',
+        'deliver_type',
+        'target_name'
+    ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
 
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+    
 }

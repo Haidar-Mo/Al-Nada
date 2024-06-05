@@ -18,6 +18,11 @@ class Student extends Model
      */
     protected $fillable = [];
 
+
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
 public function sponsership(): MorphMany
 {
     return $this->morphMany(SponsershipType::class,'sponsershipable');

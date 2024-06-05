@@ -31,10 +31,10 @@ class User extends Authenticatable
         'image',
         'verification_code',
         'deviceToken',
-        'is_volunteer'
+        'is_volunteer',
     ];
 
-    protected $appends = ['wallet'];
+    protected $appends = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,17 +56,16 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
-        'birth_date' => 'date',
+        'birth_date' => 'date:Y/m/d',
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
 
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);
     }
-    public function getWalletAttribute()
-    {
-        return $this->wallet()->get();
-    }
+
     public function sposership(): HasOne
     {
         return $this->hasOne(Sponsership::class);
@@ -75,6 +74,11 @@ class User extends Authenticatable
     public function donation(): HasMany
     {
         return $this->hasMany(Donation::class);
+    }
+
+    public function TotalDonations()
+    {
+        return $this->donation()->sum('amount');
     }
 
     public function city(): BelongsTo

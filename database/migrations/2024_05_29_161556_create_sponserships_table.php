@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sponserships', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
             $table->string('partner_name')->default('---');
             $table->string('fixed_phone_number')->default('---');
             $table->string('job')->default('---');
