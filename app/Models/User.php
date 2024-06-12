@@ -100,4 +100,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favorite::class);
     }
+
+    public function donationAlert(): HasMany
+    {
+        return $this->hasMany(DonationAlert::class);
+    }
 }
