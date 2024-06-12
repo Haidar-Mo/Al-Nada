@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BillingHistory extends Model
+class DonationAlert extends Model
 {
     use HasFactory;
 
@@ -16,18 +16,14 @@ class BillingHistory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'wallet_id',
-        'transiction_type',
-        'amount',
+        'user_id',
+        'title',
+        'frequency'
     ];
 
-    protected $casts =[
-        'created_at'=>'date:Y/m/d',
-        'updated_at'=>'date:Y/m/d',
-    ];
 
-    public function wallet(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class);
+        return $this->belongsTo(User::class);
     }
 }

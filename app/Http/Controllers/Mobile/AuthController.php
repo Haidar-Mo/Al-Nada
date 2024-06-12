@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Models\User;
-use App\Services\NotificationService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\MobileLoginRequest;
 use App\Http\Requests\Mobile\MobileRegisterRequest;
 use App\Traits\ConfirmationEmailTrait;
+use App\Traits\NotificationTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     use ConfirmationEmailTrait;
+    use NotificationTrait;
 
     /**
      * Create new Account 
@@ -24,6 +25,7 @@ class AuthController extends Controller
      */
     public function register(MobileRegisterRequest $request)
     {
+
         DB::beginTransaction();
         try {
             $code = $this->generateVerificationCode();
@@ -32,8 +34,7 @@ class AuthController extends Controller
             $this->sendVerificationEmail($user);
             DB::commit();
 
-            /* $notificatoin = new NotificationService;
-            $notificatoin->subscribeToTopic($user->deviceToken , 'mobile_user');*/
+            //$this->subscribeToTopic($user->deviceToken, 'mobile_user');
             return response()->json([
                 'message' => "تم إنشاء الحساب بنجاح \nتحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
             ], 201);

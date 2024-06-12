@@ -22,7 +22,6 @@ class VolunteeringInCampaignRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'campaign_id' => ['required', 'exists:campaigns,id'],
             'reason_for_volunteering' => ['required', 'string'],
             'academic_level' => ['required',],
             'address' => ['required', 'string']

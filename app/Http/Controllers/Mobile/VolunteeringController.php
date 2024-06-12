@@ -32,23 +32,30 @@ class VolunteeringController extends Controller
         DB::beginTransaction();
         try {
             $user = User::findOrFail(Auth::user()->id);
-
+            // check if he is already a volunteer
             if ($user->is_volunteer == 1)
                 return response()->json(['message' => 'أنت بالفعل متطوع لدى الجمعية, شكراً لك'], 422);
-            if ($user->volunteering->last()) {
-                if ($user->volunteering->last()->status == 'انتظار')
+
+            // check if he has a volunteering request on pending
+            $last_volunteering = $user->volunteering->last();
+            if ($last_volunteering) {
+                if ($last_volunteering->status == 'انتظار')
                     return response()->json(['message' => 'عذراً, طلبك السابق قيد الانتظار'], 422);
             }
+
+            // check Images exsistance in request
             if (!($request->hasFile('id_card_image')) || !($request->hasFile('personal_image')))
                 return response()->json(['message' => 'يرجى إرفاق صورة البطاقة الشخصي و صورتك الشحصية'], 422);
-            $id_card_path = $request->file('id_card_image')->store('Volunteering', 'public');
-            $personal_image_path = $request->file('personal_image')->store('Volunteering', 'public');
+
+            // store the request    
+            $id_card_path = $request->file('id_card_image')->store('Volunteering/Id_card_image', 'public');
+            $personal_image_path = $request->file('personal_image')->store('Volunteering/Personal_image', 'public');
             $volunteer = $user->volunteering()->create(array_merge($request->all(), [
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'phone_number' => $user->phone_number,
                 'birth_date' => $user->birth_date,
-                'city_id' => $user->city_id,
+                'city_id' => 1,
                 'id_card_image' => $id_card_path,
                 'personal_image' => $personal_image_path,
                 'Status' => 'انتظار',
@@ -76,27 +83,88 @@ class VolunteeringController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @param VolunteeringRequest $request
+     * @param string $id
+     * @return JsonResponse
      */
     public function update(VolunteeringRequest $request, string $id)
     {
-        $volunteering_request = Volunteering::findOrFail($id);
-        if ($volunteering_request->user_id != Auth::user()->id)
-            return response()->json(['message' => 'Unauthorized'], 401);
-        if ($volunteering_request->status != 'انتظار')
-            return response()->json(['message' => 'لا يمكن تعديل طلبك بعد أن تم قبوله أو رفضه'], 422);
-        $volunteering_request->update($request->all());
-        return response()->json($volunteering_request, 200);
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail(Auth::user()->id);
+            $volunteer = $user->volunteering()->findOrFail($id);
+
+            // Check if the volunteer request is not approved or rejected
+            if ($volunteer->status != 'انتظار')
+                return response()->json(['message' => 'لا يمكن تعديل الطلب بعد الموافقة عليه أو رفضه'], 422);
+
+            // Check Id_card_Image existence in request
+            if ($request->hasFile('id_card_image')) {
+                // Delete old image
+                if (Storage::exists("public/" . $volunteer->id_card_image))
+                    Storage::delete("public/" . $volunteer->id_card_image);
+
+                // Store new image
+                $id_card_path = $request->file('id_card_image')->store('Volunteering/Id_card_image', 'public');
+                $volunteer->id_card_image = $id_card_path;
+            }
+            // Check Personal_Image existence in request
+            if ($request->hasFile('personal_image')) {
+                // Delete old image
+                if (Storage::exists("public/" . $volunteer->personal_image))
+                    Storage::delete("public/" . $volunteer->personal_image);
+
+                // Store new image
+                $personal_image_path = $request->file('personal_image')->store('Volunteering/Personal_image', 'public');
+                $volunteer->personal_image = $personal_image_path;
+            }
+
+            // Update other fields
+            $volunteer->update($request->all());
+
+            DB::commit();
+            return response()->json($volunteer, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if (isset($id_card_path) && Storage::exists("public/" . $id_card_path))
+                Storage::delete("public/" . $id_card_path);
+            if (isset($personal_image_path) && Storage::exists("public/" . $personal_image_path))
+                Storage::delete("public/" . $personal_image_path);
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
+     * @param string $id
+     * @return JsonResponse
      */
     public function destroy(string $id)
     {
-        $volunteering_request = Volunteering::findOrFail($id);
-        if ($volunteering_request->status != 'انتظار')
-            return response()->json(['message' => 'عذراً, لايمكنك الغاء طلبك'], 422);
-        $volunteering_request->delete();
-        return response()->json(['message' => 'تم إلغاء طلبك بنجاح'], 200);
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail(Auth::user()->id);
+            $volunteer = $user->volunteering()->findOrFail($id);
+
+            // Check if the volunteer request is not approved or rejected
+            if ($volunteer->status != 'انتظار')
+                return response()->json(['message' => 'لا يمكن حذف الطلب بعد الموافقة عليه أو رفضه'], 422);
+
+            // Delete associated images
+            if (Storage::exists("public/" . $volunteer->id_card_image))
+                Storage::delete("public/" . $volunteer->id_card_image);
+
+            if (Storage::exists("public/" . $volunteer->personal_image))
+                Storage::delete("public/" . $volunteer->personal_image);
+
+            // Delete the volunteering request
+            $volunteer->delete();
+
+            DB::commit();
+            return response()->json(['message' => 'تم حذف طلب التطوع بنجاح'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }

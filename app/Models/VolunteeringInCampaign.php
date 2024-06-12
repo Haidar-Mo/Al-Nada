@@ -14,7 +14,7 @@ class VolunteeringInCampaign extends Model
         'campaign_id',
         'first_name',
         'last_name',
-        'Reason_for_volunteering',
+        'reason_for_volunteering',
         'academic_level',
         'city_id',
         'address',
