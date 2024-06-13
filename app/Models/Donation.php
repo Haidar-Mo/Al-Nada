@@ -21,18 +21,19 @@ class Donation extends Model
         'amount',
         'description',
         'deliver_type',
-        'target_name'
+        'address',
+        'created_at',
+        'updated_at',
     ];
 
-    protected $casts =[
-        'created_at'=>'date:Y/m/d',
-        'updated_at'=>'date:Y/m/d',
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
 
-    public function user():BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    
 }

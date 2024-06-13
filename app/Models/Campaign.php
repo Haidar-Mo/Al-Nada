@@ -41,4 +41,14 @@ class Campaign extends Model
     {
         return $this->hasMany(Favorite::class);
     }
+
+    public function donation(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
+    }
+
+    public function alert(): HasMany
+    {
+        return $this->hasMany(DonationCampaignAlert::class);
+    }
 }
