@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DonationAlert extends Model
+class DonationCampaign extends Model
 {
     use HasFactory;
 
@@ -17,22 +17,25 @@ class DonationAlert extends Model
      */
     protected $fillable = [
         'user_id',
-        'title',
-        'frequency'
+        'campaign_id',
+        'type',
+        'amount',
+        'description',
+        'deliver_type',
+        'address',
+        'created_at',
+        'updated_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'frequency'
-    ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
     }
 
 }

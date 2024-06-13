@@ -76,11 +76,30 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
-    public function TotalDonations()
+    public function donationCampaign(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
+    }
+
+    public function donationAlert(): HasMany
+    {
+        return $this->hasMany(DonationAlert::class);
+    }
+    public function donationCampaignAlert(): HasMany
+    {
+        return $this->hasMany(DonationCampaignAlert::class);
+    }
+
+    public function TotalPrivateDonations()
     {
         return $this->donation()->sum('amount');
     }
 
+    public function TotalCampaignDonations()
+    {
+        return $this->donationCampaign()->sum('amount');
+    }
+    
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -99,10 +118,5 @@ class User extends Authenticatable
     public function favorite(): HasMany
     {
         return $this->hasMany(Favorite::class);
-    }
-
-    public function donationAlert(): HasMany
-    {
-        return $this->hasMany(DonationAlert::class);
     }
 }

@@ -11,6 +11,7 @@ class Kernel extends ConsoleKernel
 
     protected $commands = [
         Commands\SendDonationAlerts::class,
+        Commands\SendDonationCampaignAlerts::class,
         Commands\DeleteUnverifiedUser::class,
     ];
     /**
@@ -19,7 +20,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('alerts:send-donations')->daily();
+        $schedule->command('alerts:send-donation-alerts')->daily();
+        $schedule->command('alerts:send-donation-campaign-alerts')->daily();
         $schedule->command('app:delete-unverified-user')->daily();
     }
 

@@ -2,20 +2,20 @@
 
 namespace App\Console\Commands;
 
+use App\Models\DonationCampaignAlert;
 use App\Models\User;
-use App\Models\DonationAlert;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use App\Services\NotificationService;
 
-class SendDonationAlerts extends Command
+class SendDonationCampaignAlerts extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'alerts:send-donation-alerts';
+    protected $signature = 'alerts:send-donation-campaign-alerts';
 
     /**
      * The console command description.
@@ -32,9 +32,9 @@ class SendDonationAlerts extends Command
         $now = Carbon::now();
 
         // Get alerts for today based on the frequency
-        $dailyAlerts = DonationAlert::where('frequency', 'يومي')->get();
-        $weeklyAlerts = DonationAlert::where('frequency', 'اسبوعي')->whereDay('created_at', $now->dayOfWeek)->get();
-        $monthlyAlerts = DonationAlert::where('frequency', 'شهري')->whereDay('created_at', $now->day)->get();
+        $dailyAlerts = DonationCampaignAlert::where('frequency', 'يومي')->get();
+        $weeklyAlerts = DonationCampaignAlert::where('frequency', 'اسبوعي')->whereDay('created_at', $now->dayOfWeek)->get();
+        $monthlyAlerts = DonationCampaignAlert::where('frequency', 'شهري')->whereDay('created_at', $now->day)->get();
 
         $alerts = $dailyAlerts->merge($weeklyAlerts)->merge($monthlyAlerts);
 

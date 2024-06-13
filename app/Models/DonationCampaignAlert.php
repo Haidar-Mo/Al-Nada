@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DonationAlert extends Model
+class DonationCampaignAlert extends Model
 {
     use HasFactory;
 
@@ -17,6 +17,7 @@ class DonationAlert extends Model
      */
     protected $fillable = [
         'user_id',
+        'campaign_id',
         'title',
         'frequency'
     ];
@@ -35,4 +36,8 @@ class DonationAlert extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 }

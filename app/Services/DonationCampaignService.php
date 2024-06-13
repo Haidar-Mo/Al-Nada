@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
+use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 /**
- * Class DonationService.
+ * Class DonationCampaignService.
  */
-class DonationService
+class DonationCampaignService
 {
-    public function donate(User $user, Request $request)
+    public function donate(User $user, Request $request, string $id)
     {
         $request->validate([
             'type' => ['required', 'string'],
@@ -32,8 +33,11 @@ class DonationService
                 'description' => 'required|string',
             ]);
         }
-
-        $donation = $user->donation()->create($request->all());
+        $campaign = Campaign::findOrFail($id);
+        if ($campaign->is_donateable == 0)
+            return response()->json(['message' => 'لايمكنك التبرع لهذه الحملة الآن'], 422);
+       
+            $donation = $user->donationCampaign()->create(array_merge($request->all(), ['campaign_id' => $campaign->id]));
 
         return $donation;
     }

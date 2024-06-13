@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donations', function (Blueprint $table) {
+        Schema::create('donation_campaigns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('campaign_id')->constrained();
             $table->enum('type', ['مالي','عيني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donations');
+        Schema::dropIfExists('donation_campaigns');
     }
 };

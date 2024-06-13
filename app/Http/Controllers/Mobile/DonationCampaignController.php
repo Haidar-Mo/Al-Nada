@@ -3,24 +3,25 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\DonationCampaign;
 use App\Models\User;
-use App\Services\DonationService;
+use App\Services\DonationCampaignService;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class DonationController extends Controller
+class DonationCampaignController extends Controller
 {
     /**
-     * Display list of user Donations
+     * Display list of user Donations for Campaign
      * @return JsonResponse
      */
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        $donations = $user->donation;
+        $donations = $user->donationCampaign;
         return response()->json($donations, 200);
     }
+
     /**
      * View specific Donation 
      * @param string $id
@@ -29,20 +30,21 @@ class DonationController extends Controller
     public function show(string $id)
     {
         $user = User::find(Auth::user()->id);
-        $donation = $user->donation()->findOrFail($id);
+        $donation = $user->donationCampaign()->with('campaign')->findOrFail($id);
         return Response()->json($donation, 200);
     }
 
     /**
-     * Store New Donation in database
+     * Store New Donation to specific campaign in database
      * @param Request $request
+     * @param string $id
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, string $id)
     {
         $user = User::findOrFail(Auth::user()->id);
-        $donation_service = new DonationService;
-        $donation = $donation_service->donate($user, $request);
+        $donation_service = new DonationCampaignService;
+        $donation = $donation_service->donate($user, $request, $id);
 
         return response()->json($donation, 201);
     }
