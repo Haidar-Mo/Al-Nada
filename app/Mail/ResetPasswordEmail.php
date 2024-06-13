@@ -4,25 +4,27 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ConfirmationEmail extends Mailable
+class ResetPasswordEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     private $name;
-    private $verification_code;
+    private $new_password;
+
 
     /**
      * Create a new message instance.
      */
-    public function __construct(private User $user)
+    public function __construct(User $user, string $new_password)
     {
         $this->name = $user->first_name . " " . $user->last_name;
-        $this->verification_code = $user->verification_code;
+        $this->new_password = $new_password;
     }
 
     /**
@@ -31,7 +33,7 @@ class ConfirmationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirmation Email',
+            subject: 'Reset Password Email',
         );
     }
 
@@ -41,10 +43,10 @@ class ConfirmationEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.ConfirmationEmailing',
+            view: 'mail.ResatPasswordEmailing',
             with: [
                 'name' => $this->name,
-                'code' => $this->verification_code,
+                'password' => $this->new_password,
             ],
         );
     }

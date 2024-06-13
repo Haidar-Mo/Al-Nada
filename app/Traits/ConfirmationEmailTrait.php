@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\User;
-use Carbon\Carbon;
 use App\Mail\ConfirmationEmail;
 use Illuminate\Support\Facades\Mail;
 
