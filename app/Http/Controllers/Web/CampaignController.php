@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateCampaignRequest;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
+use App\Notifications\NewCampaignNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class CampaignController extends Controller
@@ -31,17 +33,18 @@ class CampaignController extends Controller
     {
         DB::beginTransaction();
         try {
-            if ($request->file('image')) {
-                $path = $request->file('image')->store('Employee', 'public');
-            }
+            $path = '';
+            if ($request->file('image'))
+                $path = $request->file('image')->store('Campaign', 'public');
             $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
+            Notification::send($campaign, new NewCampaignNotification('حملة جديدة', 'تم إضافة حملة جديدة'));
             DB::commit();
             return response()->json($campaign, 201);
         } catch (\Exception $e) {
             DB::rollback();
             if (Storage::exists("public/" . $path))
                 Storage::delete("public/" . $path);
-            return response()->json($e->getMessage(), $e->getCode() ?: 500);
+            return response()->json($e->getMessage(),500);
         }
     }
 
@@ -53,7 +56,8 @@ class CampaignController extends Controller
     public function show(string $id)
     {
         $campaign = Campaign::findOrFail($id);
-        return response()->json($campaign, 200);
+        $notifi = $campaign->notifications;
+        return response()->json($notifi, 200);
     }
 
     /**

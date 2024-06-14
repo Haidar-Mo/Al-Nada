@@ -29,3 +29,4 @@ include __DIR__ . '/V1/Mobile/donation.php';
 include __DIR__ . '/V1/Web/administration.php';
 include __DIR__ . '/V1/Web/employee.php';
 include __DIR__ . '/V1/Web/section.php';
+include __DIR__ . '/V1/Web/campaign.php';

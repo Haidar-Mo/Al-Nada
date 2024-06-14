@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateEmployeeRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
@@ -26,10 +28,11 @@ class EmployeeController extends Controller
     {
         DB::beginTransaction();
         try {
-            if ($request->file('image')) {
+            $path = '';
+            if ($request->file('image'))
                 $path = $request->file('image')->store('Employee', 'public');
-            }
             $employee = Employee::create(array_merge($request->all(), ['image' => $path]));
+            //notification
             DB::commit();
             return response()->json($employee, 201);
         } catch (\Exception $e) {
