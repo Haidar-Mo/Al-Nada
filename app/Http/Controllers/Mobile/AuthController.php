@@ -43,7 +43,7 @@ class AuthController extends Controller
 
             //$this->subscribeToTopic($user->deviceToken, 'mobile_user');
             return response()->json([
-                'message' => "تم إنشاء الحساب بنجاح \nتحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
+                'message' => "تم إنشاء الحساب بنجاح, تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -71,6 +71,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User logged in successfully.',
             'access_token' => $token,
+            'user' => $user,
         ]);
     }
 

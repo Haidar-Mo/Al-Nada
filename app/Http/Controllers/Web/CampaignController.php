@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateCampaignRequest;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
+use App\Models\User;
 use App\Notifications\NewCampaignNotification;
+use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class CampaignController extends Controller
 {
+    use NotificationTrait;
     /**
      * Display a listing of the resource.
      */
@@ -34,17 +37,23 @@ class CampaignController extends Controller
         DB::beginTransaction();
         try {
             $path = '';
+            // check if Image exsist in request
             if ($request->file('image'))
                 $path = $request->file('image')->store('Campaign', 'public');
+            // create new campaign
             $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
-            Notification::send($campaign, new NewCampaignNotification('حملة جديدة', 'تم إضافة حملة جديدة'));
+            // send Notifications 
+            $user = User::all();
+            Notification::send($user, new NewCampaignNotification($campaign));
+            //$this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', ["بدأ العمل بحملة" . $campaign->name]);
+
             DB::commit();
             return response()->json($campaign, 201);
         } catch (\Exception $e) {
             DB::rollback();
             if (Storage::exists("public/" . $path))
                 Storage::delete("public/" . $path);
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
     }
 

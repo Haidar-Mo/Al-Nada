@@ -51,10 +51,10 @@ class DatabaseSeeder extends Seeder
     private function employee()
     {
         Employee::insert([[
-            'first_name' => 'محمد',
-            'last_name' => 'حيدر',
-            'father_name' => 'إبراهيم',
-            'mother_name' => 'أسيما',
+            'first_name' => 'MM',
+            'last_name' => 'MM',
+            'father_name' => 'MM',
+            'mother_name' => 'MM',
             'phone_number' => '0936287134',
             'id_serial_number' => '03280000000',
             'nationality' => 'سوري',

@@ -11,15 +11,13 @@ class NewCampaignNotification extends Notification
 {
     use Queueable;
 
-    private $titel;
-    private $body;
+    public $campaign;
     /**
      * Create a new notification instance.
      */
-    public function __construct($title,$body)
+    public function __construct($campaign)
     {
-        $this->titel = $title;
-        $this->body = $body;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -33,26 +31,16 @@ class NewCampaignNotification extends Notification
     }
 
     /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
+     * Get the Database representation of the notification.
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'title'=>$this->titel,
-            'body'=>$this->body,
+            'campaign_id' => $this->campaign->id,
+            'campaign_name' => $this->campaign->name,
+            'message' => 'تم إطلاق حملة جديدة',
         ];
     }
 }
