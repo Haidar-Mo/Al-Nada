@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Administration;
 use App\Models\Campaign;
 use App\Models\City;
+use App\Models\Donation;
 use App\Models\Employee;
 use App\Models\News;
 use App\Models\NewsImage;
@@ -27,6 +28,12 @@ class DatabaseSeeder extends Seeder
 
         ]);
     }
+    private function city()
+    {
+        City::insert([
+            ['name' => 'دمشق'],
+        ]);
+    }
     private function section()
     {
         Section::insert([
@@ -44,10 +51,10 @@ class DatabaseSeeder extends Seeder
     private function employee()
     {
         Employee::insert([[
-            'first_name' => 'محمد',
-            'last_name' => 'حيدر',
-            'father_name' => 'إبراهيم',
-            'mother_name' => 'أسيما',
+            'first_name' => 'MM',
+            'last_name' => 'MM',
+            'father_name' => 'MM',
+            'mother_name' => 'MM',
             'phone_number' => '0936287134',
             'id_serial_number' => '03280000000',
             'nationality' => 'سوري',
@@ -70,7 +77,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->rolesAndPermissions();
         $this->section();
-        City::factory(5)->create();
+        $this->city();
         $this->employee();
 
         Administration::factory(1)->create();
@@ -80,5 +87,6 @@ class DatabaseSeeder extends Seeder
 
         Employee::factory(5)->create();
         User::factory(5)->create();
+        //Donation::factory(15)->create();
     }
 }

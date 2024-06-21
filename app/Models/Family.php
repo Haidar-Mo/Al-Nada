@@ -46,7 +46,10 @@ class Family extends Model
         'is_stopped',
     ];
 
-
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
 
 
     public function member():HasMany

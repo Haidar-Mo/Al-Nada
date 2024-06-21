@@ -23,7 +23,8 @@ class CreateAccountRequest extends FormRequest
     {
         return [
             'user_name' => ['required', 'max:255', 'unique:Administrations,user_name,' . $this->route('id') . ',id'],
-            'password' => ['required', 'confirmed', 'min:6']
+            'password' => ['required', 'confirmed', 'min:6'],
+            'role' => ['required', 'in:admin,employee'],
         ];
     }
 }

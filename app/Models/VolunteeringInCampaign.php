@@ -14,7 +14,7 @@ class VolunteeringInCampaign extends Model
         'campaign_id',
         'first_name',
         'last_name',
-        'Reason_for_volunteering',
+        'reason_for_volunteering',
         'academic_level',
         'city_id',
         'address',
@@ -23,6 +23,10 @@ class VolunteeringInCampaign extends Model
         'end_date',
     ];
 
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
+    ];
 
     public function user(): BelongsTo
     {
@@ -32,5 +36,10 @@ class VolunteeringInCampaign extends Model
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }

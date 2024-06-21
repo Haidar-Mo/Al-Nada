@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->enum('type', ['مالي', 'عيني']);
-            $table->bigInteger('amount');
-            $table->text('discreption');
+            $table->enum('type', ['مالي','عيني']);
+            $table->bigInteger('amount')->nullable();
+            $table->text('description')->nullable();
             $table->enum('deliver_type', ['مندوب توصيل', 'يدوي', 'الكتروني']);
-            $table->string('target_name');
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }

@@ -22,7 +22,11 @@ class News extends Model
 
     protected $appends = ['images'];
 
-
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+    
     public function getImagesAttribute()
     {
         return $this->image()->get();

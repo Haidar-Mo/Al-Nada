@@ -27,6 +27,11 @@ class Campaign extends Model
         'start_date',
     ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function volinteeringInCampaign(): HasMany
     {
         return $this->hasMany(volunteeringInCampaign::class);
@@ -35,5 +40,15 @@ class Campaign extends Model
     public function favorite(): HasMany
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function donation(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
+    }
+
+    public function alert(): HasMany
+    {
+        return $this->hasMany(DonationCampaignAlert::class);
     }
 }

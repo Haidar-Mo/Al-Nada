@@ -18,8 +18,10 @@ class SponsershipType extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'date:Y/m/d',
+        'end_date' => 'date:Y/m/d',
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
     ];
 
     public function sponserships(): BelongsTo
