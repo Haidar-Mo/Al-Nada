@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wallet;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class WalletController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Wallet $wallet)
+    public function show(Product $product)
     {
         //
     }
@@ -42,7 +42,7 @@ class WalletController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Wallet $wallet)
+    public function edit(Product $product)
     {
         //
     }
@@ -50,7 +50,7 @@ class WalletController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Wallet $wallet)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -58,7 +58,7 @@ class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Wallet $wallet)
+    public function destroy(Product $product)
     {
         //
     }

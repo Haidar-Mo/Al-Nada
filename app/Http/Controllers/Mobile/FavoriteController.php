@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isEmpty;
+
 class FavoriteController extends Controller
 {
     /**
@@ -27,6 +29,9 @@ class FavoriteController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $campaign = Campaign::findOrFail($id);
+        $favorite = $user->favorite()->where('campaign_id', $id)->first();
+        if ($favorite)
+            return response()->json(['message' => 'الحملة مضافة للمفضلة مسبقاً'], 409);
         $favorite = $user->favorite()->create(['campaign_id' => $campaign->id]);
         return response()->json($favorite, 201);
     }

@@ -3,19 +3,27 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Models\User;
-use App\Services\NotificationService;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\MobileLoginRequest;
 use App\Http\Requests\Mobile\MobileRegisterRequest;
+
 use App\Traits\ConfirmationEmailTrait;
+use App\Traits\NotificationTrait;
+use App\Traits\ResetPasswordEmailingTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
     use ConfirmationEmailTrait;
+    use ResetPasswordEmailingTrait;
+    use NotificationTrait;
 
     /**
      * Create new Account 
@@ -24,6 +32,7 @@ class AuthController extends Controller
      */
     public function register(MobileRegisterRequest $request)
     {
+
         DB::beginTransaction();
         try {
             $code = $this->generateVerificationCode();
@@ -32,9 +41,10 @@ class AuthController extends Controller
             $this->sendVerificationEmail($user);
             DB::commit();
 
-            /* $notificatoin = new NotificationService;
-            $notificatoin->subscribeToTopic($user->deviceToken , 'mobile_user');*/
-            return response()->json(['message' => 'تم إنشاء الحساب بنجاح \\n تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل', 'user' => $user], 201);
+            //$this->subscribeToTopic($user->deviceToken, 'mobile_user');
+            return response()->json([
+                'message' => "تم إنشاء الحساب بنجاح, تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
+            ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);
@@ -61,6 +71,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User logged in successfully.',
             'access_token' => $token,
+            'user' => $user,
         ]);
     }
 
@@ -74,9 +85,8 @@ class AuthController extends Controller
 
     public function profile()
     {
-
-        $user = User::findOrfail(Auth::user()->id);
-        return response()->json($user, 200);
+        $user = User::with(['wallet', 'sposership.target'])->findOrfail(Auth::user()->id);
+        return response()->json(array_merge([$user, 'total donation ' => $user->TotalDonations()]), 200);
     }
 
     /**
@@ -85,17 +95,51 @@ class AuthController extends Controller
      * @param Request $code
      * @return JsonResponse
      */
-    protected function activateAccount($id, Request $request)
+    protected function activateAccount($id, Request $code)
     {
         $user = User::findOrFail($id);
         if ($user->verification_code == null || $user->email_verified_at != null)
             return response()->json(['message' => 'الحساب مفعل بالفعل'], 422);
-        if ($user->verification_code == $request->code) {
+        if ($user->verification_code == $code->code) {
             $user->email_verified_at = Carbon::now();
             $user->verification_code = null;
             $user->save();
             return response()->json(['message' => 'تم تفعيل حسابك بنجاح', $user], 200);
         }
         return response()->json(['message' => 'عذراً, يرجى التأكد من الكود المرسل'], 422);
+    }
+
+    /**
+     * Reset Password
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function autoResetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'phone_number' => 'required|exists:users,phone_number'
+        ]);
+        $user = User::where('phone_number', $request->phone_number)->where('email', $request->email)->first();
+        if (!$user)
+            return response()->json(['message' => 'الرقم و البريد غير متطابقين'], 422);
+        $password = $this->resetPassword($user);
+        $this->sendResetPasswordEmail($user, $password);
+        return response()->json(['message' => 'تم تغيير كلمة المرور, راجع بريدك الإلكتروني'], 200);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:6',
+        ]);
+        $user = User::find(Auth::user()->id);
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['message' => 'كلمة مرور الحالية غير صحيحة'], 422);
+        }
+        $user->password =  Hash::make($request->new_password);
+        $user->save();
+        return response()->json(['message' => 'تم تغيير كلمة مرور حسابك'], 200);
     }
 }

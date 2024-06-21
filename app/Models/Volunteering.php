@@ -48,12 +48,22 @@ class Volunteering extends Model
         'end_date',
     ];
 
-    protected $cast = [
-        'birth_date' => 'date',
+    //protected $appends = [];
+    
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
+        'birth_date' => 'date:Y/m/d',
     ];
+
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }

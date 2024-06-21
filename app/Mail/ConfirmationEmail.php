@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,8 +13,8 @@ class ConfirmationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
-    public $verification_code;
+    private $name;
+    private $verification_code;
 
     /**
      * Create a new message instance.
@@ -42,7 +41,7 @@ class ConfirmationEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.Emailing',
+            view: 'mail.ConfirmationEmailing',
             with: [
                 'name' => $this->name,
                 'code' => $this->verification_code,

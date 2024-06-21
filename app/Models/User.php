@@ -4,12 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-<<<<<<< HEAD
-=======
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
->>>>>>> temp3
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,13 +21,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-<<<<<<< HEAD
-        'name',
-        'email',
-        'password',
-    ];
-
-=======
         'first_name',
         'last_name',
         'phone_number',
@@ -41,12 +31,11 @@ class User extends Authenticatable
         'image',
         'verification_code',
         'deviceToken',
-        'is_volunteer'
+        'is_volunteer',
     ];
 
-    protected $appends = ['wallet'];
+    protected $appends = [];
 
->>>>>>> temp3
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -55,11 +44,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-<<<<<<< HEAD
-=======
         'verification_code',
         'deviceToken',
->>>>>>> temp3
     ];
 
     /**
@@ -68,23 +54,18 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-<<<<<<< HEAD
-        'email_verified_at' => 'datetime',
-    ];
-=======
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
-        'birth_date' => 'date',
+        'birth_date' => 'date:Y/m/d',
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
 
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);
     }
-    public function getWalletAttribute()
-    {
-        return $this->wallet()->get();
-    }
+
     public function sposership(): HasOne
     {
         return $this->hasOne(Sponsership::class);
@@ -95,6 +76,30 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
+    public function donationCampaign(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
+    }
+
+    public function donationAlert(): HasMany
+    {
+        return $this->hasMany(DonationAlert::class);
+    }
+    public function donationCampaignAlert(): HasMany
+    {
+        return $this->hasMany(DonationCampaignAlert::class);
+    }
+
+    public function TotalPrivateDonations()
+    {
+        return $this->donation()->sum('amount');
+    }
+
+    public function TotalCampaignDonations()
+    {
+        return $this->donationCampaign()->sum('amount');
+    }
+    
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -114,5 +119,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favorite::class);
     }
->>>>>>> temp3
 }

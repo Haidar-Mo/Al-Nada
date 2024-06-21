@@ -24,13 +24,18 @@ class Sponsership extends Model
         'notes',
     ];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function type(): HasMany
+    public function target(): HasMany
     {
-        return $this->hasMany(SponsershipType::class);
+        return $this->hasMany(SponsershipType::class,'sponsership_id');
     }
 }

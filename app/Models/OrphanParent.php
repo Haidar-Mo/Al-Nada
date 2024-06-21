@@ -17,6 +17,11 @@ class OrphanParent extends Model
      */
     protected $fillable = [];
 
+    protected $casts =[
+        'created_at'=>'date:Y/m/d',
+        'updated_at'=>'date:Y/m/d',
+    ];
+
     public function orphan(): HasMany
     {
         return $this->hasMany(Orphan::class);

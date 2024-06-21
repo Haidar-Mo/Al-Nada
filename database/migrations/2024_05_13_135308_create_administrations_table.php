@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('administrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('employee_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('user_name');
             $table->string('password');
             $table->timestamps();
