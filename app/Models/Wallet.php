@@ -21,11 +21,15 @@ class Wallet extends Model
         'balance'
     ];
 
+
+    protected $appends = ['Bills'];
+
+
     protected $casts = [
         'created_at' => 'date:Y/m/d',
         'updated_at' => 'date:Y/m/d',
     ];
-    
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -34,5 +38,23 @@ class Wallet extends Model
     public function billingHistory(): HasMany
     {
         return $this->hasMany(BillingHistory::class);
+    }
+
+    public function getBillsAttribute()
+    {
+        return $this->billingHistory->map(function ($billHistory) {
+            return [
+                'id' => $billHistory->id,
+                'amount' => $billHistory->amount,
+                'date' => $billHistory->created_at,
+                'type' => get_class($billHistory->billable),
+                'details' => $billHistory->billable,
+            ];
+        });
+    }
+
+    public function charge(): HasMany
+    {
+        return $this->hasMany(WalletCharge::class);
     }
 }

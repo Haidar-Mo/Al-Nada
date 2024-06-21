@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Administration;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,16 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('a', function () {
+    $user = Administration::find(1);
+    $user->assignRole('admin');
+    return $user;
 });
 
 /** MOBILE ROUTE FILES */
 include __DIR__ . '/V1/Mobile/auth.php';
 include __DIR__ . '/V1/Mobile/notification.php';
+include __DIR__ . '/V1/Mobile/wallet.php';
+include __DIR__ . '/V1/Mobile/donation.php';
 include __DIR__ . '/V1/Mobile/volunteering.php';
 include __DIR__ . '/V1/Mobile/campaign.php';
-include __DIR__ . '/V1/Mobile/donation.php';
 include __DIR__ . '/V1/Mobile/news.php';
 
 /** WEB ROUTE FILES */

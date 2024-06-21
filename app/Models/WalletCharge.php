@@ -6,20 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BillingHistory extends Model
+class WalletCharge extends Model
 {
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
-     * 
-     * @var array<int, string>
+     *
+     * @var array
      */
-    protected $fillable = [
-        'wallet_id',
-        'transaction_type',
-        'amount',
-    ];
+    protected $fillable = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [];
 
     /**
      * The accessors to append to the model's array form.
@@ -28,25 +31,9 @@ class BillingHistory extends Model
      */
     protected $appends = [];
 
-    /**
-     * The attributes that should be cast.
-     * 
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'date:Y/m/d',
-        'updated_at' => 'date:Y/m/d',
-    ];
 
     public function wallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class);
     }
-
-    public function billable()
-    {
-        return $this->morphTo();
-    }
-
-
 }
