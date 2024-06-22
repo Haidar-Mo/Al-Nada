@@ -17,10 +17,9 @@ class NewsImageFactory extends Factory
      */
     public function definition(): array
     {
-        $news_IDs = News::pluck('id');
         return [
-            'news_id' => fake()->randomElement($news_IDs),
-            'url' => 'News/news.jpeg'
+            'news_id' => News::factory(),
+            'url' => 'News/news.jpg'
         ];
     }
 }

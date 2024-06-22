@@ -28,6 +28,18 @@ class CampaignController extends Controller
     }
 
     /**
+     * Display the specified campaign.
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function show(string $id)
+    {
+        $campaign = Campaign::findOrFail($id);
+        return response()->json($campaign, 200);
+    }
+
+
+    /**
      * Store a newly created campaign in storage.
      * @param Request $request
      * @return JsonResponse
@@ -37,16 +49,13 @@ class CampaignController extends Controller
         DB::beginTransaction();
         try {
             $path = '';
-            // check if Image exsist in request
             if ($request->file('image'))
                 $path = $request->file('image')->store('Campaign', 'public');
-            // create new campaign
             $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
             // send Notifications 
             $user = User::all();
             Notification::send($user, new NewCampaignNotification($campaign));
             //$this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', ["بدأ العمل بحملة" . $campaign->name]);
-
             DB::commit();
             return response()->json($campaign, 201);
         } catch (\Exception $e) {
@@ -57,17 +66,6 @@ class CampaignController extends Controller
         }
     }
 
-    /**
-     * Display the specified campaign.
-     * @param string $id
-     * @return JsonResponse
-     */
-    public function show(string $id)
-    {
-        $campaign = Campaign::findOrFail($id);
-        $notifi = $campaign->notifications;
-        return response()->json($notifi, 200);
-    }
 
     /**
      * Update the specified resource in storage.

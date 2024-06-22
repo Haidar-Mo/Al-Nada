@@ -108,10 +108,12 @@ class NewsController extends Controller
     }
 
     /**
-     * Delete news image 
-     * 
+     * Delete news images (passing array of images)
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function deleteImage(Request $request, string $id)
+    public function deleteImages(Request $request, string $id)
     {
         DB::beginTransaction();
         try {
@@ -127,6 +129,28 @@ class NewsController extends Controller
             DB::commit();
             $news = News::findOrFail($id);
             return response()->json($news, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), 500);
+        }
+    }
+
+
+    /**
+     * Delete new image (singel Image)
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteImage(string $id)
+    {
+        DB::beginTransaction();
+        try {
+            $image = NewsImage::findOrFail($id);
+            if (Storage::exists("public/" . $image->url))
+                Storage::delete("public/" . $image->url);
+            $image->delete();
+            DB::commit();
+            return response()->json(null, 204);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);

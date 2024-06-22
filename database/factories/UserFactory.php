@@ -18,7 +18,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $city_IDs = City::pluck('id')->toArray();
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
@@ -26,7 +25,7 @@ class UserFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'id_serial_number' => fake()->randomNumber(9),
             'birth_date' => fake()->date(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'), //'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'image' => 'User/user.png',
             'deviceToken' => Str::random(50),
             'is_volunteer' => 0,

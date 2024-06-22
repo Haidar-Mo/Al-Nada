@@ -38,17 +38,17 @@ class DonationService
 
             $donation = $user->donation()->create($request->all());
             if ($request->type == 'مالي' && $request->deliver_type == 'الكتروني') {
-                $donation->bill()->create([
+                $bill = $donation->bill()->create([
                     'wallet_id' => $user->wallet->id,
                     'transaction_type' => 'سحب',
                     'amount' => $donation->amount,
                 ]);
             }
             DB::commit();
-            return $donation;
+            return $bill;
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json($e->getMessage(), 500);
+            return response()->json($e->getMessage(), 400);
         }
     }
 }

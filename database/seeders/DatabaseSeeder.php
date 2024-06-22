@@ -9,6 +9,7 @@ use App\Models\Campaign;
 use App\Models\City;
 use App\Models\Donation;
 use App\Models\Employee;
+use App\Models\Evaluation;
 use App\Models\News;
 use App\Models\NewsImage;
 use App\Models\Section;
@@ -75,18 +76,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->rolesAndPermissions();
+        /*$this->rolesAndPermissions();
         $this->section();
         $this->city();
         $this->employee();
 
         Administration::factory(1)->create();
-        News::factory(5)->create();
         NewsImage::factory(10)->create();
         Campaign::factory(4)->create();
 
         Employee::factory(5)->create();
         User::factory(5)->create();
-        //Donation::factory(15)->create();
+        Donation::factory(15)->create();
+        Evaluation::factory(2)->create();*/
     }
 }
