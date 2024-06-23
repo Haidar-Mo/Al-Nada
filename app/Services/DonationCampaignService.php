@@ -37,8 +37,14 @@ class DonationCampaignService
         if ($campaign->is_donateable == 0)
             return response()->json(['message' => 'لايمكنك التبرع لهذه الحملة الآن'], 422);
        
-            $donation = $user->donationCampaign()->create(array_merge($request->all(), ['campaign_id' => $campaign->id]));
-
+            $donation = $user->wallet->donationCampaign()->create(array_merge($request->all(), ['campaign_id' => $campaign->id]));
+            if ($request->type == 'مالي' && $request->deliver_type == 'الكتروني') {
+                $bill = $donation->bill()->create([
+                    'wallet_id' => $user->wallet->id,
+                    'transaction_type' => 'سحب',
+                    'amount' => $donation->amount,
+                ]);
+            }
         return $donation;
     }
 }

@@ -17,12 +17,11 @@ class DonationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 8,
+            'wallet_id' => 12,
             'type' => 'مالي',
             'amount' => fake()->randomNumber(7),
             'deliver_type' => 'الكتروني',
-            'descreption' => 'لايوجد',
-            'target_name' => 'خاص',
+            'description' => 'لايوجد',
 
         ];
     }

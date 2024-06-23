@@ -31,6 +31,16 @@ class NewCampaignNotification extends Notification
     }
 
     /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'campaign';
+    }
+
+    /**
      * Get the Database representation of the notification.
      *
      * @return array<string, mixed>

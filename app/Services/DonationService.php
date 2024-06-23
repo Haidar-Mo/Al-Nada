@@ -36,7 +36,7 @@ class DonationService
                 ]);
             }
 
-            $donation = $user->donation()->create($request->all());
+            $donation = $user->wallet->donation()->create($request->all());
             if ($request->type == 'مالي' && $request->deliver_type == 'الكتروني') {
                 $bill = $donation->bill()->create([
                     'wallet_id' => $user->wallet->id,
@@ -45,7 +45,7 @@ class DonationService
                 ]);
             }
             DB::commit();
-            return $bill;
+            return $donation;
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 400);

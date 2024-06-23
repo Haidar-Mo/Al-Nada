@@ -39,3 +39,4 @@ include __DIR__ . '/V1/Web/section.php';
 include __DIR__ . '/V1/Web/campaign.php';
 include __DIR__ . '/V1/Web/product.php';
 include __DIR__ . '/V1/Web/news.php';
+include __DIR__ . '/V1/Web/wallet.php';

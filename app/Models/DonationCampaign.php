@@ -29,9 +29,9 @@ class DonationCampaign extends Model
     ];
 
 
-    public function user(): BelongsTo
+    public function wallet(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Wallet::class);
     }
 
     public function campaign(): BelongsTo

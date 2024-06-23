@@ -9,6 +9,7 @@ use App\Models\Campaign;
 use App\Models\User;
 use App\Notifications\NewCampaignNotification;
 use App\Traits\NotificationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -66,7 +67,6 @@ class CampaignController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      * @param CreateCampaignRequest $request
@@ -93,6 +93,18 @@ class CampaignController extends Controller
             DB::rollBack();
             return response()->json($e->getMessage(), $e->getCode() ?: 500);
         }
+    }
+    /**
+     * finish the Campaign ( set end-date )
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function FinishCampaign(string $id)
+    {
+        $campaign = Campaign::findOrFail($id);
+        $campaign->end_date = now();
+        $campaign->save();
+        return response()->json($campaign, 200);
     }
 
     /**

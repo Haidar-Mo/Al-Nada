@@ -18,7 +18,7 @@ class DonationCampaignController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        $donations = $user->donationCampaign;
+        $donations = $user->wallet->donationCampaign()->with('campaign')->get();
         return response()->json($donations, 200);
     }
 
@@ -30,7 +30,7 @@ class DonationCampaignController extends Controller
     public function show(string $id)
     {
         $user = User::find(Auth::user()->id);
-        $donation = $user->donationCampaign()->with('campaign')->findOrFail($id);
+        $donation = $user->wallet->donationCampaign()->with('campaign')->findOrFail($id);
         return Response()->json($donation, 200);
     }
 

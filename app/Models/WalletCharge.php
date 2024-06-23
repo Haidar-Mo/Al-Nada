@@ -15,7 +15,11 @@ class WalletCharge extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'wallet_id',
+        'image',
+        'status',
+    ];
 
     /**
      * The attributes that should be cast to native types.

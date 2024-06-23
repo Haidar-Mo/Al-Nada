@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /*$this->rolesAndPermissions();
+        /* $this->rolesAndPermissions();
         $this->section();
         $this->city();
         $this->employee();
