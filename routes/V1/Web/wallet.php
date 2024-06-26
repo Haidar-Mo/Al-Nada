@@ -4,7 +4,7 @@ use App\Http\Controllers\Web\WalletChargeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix('web/wallet')->middleware('auth:sanctum')->group(function () {
+Route::prefix('web/wallet')->middleware('auth:sanctum', 'type.web')->group(function () {
 
     Route::prefix('charge-request')->group(function () {
 

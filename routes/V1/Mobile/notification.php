@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('mobile/notification')->middleware('auth:sanctum')->group(function () {
+Route::prefix('mobile/notification')->middleware('auth:sanctum', 'type.mobile')->group(function () {
     Route::get('index', [NotificationController::class, 'index']);
     Route::post('mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('mark-as-unread/{id}', [NotificationController::class, 'MarkAsUnRead']);

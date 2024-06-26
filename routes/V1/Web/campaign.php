@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\CampaignController;
 
-Route::prefix('web/campaign')->middleware('auth:sanctum')->group(function () {
+Route::prefix('web/campaign')->middleware('auth:sanctum', 'type.web')->group(function () {
     Route::get('index', [CampaignController::class, 'index']);
     Route::get('show/{id}', [CampaignController::class, 'show']);
     Route::post('create', [CampaignController::class, 'store']);

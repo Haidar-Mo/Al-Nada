@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('web/auth/')->group(function () {
 
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
+    Route::post('logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum', 'type.web']);
     // Route::get('profile', [AuthController::class, 'profile'])->middleware(['auth:sanctum']);
 
     // Route::post('change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');

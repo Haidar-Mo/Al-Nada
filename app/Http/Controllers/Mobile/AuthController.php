@@ -64,9 +64,8 @@ class AuthController extends Controller
 
         if ($user->email_verified_at == null)
             return response()->json(['message' => 'يرجى تفعيل حسابك قبل عملية تسجيل الدخول'], 422);
-
-        /* add ['role:user'] as second param */
-        $token = $user->createToken('access_token')->plainTextToken;
+        $user->tokens()->delete();
+        $token = $user->createToken('access_token', ['role:mobile'])->plainTextToken;
 
         return response()->json([
             'message' => 'User logged in successfully.',
