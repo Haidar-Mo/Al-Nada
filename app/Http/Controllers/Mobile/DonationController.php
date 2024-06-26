@@ -18,7 +18,7 @@ class DonationController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        $donations = $user->donation;
+        $donations = $user->wallet->donation;
         return response()->json($donations, 200);
     }
     /**
@@ -29,7 +29,7 @@ class DonationController extends Controller
     public function show(string $id)
     {
         $user = User::find(Auth::user()->id);
-        $donation = $user->donation()->findOrFail($id);
+        $donation = $user->wallet->donation()->findOrFail($id);
         return Response()->json($donation, 200);
     }
 

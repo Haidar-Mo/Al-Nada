@@ -9,6 +9,7 @@ use App\Models\Campaign;
 use App\Models\User;
 use App\Notifications\NewCampaignNotification;
 use App\Traits\NotificationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,18 @@ class CampaignController extends Controller
     }
 
     /**
+     * Display the specified campaign.
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function show(string $id)
+    {
+        $campaign = Campaign::findOrFail($id);
+        return response()->json($campaign, 200);
+    }
+
+
+    /**
      * Store a newly created campaign in storage.
      * @param Request $request
      * @return JsonResponse
@@ -37,16 +50,13 @@ class CampaignController extends Controller
         DB::beginTransaction();
         try {
             $path = '';
-            // check if Image exsist in request
             if ($request->file('image'))
                 $path = $request->file('image')->store('Campaign', 'public');
-            // create new campaign
             $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
             // send Notifications 
             $user = User::all();
             Notification::send($user, new NewCampaignNotification($campaign));
             //$this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', ["بدأ العمل بحملة" . $campaign->name]);
-
             DB::commit();
             return response()->json($campaign, 201);
         } catch (\Exception $e) {
@@ -55,18 +65,6 @@ class CampaignController extends Controller
                 Storage::delete("public/" . $path);
             return response()->json($e->getMessage(), 500);
         }
-    }
-
-    /**
-     * Display the specified campaign.
-     * @param string $id
-     * @return JsonResponse
-     */
-    public function show(string $id)
-    {
-        $campaign = Campaign::findOrFail($id);
-        $notifi = $campaign->notifications;
-        return response()->json($notifi, 200);
     }
 
     /**
@@ -95,6 +93,18 @@ class CampaignController extends Controller
             DB::rollBack();
             return response()->json($e->getMessage(), $e->getCode() ?: 500);
         }
+    }
+    /**
+     * finish the Campaign ( set end-date )
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function FinishCampaign(string $id)
+    {
+        $campaign = Campaign::findOrFail($id);
+        $campaign->end_date = now();
+        $campaign->save();
+        return response()->json($campaign, 200);
     }
 
     /**

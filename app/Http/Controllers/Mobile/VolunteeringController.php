@@ -94,32 +94,25 @@ class VolunteeringController extends Controller
             $user = User::findOrFail(Auth::user()->id);
             $volunteer = $user->volunteering()->findOrFail($id);
 
-            // Check if the volunteer request is not approved or rejected
             if ($volunteer->status != 'انتظار')
                 return response()->json(['message' => 'لا يمكن تعديل الطلب بعد الموافقة عليه أو رفضه'], 422);
 
-            // Check Id_card_Image existence in request
             if ($request->hasFile('id_card_image')) {
-                // Delete old image
                 if (Storage::exists("public/" . $volunteer->id_card_image))
                     Storage::delete("public/" . $volunteer->id_card_image);
 
-                // Store new image
                 $id_card_path = $request->file('id_card_image')->store('Volunteering/Id_card_image', 'public');
                 $volunteer->id_card_image = $id_card_path;
             }
-            // Check Personal_Image existence in request
+
             if ($request->hasFile('personal_image')) {
-                // Delete old image
                 if (Storage::exists("public/" . $volunteer->personal_image))
                     Storage::delete("public/" . $volunteer->personal_image);
 
-                // Store new image
                 $personal_image_path = $request->file('personal_image')->store('Volunteering/Personal_image', 'public');
                 $volunteer->personal_image = $personal_image_path;
             }
 
-            // Update other fields
             $volunteer->update($request->all());
 
             DB::commit();

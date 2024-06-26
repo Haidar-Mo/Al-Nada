@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('donation_campaigns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('wallet_id')->constrained();
             $table->foreignId('campaign_id')->constrained();
             $table->enum('type', ['مالي','عيني']);
             $table->bigInteger('amount')->nullable();

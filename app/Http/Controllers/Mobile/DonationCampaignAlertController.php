@@ -36,7 +36,11 @@ class DonationCampaignAlertController extends Controller
             'frequency' => ['required', 'in:يومي,اسبوعي,شهري']
         ]);
         $user = User::find(Auth::user()->id);
+        if ($user->donationCampaignAlert()->where('campaign_id', $id)->first())
+            return response()->json(['message' => 'هنالك منبه مُضاف لهذه الحملة بالفعل'], 422);
         $campaign = Campaign::findOrFail($id);
+        if ($campaign->end_date != null)
+            return response()->json(['message' => 'عذراً,الحملة منتهية....إنتظرنا بحملة أخرى <3'], 422);
         $alert = $user->donationCampaignAlert()->create(array_merge($request->only('title', 'requency'), ['campaign_id' => $campaign->id]));
         return response()->json($alert, 201);
     }

@@ -22,7 +22,7 @@ class Wallet extends Model
     ];
 
 
-    protected $appends = ['Bills'];
+    protected $appends = [];
 
 
     protected $casts = [
@@ -33,6 +33,16 @@ class Wallet extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function donation(): HasMany
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    public function donationCampaign(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
     }
 
     public function billingHistory(): HasMany

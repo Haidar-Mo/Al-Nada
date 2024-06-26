@@ -21,8 +21,8 @@ class AuthController extends Controller
         }
 
         $user = Administration::find(Auth::guard('web')->user()->id);
-        /* add ['role:user'] as second param */
-        $token = $user->createToken('access_token')->plainTextToken;
+        $user->tokens()->delete();
+        $token = $user->createToken('access_token', ['role:web'])->plainTextToken;
 
         return response()->json([
             'message' => 'تم تسجيل الدخول بنجاح.',

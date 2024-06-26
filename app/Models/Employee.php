@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
@@ -36,11 +37,11 @@ class Employee extends Model
         'image'
     ];
 
-    protected $casts =[
-        'created_at'=>'date:Y/m/d',
-        'updated_at'=>'date:Y/m/d',
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
-    
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -53,5 +54,9 @@ class Employee extends Model
     public function account(): HasOne
     {
         return $this->hasOne(Administration::class, 'employee_id', 'id');
+    }
+    public function evaluation(): HasMany
+    {
+        return $this->hasMany(Evaluation::class);
     }
 }
