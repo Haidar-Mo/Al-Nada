@@ -166,23 +166,4 @@ class ProductController extends Controller
         }
     }
 
-
-    public function sellHistory()
-    {
-        $history = SellingHistory::all();
-        return response()->json($history);
-    }
-
-    public function sellHistoryShow(string $id)
-    {
-        $history = SellingHistory::findOrfail($id);
-        return response()->json($history, 200);
-    }
-
-    public function sellHistoryDestroy(string $id)
-    {
-        $history = SellingHistory::findOrfail($id);
-        $history->delete();
-        return response()->json(null, 204);
-    }
 }

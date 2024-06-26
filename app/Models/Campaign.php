@@ -51,4 +51,5 @@ class Campaign extends Model
     {
         return $this->hasMany(DonationCampaignAlert::class);
     }
+
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Mobile\OrderRequest;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\BuyProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,14 +36,17 @@ class ProductController extends Controller
 
     /**
      * Buy the specific Product
+     * @param OrderRequest $request
      * @param string $id
      * @return JsonResponse
      */
-    public function buyProduct(string $id)
+    public function orderProduct(OrderRequest $request, string $id)
     {
         $user = Auth::user();
-        $service = new BuyProductService;
-        $bill = $service->buy($user, $id);
-        return response()->json($bill, 200);
+        $product = Product::findOrFail($id);
+        if (!$product->is_available)
+            return response()->json(['message' => 'المنتج غير متاح حالياً'], 422);
+        $order = $product->order()->create(array_merge($request->all(), ['user_id' => $user->id]));
+        return response()->json($order, 201);
     }
 }

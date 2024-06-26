@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,10 +36,16 @@ class WalletChargeController extends Controller
      * @param string $id
      * @return JsonResponse 
      */
-    public function accept(string $id)
+    public function accept(Request $request, string $id)
     {
+        $request->validate(['amount' => 'required']);
         $wallet_charge = WalletCharge::findOrFail($id);
         $wallet_charge->update(['status' => 'تم الشحن']);
+        $wallet = Wallet::findOrFail($wallet_charge->wallet_id);
+        $wallet->billingHistory()->create([
+            'amount' => $request->amount,
+            'transiction_type' => 'ايداع'
+        ]);
         return response()->json($wallet_charge, 200);
     }
 

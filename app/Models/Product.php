@@ -46,8 +46,9 @@ class Product extends Model
         return $this->morphMany(BillingHistory::class, 'billable');
     }
 
-    public function sellingHistory(): HasMany
+    public function order(): MorphMany
     {
-        return $this->hasMany(SellingHistory::class);
+        return $this->morphMany(Order::class, 'orderable');
     }
+
 }

@@ -44,6 +44,10 @@ class VolunteeringInCampaignController extends Controller
     public function store(VolunteeringInCampaignRequest $request, string $id)
     {
         $user = User::findOrfail(Auth::user()->id);
+        // check if he is already a volunteer
+        if ($user->is_volunteer == 1)
+            return response()->json(['message' => 'أنت بالفعل متطوع لدى الجمعية, شكراً لك'], 422);
+
         $campaign = Campaign::findOrfail($id);
         $old_request =  $user->volunteeringInCampaign()->where('campaign_id', $id)->where('status', 'انتظار')->first();
         if ($old_request)
