@@ -14,9 +14,4 @@ Route::prefix('web/product')->middleware('auth:sanctum', 'type.web')->group(func
     Route::put('make-not-available/{id}', [ProductController::class, 'makeNotAvailable']);
     Route::delete('delete/{id}', [ProductController::class, 'destroy']);
 
-    Route::prefix('sell/history')->group(function () {
-        Route::get('index', [ProductController::class, 'sellHistory']);
-        Route::get('show/{id}', [ProductController::class, 'sellHistoryShow']);
-        Route::delete('delete/{id}', [ProductController::class, 'sellHistoryDestroy']);
-    });
 });

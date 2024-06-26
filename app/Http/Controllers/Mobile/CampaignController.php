@@ -25,7 +25,13 @@ class CampaignController extends Controller
             ->take(3)
             ->get()
             ->map(function ($campaign) use ($user) {
-                $campaign->is_favorite = $user->favorite->contains($campaign);
+                $campaign->is_favorite = false;
+                $favorites = $user->favorite;
+                foreach ($favorites as $favorite) {
+                    if ($favorite->campaign->id == $campaign->id) {
+                        $campaign->is_favorite = true;
+                    }
+                }
                 return $campaign;
             });
 
@@ -35,7 +41,13 @@ class CampaignController extends Controller
             ->take(3)
             ->get()
             ->map(function ($campaign) use ($user) {
-                $campaign->is_favorite = $user->favorite->contains($campaign);
+                $campaign->is_favorite = false;
+                $favorites = $user->favorite;
+                foreach ($favorites as $favorite) {
+                    if ($favorite->campaign->id == $campaign->id) {
+                        $campaign->is_favorite = true;
+                    }
+                }
                 return $campaign;
             });
 
@@ -49,7 +61,13 @@ class CampaignController extends Controller
     {
         $user = Auth::user();
         $is_donateable_campaigns = Campaign::where('is_donateable', 1)->where('end_date', null)->get()->map(function ($campaign) use ($user) {
-            $campaign->is_favorite = $user->favorite->contains($campaign);
+            $campaign->is_favorite = false;
+            $favorites = $user->favorite;
+            foreach ($favorites as $favorite) {
+                if ($favorite->campaign->id == $campaign->id) {
+                    $campaign->is_favorite = true;
+                }
+            }
             return $campaign;
         });
         return response()->json($is_donateable_campaigns, 200);
@@ -60,7 +78,13 @@ class CampaignController extends Controller
     {
         $user = Auth::user();
         $is_volunteerable_campaigns = Campaign::where('is_volunteerable', 1)->where('end_date', null)->get()->map(function ($campaign) use ($user) {
-            $campaign->is_favorite = $user->favorite->contains($campaign);
+            $campaign->is_favorite = false;
+            $favorites = $user->favorite;
+            foreach ($favorites as $favorite) {
+                if ($favorite->campaign->id == $campaign->id) {
+                    $campaign->is_favorite = true;
+                }
+            }
             return $campaign;
         });
         return response()->json($is_volunteerable_campaigns, 200);
@@ -74,7 +98,13 @@ class CampaignController extends Controller
     {
         $user = Auth::user();
         $campaign = Campaign::findOrfail($id);
-        $campaign->is_favorite = $user->favorite->contains($campaign);
+        $favorites = $user->favorite;
+        $campaign->is_favorite = false;
+        foreach ($favorites as $favorite) {
+            if ($favorite->campaign->id == $campaign->id) {
+                $campaign->is_favorite = true;
+            }
+        }
         return response()->json($campaign, 200);
     }
 }

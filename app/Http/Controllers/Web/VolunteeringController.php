@@ -15,7 +15,7 @@ class VolunteeringController extends Controller
      */
     public function index()
     {
-        $volunteer_request = Volunteering::with('city')->all();
+        $volunteer_request = Volunteering::with('city')->get();
         return response()->json($volunteer_request, 200);
     }
 
