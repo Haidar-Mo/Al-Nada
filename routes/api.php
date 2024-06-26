@@ -30,6 +30,7 @@ include __DIR__ . '/V1/Mobile/donation.php';
 include __DIR__ . '/V1/Mobile/volunteering.php';
 include __DIR__ . '/V1/Mobile/campaign.php';
 include __DIR__ . '/V1/Mobile/product.php';
+include __DIR__ . '/V1/Mobile/order.php';
 include __DIR__ . '/V1/Mobile/news.php';
 
 /** WEB ROUTE FILES */
