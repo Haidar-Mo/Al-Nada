@@ -14,29 +14,29 @@ use Illuminate\Support\Facades\Auth;
 class VolunteeringInCampaignController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the volunteering request.
      * @return JsonResponse
      */
     public function index()
     {
         $user = Auth::user();
-        $volunteering_request_in_campaign = $user->volunteeringInCampaign;
-        return response()->json($volunteering_request_in_campaign, 200);
+        $volunteering_request = $user->volunteeringInCampaign;
+        return response()->json($volunteering_request, 200);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified volunteering request.
      * @param string $id
      * @return JsonResponse
      */
     public function show(string $id)
     {
-        $volunteering_request_in_campaign = VolunteeringInCampaign::findOrFail($id);
-        return response()->json($volunteering_request_in_campaign, 200);
+        $volunteering_request = VolunteeringInCampaign::findOrFail($id);
+        return response()->json($volunteering_request, 200);
     }
 
     /**
-     * Store a newly created campain_volunteering in storage.
+     * Store a newly created volunteering request in storage.
      * @param VolunteeringInCampaignRequest $request
      * @param string $id
      * @return JsonResponse
@@ -45,6 +45,9 @@ class VolunteeringInCampaignController extends Controller
     {
         $user = User::findOrfail(Auth::user()->id);
         $campaign = Campaign::findOrfail($id);
+        $old_request =  $user->volunteeringInCampaign()->where('campaign_id', $id)->where('status', 'انتظار')->first();
+        if ($old_request)
+            return response()->json(['message' => 'طلبك السابق لهذه الحملة قيد الإنتظار'], 422);
         if ($campaign->is_volunteerable == 0)
             return response()->json(['message' => 'لايمكنك الإنضمام لهذه الحملة حالباً'], 422);
         $volunteering_request =  $user->volunteeringInCampaign()->create(array_merge($request->all(), [

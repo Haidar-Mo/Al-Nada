@@ -7,9 +7,11 @@ use App\Models\DonationAlert;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Services\NotificationService;
+use App\Traits\NotificationTrait;
 
 class SendDonationAlerts extends Command
 {
+    use NotificationTrait;
     /**
      * The name and signature of the console command.
      *
@@ -38,11 +40,11 @@ class SendDonationAlerts extends Command
 
         $alerts = $dailyAlerts->merge($weeklyAlerts)->merge($monthlyAlerts);
 
-        $notification = new NotificationService;
+
         foreach ($alerts as $alert) {
             $user = User::find($alert->user_id);
             if ($user) {
-                $notification->sendNotification($user->deviceToken, 'تذكير', "$alert->title");
+                $this->sendNotification($user->deviceToken, 'تذكير', "$alert->title");
             }
         }
 

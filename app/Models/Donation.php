@@ -46,9 +46,9 @@ class Donation extends Model
         'updated_at' => 'date:Y/m/d',
     ];
 
-    public function user(): BelongsTo
+    public function wallet(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Wallet::class);
     }
 
     public function bill(): MorphMany

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Product extends Model
@@ -18,6 +19,7 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
+        'maker_name',
         'description',
         'price',
         'is_available',
@@ -42,5 +44,10 @@ class Product extends Model
     public function bill(): MorphMany
     {
         return $this->morphMany(BillingHistory::class, 'billable');
+    }
+
+    public function sellingHistory(): HasMany
+    {
+        return $this->hasMany(SellingHistory::class);
     }
 }

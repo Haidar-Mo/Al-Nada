@@ -29,6 +29,7 @@ include __DIR__ . '/V1/Mobile/wallet.php';
 include __DIR__ . '/V1/Mobile/donation.php';
 include __DIR__ . '/V1/Mobile/volunteering.php';
 include __DIR__ . '/V1/Mobile/campaign.php';
+include __DIR__ . '/V1/Mobile/product.php';
 include __DIR__ . '/V1/Mobile/news.php';
 
 /** WEB ROUTE FILES */
@@ -36,4 +37,6 @@ include __DIR__ . '/V1/Web/administration.php';
 include __DIR__ . '/V1/Web/employee.php';
 include __DIR__ . '/V1/Web/section.php';
 include __DIR__ . '/V1/Web/campaign.php';
+include __DIR__ . '/V1/Web/product.php';
 include __DIR__ . '/V1/Web/news.php';
+include __DIR__ . '/V1/Web/wallet.php';

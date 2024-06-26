@@ -18,9 +18,8 @@ class AdministrationFactory extends Factory
      */
     public function definition(): array
     {
-        $IDs = Employee::pluck('id');
         return [
-            'employee_id' => fake()->unique()->randomElement($IDs),
+            'employee_id' => Employee::factory(),
             'user_name' => $this->faker->userName(),
             'password' => bcrypt('password'),
         ];
