@@ -11,8 +11,7 @@ Route::prefix('mobile/campaign')->middleware('auth:sanctum', 'type.mobile')->gro
     Route::get('index', [CampaignController::class, 'index']);
     Route::get('donateable', [CampaignController::class, 'donateableCampaign']);
     Route::get('volunteerable', [CampaignController::class, 'volunteerableCampaign']);
-
-    Route::get('show/{id}', [CampaignController::class, 'show']);
+    Route::get('show/{id}', [CampaignController::class, 'show'])->name('mobile.show-campaign');
 
     Route::prefix('favorite')->group(function () {
 

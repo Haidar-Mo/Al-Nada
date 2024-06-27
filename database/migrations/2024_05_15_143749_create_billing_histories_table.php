@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('billing_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->constrained();
+            $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
             $table->enum('transaction_type', ['ايداع', 'سحب']);
             $table->decimal('amount', 10, 2);
             $table->morphs('billable');

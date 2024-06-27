@@ -44,7 +44,7 @@ class ConfirmationEmail extends Mailable
             view: 'mail.ConfirmationEmailing',
             with: [
                 'name' => $this->name,
-                'code' => $this->verification_code,
+                'verification_code' => $this->verification_code,
             ],
         );
     }

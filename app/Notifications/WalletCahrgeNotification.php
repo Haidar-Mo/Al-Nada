@@ -7,17 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewCampaignNotification extends Notification
+class WalletCahrgeNotification extends Notification
 {
     use Queueable;
 
-    private $campaign;
+    private $charge;
     /**
      * Create a new notification instance.
      */
-    public function __construct($campaign)
+    public function __construct($charge)
     {
-        $this->campaign = $campaign;
+        $this->charge = $charge;
     }
 
     /**
@@ -37,7 +37,7 @@ class NewCampaignNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-campaign';
+        return 'charge-wallet';
     }
 
     /**
@@ -48,10 +48,10 @@ class NewCampaignNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'campaign_id' => $this->campaign->id,
-            'campaign_name' => $this->campaign->name,
+            'type' => $this->charge->transaction_type,
+            'amount' => $this->charge->amount,
             'message' => 'تم إطلاق حملة جديدة',
-            'url' => route('mobile.show-campaign',$this->campaign->id)
+            'url' => url('mobile/wallet/billing-history')
         ];
     }
 }
