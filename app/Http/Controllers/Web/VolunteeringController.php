@@ -15,7 +15,7 @@ class VolunteeringController extends Controller
      */
     public function index()
     {
-        $volunteer_request = Volunteering::with('city')->all();
+        $volunteer_request = Volunteering::with('city')->get();
         return response()->json($volunteer_request, 200);
     }
 
@@ -30,23 +30,6 @@ class VolunteeringController extends Controller
         return response()->json($volunteer_request, 200);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Volunteering $request)
-    {
-        //
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Volunteering $volunteering)
-    {
-        //
-    }
 
     /**
      * Remove the specified voulnteer request from storage

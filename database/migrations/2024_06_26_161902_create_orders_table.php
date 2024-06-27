@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('selling_histories', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->decimal('price', 10, 2);
+            $table->foreignId('user_id');
+            $table->morphs('orderable');
+            $table->string('phone_number');
+            $table->string('address');
+            $table->string('note')->nullable();
+            $table->enum('status', ['مرفوض', 'مقبول', 'جديد'])->default('جديد');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('selling_histories');
+        Schema::dropIfExists('orders');
     }
 };

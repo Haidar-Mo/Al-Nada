@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class WalletCharge extends Model
+class Volunteer extends Model
 {
     use HasFactory;
 
@@ -17,9 +16,18 @@ class WalletCharge extends Model
      * @var array
      */
     protected $fillable = [
-        'wallet_id',
-        'image',
-        'status',
+        'first_name',
+        'last_name',
+        'father_name',
+        'mother_name',
+        'nationality',
+        'id_serial_number',
+        'birh_date',
+        'phone_number',
+        'academic_leve',
+        'academic_specialization',
+        'social_situation',
+        'status'
     ];
 
     /**
@@ -35,15 +43,4 @@ class WalletCharge extends Model
      * @var array<int, string>
      */
     protected $appends = [];
-
-
-    public function wallet(): BelongsTo
-    {
-        return $this->belongsTo(Wallet::class);
-    }
-
-    public function billingHistory(): MorphMany
-    {
-        return $this->morphMany(BillingHistory::class, 'billable');
-    }
 }

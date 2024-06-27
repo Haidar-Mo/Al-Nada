@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('number_of_daughters');
             $table->json('birth_date_of_daughters')->nullable();
             $table->foreignId('city_id')->constrained();
-            $table->string('adress');
+            $table->string('address');
             $table->json('languages');
             $table->text('assistance_can_be_provided');
             $table->enum('computer_useability_level', ['مبتدأ', 'متوسط', 'متقدم']);

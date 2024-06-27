@@ -34,7 +34,13 @@ class User extends Authenticatable
         'is_volunteer',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     * 
+     * @var array<int, string>
+     */
     protected $appends = [];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -89,7 +95,7 @@ class User extends Authenticatable
     {
         return $this->donationCampaign()->sum('amount');
     }
-    
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -108,5 +114,10 @@ class User extends Authenticatable
     public function favorite(): HasMany
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 }
