@@ -10,7 +10,7 @@ Route::prefix('web/wallet')->middleware('auth:sanctum', 'type.web')->group(funct
 
         Route::get('index', [WalletChargeController::class, 'index']);
         Route::get('show/{id}', [WalletChargeController::class, 'show']);
-        Route::put('accept/{id}',[WalletChargeController::class,'accept']);
+        Route::post('accept/{id}',[WalletChargeController::class,'accept']);
         Route::put('reject/{id}',[WalletChargeController::class,'reject']);
     });
 });

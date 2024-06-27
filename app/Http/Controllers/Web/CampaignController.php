@@ -53,7 +53,7 @@ class CampaignController extends Controller
             if ($request->file('image'))
                 $path = $request->file('image')->store('Campaign', 'public');
             $campaign = Campaign::create(array_merge($request->all(), ['image' => $path]));
-            // send Notifications 
+            // send Notifications :
             $user = User::all();
             Notification::send($user, new NewCampaignNotification($campaign));
             //$this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', ["بدأ العمل بحملة" . $campaign->name]);

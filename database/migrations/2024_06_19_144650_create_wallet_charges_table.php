@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('wallet_id');
             $table->string('image');
             $table->enum('status', ['جديد', 'تم الشحن', 'ملغي'])->default('جديد');
+            $table->string('reject_reason')->nullable();
             $table->timestamps();
         });
     }

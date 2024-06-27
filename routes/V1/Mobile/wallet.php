@@ -7,5 +7,5 @@ Route::prefix('mobile/wallet')->middleware('auth:sanctum', 'type.mobile')->group
 
     Route::get('show', [WalletController::class, 'show']);
     Route::post('deposit', [WalletController::class, 'deposit']);
-    Route::get('billing-history', [WalletController::class, 'billingHistory']);
+    Route::get('billing-history', [WalletController::class, 'billingHistory'])->name('billing-history');
 });

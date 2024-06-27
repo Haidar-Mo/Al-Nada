@@ -41,8 +41,9 @@ class WalletController extends Controller
      */
     public function deposit(Request $request)
     {
+        $path = '';
         $request->validate([
-            'image' => ['image']
+            'image' => ['required','image']
         ]);
         $user = User::find(Auth::user()->id);
         if ($request->hasFile('image'))
