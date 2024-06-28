@@ -50,6 +50,13 @@ class Administration extends Authenticatable
 
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     * 
+     * @var array<int, string>
+     */
+    protected $appends = [];
+
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);

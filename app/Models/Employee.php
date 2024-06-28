@@ -37,10 +37,33 @@ class Employee extends Model
         'image'
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'created_at' => 'date:Y/m/d',
         'updated_at' => 'date:Y/m/d',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     * 
+     * @var array<int, string>
+     */
+    protected $appends = ['section', 'city'];
+
+
+    public function getSectionAttribute()
+    {
+        return $this->section()->first();
+    }
+
+    public function getCityAttribute()
+    {
+        return $this->city()->first();
+    }
 
     public function city(): BelongsTo
     {

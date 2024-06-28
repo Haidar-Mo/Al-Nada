@@ -55,8 +55,7 @@ class EvaluationRequest extends FormRequest
             'clarification_of_direction' => 'required|integer|min:1|max:10',
             'decision_making' => 'required|integer|min:1|max:10',
             'knowledge_sharing' => 'required|integer|min:1|max:10',
-            'total_score' => 'required|integer|min:0|max:100',
-            'attendance_percentage' => 'required|numeric|min:0|max:100',
+            'attendance_percentage' => 'required|numeric|min:1|max:10',
         ];
     }
 }

@@ -5,9 +5,13 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Administration;
+use App\Models\BillingHistory;
 use App\Models\Campaign;
 use App\Models\City;
 use App\Models\Donation;
+use App\Models\DonationAlert;
+use App\Models\DonationCampaign;
+use App\Models\DonationCampaignAlert;
 use App\Models\Employee;
 use App\Models\Evaluation;
 use App\Models\News;
@@ -15,6 +19,7 @@ use App\Models\NewsImage;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Models\WalletCharge;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -50,19 +55,19 @@ class DatabaseSeeder extends Seeder
             ['name' => 'الأسر المتعففة'],
         ]);
     }
-    private function employee()
+    private function employeeAndAccount()
     {
         Employee::insert([[
-            'first_name' => 'MM',
-            'last_name' => 'MM',
-            'father_name' => 'MM',
-            'mother_name' => 'MM',
-            'phone_number' => '0936287134',
-            'id_serial_number' => '03280000000',
+            'first_name' => 'ادمن',
+            'last_name' => 'ادمن',
+            'father_name' => 'اسم الاب',
+            'mother_name' => 'اسم الام',
+            'phone_number' => '0900000000',
+            'id_serial_number' => '00000000000',
             'nationality' => 'سوري',
-            'birth_date' => '2000-12-08',
+            'birth_date' => '2000-01-01',
             'city_id' => 1,
-            'address' => 'بأخر الدنيا',
+            'address' => 'عنوان',
             'academic_level' => 'جامعي',
             'academic_specialization' => 'الهندسة المعلوماتية',
             'social_situation' => 'أعزب',
@@ -71,6 +76,12 @@ class DatabaseSeeder extends Seeder
             'date_end_working' => null,
             'image' => 'Employee/image.png'
         ]]);
+
+        Administration::insert([
+            'employee_id' => 1,
+            'user_name' => 'admin',
+            'password' => bcrypt('password')
+        ]);
     }
     /**
      * Seed the application's database.
@@ -80,15 +91,24 @@ class DatabaseSeeder extends Seeder
         $this->rolesAndPermissions();
         $this->section();
         $this->city();
-        $this->employee();
+        $this->employeeAndAccount();
 
-        Administration::factory(1)->create();
-        NewsImage::factory(10)->create();
+        Administration::factory(5)->create();
+        //Employee::factory(5)->create();
+        Evaluation::factory(2)->create();
         Campaign::factory(4)->create();
-        Employee::factory(5)->create();
+        //News::factory(10)->create();
+        NewsImage::factory(10)->create();
+
         User::factory(5)->create();
         Wallet::factory(5)->create();
-        Donation::factory(15)->create();
-        Evaluation::factory(2)->create();
+        
+        //WalletCharge::factory(20)->create();
+        //Donation::factory(15)->create();
+        //DonationCampaign::factory(15)->create();
+
+        BillingHistory::factory(5)->create();
+        DonationAlert::factory(4)->create();
+        DonationCampaignAlert::factory(4)->create();
     }
 }

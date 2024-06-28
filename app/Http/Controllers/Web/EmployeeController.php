@@ -22,6 +22,15 @@ class EmployeeController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $employee = Employee::findOrFail($id);
+        return response()->json($employee, 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(CreateEmployeeRequest $request)
@@ -43,15 +52,7 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $employee = Employee::findOrFail($id);
-        return response()->json($employee, 200);
-    }
-
+    
     /**
      * Update the specified resource in storage.
      */
