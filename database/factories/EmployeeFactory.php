@@ -18,8 +18,8 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
-        $city_IDs = City::pluck('id');
-        $section_IDs = Section::pluck('id');
+        $city_IDs = City::pluck('id')->toArray();
+        $section_IDs = Section::pluck('id')->toArray();
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -29,9 +29,9 @@ class EmployeeFactory extends Factory
             'id_serial_number' => $this->faker->unique()->uuid,
             'nationality' => $this->faker->country,
             'birth_date' => $this->faker->date,
-            'city_id' => $this->faker->unique()->randomElement($city_IDs),
+            'city_id' => $this->faker->randomElement($city_IDs),
             'address' => $this->faker->address(),
-            'academic_level' => $this->faker->randomElement(['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']),
+            'academic_level' => $this->faker->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'academic_specialization' => $this->faker->word,
             'social_situation' => $this->faker->randomElement(['أعزب', 'متزوج', 'مطلق', 'ارمل']),
             'section_id' => fake()->randomElement($section_IDs),

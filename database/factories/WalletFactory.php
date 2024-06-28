@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class WalletFactory extends Factory
      */
     public function definition(): array
     {
+        $user_IDS = User::all()->pluck('id')->toArray();
         return [
-            //
+            'user_id'=>fake()->unique()->randomElement($user_IDS),
+            'balance'=>fake()->numberBetween(1000000,9999999)
         ];
     }
 }

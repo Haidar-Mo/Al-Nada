@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('phone_number', 10);
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
-            $table->stirng('academic_specialization');
+            $table->string('academic_specialization');
             $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'ارمل']);
             $table->enum('status', ['نشط', 'غير نشط']);
             $table->timestamps();

@@ -14,6 +14,7 @@ use App\Models\News;
 use App\Models\NewsImage;
 use App\Models\Section;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -76,7 +77,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /* $this->rolesAndPermissions();
+        $this->rolesAndPermissions();
         $this->section();
         $this->city();
         $this->employee();
@@ -84,10 +85,10 @@ class DatabaseSeeder extends Seeder
         Administration::factory(1)->create();
         NewsImage::factory(10)->create();
         Campaign::factory(4)->create();
-
         Employee::factory(5)->create();
         User::factory(5)->create();
+        Wallet::factory(5)->create();
         Donation::factory(15)->create();
-        Evaluation::factory(2)->create();*/
+        Evaluation::factory(2)->create();
     }
 }

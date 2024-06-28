@@ -33,8 +33,9 @@ return new class extends Migration
             $table->json('birth_date_of_daughters')->nullable();
             $table->foreignId('city_id')->constrained();
             $table->string('address');
-            $table->json('languages');
+            $table->string('languages');
             $table->text('assistance_can_be_provided');
+            $table->enum('academic_level', ['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']);
             $table->enum('computer_useability_level', ['مبتدأ', 'متوسط', 'متقدم']);
             $table->text('old_experience')->default('---');
             $table->text('hopies')->default('---');

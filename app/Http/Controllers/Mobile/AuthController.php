@@ -61,9 +61,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'تحقق من البريد الألكتروني أو كلمة المرور'], 401);
         }
         $user = User::find(Auth::guard('mobile')->user()->id);
-
-        if ($user->email_verified_at == null)
-            return response()->json(['message' => 'يرجى تفعيل حسابك قبل عملية تسجيل الدخول'], 422);
         $user->tokens()->delete();
         $token = $user->createToken('access_token', ['role:mobile'])->plainTextToken;
 
