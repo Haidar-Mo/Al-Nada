@@ -17,7 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employee =  Employee::all();
+        $employee =  Employee::with('account.roles')->get();
         return response()->json($employee, 200);
     }
 
@@ -26,7 +26,7 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::with('account.roles')->findOrFail($id);
         return response()->json($employee, 200);
     }
 
