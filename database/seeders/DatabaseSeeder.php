@@ -85,7 +85,6 @@ class DatabaseSeeder extends Seeder
         Administration::factory(1)->create();
         NewsImage::factory(10)->create();
         Campaign::factory(4)->create();
-
         Employee::factory(5)->create();
         User::factory(5)->create();
         Wallet::factory(5)->create();
