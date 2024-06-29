@@ -75,7 +75,7 @@ class EmployeeController extends Controller
             return response()->json($employee, 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json($e->getMessage(), $e->getCode() ?: 500);
+            return response()->json($e->getMessage(), 400);
         }
     }
 

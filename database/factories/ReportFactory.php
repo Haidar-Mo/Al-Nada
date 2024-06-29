@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Favorite>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
  */
-class FavoriteFactory extends Factory
+class ReportFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,11 +17,11 @@ class FavoriteFactory extends Factory
      */
     public function definition(): array
     {
-        $campaign_IDs = Campaign::all()->pluck('id')->toArray();
+        
         $user_IDs = User::all()->pluck('id')->toArray();
         return [
-            'campaign_id' => fake()->randomElement($campaign_IDs),
             'user_id' => fake()->randomElement($user_IDs),
+            'description' => fake('ar_SA')->text(500),
         ];
     }
 }

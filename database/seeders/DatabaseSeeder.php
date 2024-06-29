@@ -16,6 +16,7 @@ use App\Models\Employee;
 use App\Models\Evaluation;
 use App\Models\News;
 use App\Models\NewsImage;
+use App\Models\Report;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Wallet;
@@ -102,7 +103,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(5)->create();
         Wallet::factory(5)->create();
-        
+
         //WalletCharge::factory(20)->create();
         //Donation::factory(15)->create();
         //DonationCampaign::factory(15)->create();
@@ -110,5 +111,7 @@ class DatabaseSeeder extends Seeder
         BillingHistory::factory(5)->create();
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
+
+        Report::factory(5)->create();
     }
 }

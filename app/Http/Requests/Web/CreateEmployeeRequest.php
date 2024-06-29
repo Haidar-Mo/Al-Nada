@@ -29,15 +29,16 @@ class CreateEmployeeRequest extends FormRequest
             'last_name' => ['required', 'string'],
             'father_name' => ['required', 'string'],
             'mother_name' => ['required', 'string'],
-            'phone_number' => ['required', new SyrianPhoneNumber],
+            'phone_number' => ['required', new SyrianPhoneNumber, 'unique:Employees,phone_number,' . $employee . ',id'],
             'id_serial_number' => ['required', 'min:11', 'max:11', 'unique:Employees,id_serial_number,' . $employee . ',id'],
             'nationality' => ['required', 'string'],
             'birth_date' => ['required', 'date'],
             'academic_specialization' => ['required', 'string'],
-            'academic_level' => ['required', 'string', 'in:الاعدادية,الثانوية,الجامعة,ماجستير'],
+            'academic_level' => ['required', 'string', 'in:ابتدائي,اعدادي,ثانوي,جامعي'],
             'social_situation' => ['required', 'string', 'in:أعزب,متزوج,مطلق,ارمل'],
-            'work_start_date' => ['required', 'date'],
-            'section_id'=>['required','string'],
+            'date_start_working' => ['required', 'date'],
+            'date_end_working' => ['nullable','date'],
+            'section_id' => ['required', 'string'],
             'image' => ['nullable', 'image']
         ];
     }
