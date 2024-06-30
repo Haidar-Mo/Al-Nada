@@ -43,13 +43,12 @@ class Volunteering extends Model
         'leave_reason',
         'id_card_image',
         'personal_image',
-        'Status',
-        'start_date',
-        'end_date',
+        'status',
+        'rejecting_reason'
     ];
 
     //protected $appends = [];
-    
+
     protected $casts = [
         'created_at' => 'date:Y/m/d',
         'updated_at' => 'date:Y/m/d',

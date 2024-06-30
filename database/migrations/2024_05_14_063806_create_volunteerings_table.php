@@ -46,10 +46,8 @@ return new class extends Migration
             $table->text('leave_reason')->default('---');
             $table->string('id_card_image');
             $table->string('personal_image');
-            $table->enum('status', ['انتظار', 'مقبول', 'مرفوض', 'منتهى'])->default('انتظار');
+            $table->enum('status', ['انتظار', 'مقبول', 'مرفوض',])->default('انتظار');
             $table->tinyText('rejecting_reason')->nullable();
-            $table->date('start_date')->nullable()->default(null);
-            $table->date('end_date')->nullable()->default(null);
             $table->timestamps();
         });
     }

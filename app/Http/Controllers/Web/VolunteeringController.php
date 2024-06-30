@@ -32,6 +32,37 @@ class VolunteeringController extends Controller
 
 
     /**
+     * Accept volunteering request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function accept(string $id)
+    {
+        $volunteer_request = Volunteering::find($id);
+        $volunteer_request->update([
+            'rejecting_reason' => null,
+            'status' => 'مقبول'
+        ]);
+        return response()->json($volunteer_request, 200);
+    }
+
+    /**
+     * Reject volunteering request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function reject(Request $request, string $id)
+    {
+        $request->validate(['rejecting_reason' => ['required', 'string']]);
+        $volunteer_request = Volunteering::find($id);
+        $volunteer_request->update([
+            'rejecting_reason' => $request->rejecting_reason,
+            'status' => 'مرفوض'
+        ]);
+        return response()->json($volunteer_request, 200);
+    }
+
+    /**
      * Remove the specified voulnteer request from storage
      * @param string $id
      * @return JsonResponse

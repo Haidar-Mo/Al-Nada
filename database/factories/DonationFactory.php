@@ -19,7 +19,7 @@ class DonationFactory extends Factory
     {
         $user_IDs = User::all()->pluck('id');
         return [
-            'wallet_id' => fake()->randomElement($user_IDs),
+            'user_id' => fake()->randomElement($user_IDs),
             'type' => 'مالي',
             'amount' => fake()->randomNumber(7),
             'description' => null,
