@@ -50,12 +50,4 @@ class DonationController extends Controller
         $donation->update(['status' => 'الرفض']);
         return response()->json($donation, 200);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Donation $donation)
-    {
-        //
-    }
 }
