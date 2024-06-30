@@ -48,10 +48,8 @@ class NewCampaignNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'campaign_id' => $this->campaign->id,
-            'campaign_name' => $this->campaign->name,
-            'message' => 'تم إطلاق حملة جديدة',
-            'url' => route('mobile.show-campaign',$this->campaign->id)
+            'message' => 'تم إطلاق حملة جديدة : ' . $this->campaign->name,
+            'url' => route('mobile.show-campaign', $this->campaign->id)
         ];
     }
 }

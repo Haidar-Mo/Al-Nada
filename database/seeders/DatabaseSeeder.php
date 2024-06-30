@@ -103,9 +103,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory(5)->create();
         Wallet::factory(5)->create();
+        Donation::factory(15)->create();
 
         //WalletCharge::factory(20)->create();
-        //Donation::factory(15)->create();
         //DonationCampaign::factory(15)->create();
 
         BillingHistory::factory(5)->create();

@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
+    public function donation():HasMany
+    {
+        return $this->hasMany(Donation::class);
+    }
+
     public function sposership(): HasOne
     {
         return $this->hasOne(Sponsership::class);
@@ -84,21 +89,6 @@ class User extends Authenticatable
     public function donationCampaignAlert(): HasMany
     {
         return $this->hasMany(DonationCampaignAlert::class);
-    }
-
-    public function TotalPrivateDonations()
-    {
-        return $this->donation()->sum('amount');
-    }
-
-    public function TotalCampaignDonations()
-    {
-        return $this->donationCampaign()->sum('amount');
-    }
-
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
     }
 
     public function volunteering(): HasMany

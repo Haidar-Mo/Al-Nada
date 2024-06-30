@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->constrained();
-            $table->enum('type', ['مالي','عيني']);
+            $table->foreignId('user_id')->constrained();
+            $table->enum('type', ['مالي', 'عيني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
-            $table->enum('deliver_type', ['مندوب توصيل', 'يدوي', 'الكتروني']);
-            $table->string('address')->nullable();
+            $table->string('address');
+            $table->string('phone_number');
+            $table->enum('status', ['جديد', 'تم التسليم', 'مرفوض'])->default('جديد');
             $table->timestamps();
         });
     }

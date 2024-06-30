@@ -22,8 +22,10 @@ class DonationFactory extends Factory
             'wallet_id' => fake()->randomElement($wallet_IDs),
             'type' => 'مالي',
             'amount' => fake()->randomNumber(7),
-            'deliver_type' => 'الكتروني',
-            'description' => 'لايوجد',
+            'description' => null,
+            'phone_number' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            'status' => fake()->randomElement(['جديد', 'تم التسليم', 'مرفوض']),
 
         ];
     }

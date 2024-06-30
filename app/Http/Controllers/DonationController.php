@@ -3,56 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donation;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the donations
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        $donations = Donation::with('user')->get();
+        return response()->json([$donations, 200]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified donation
+     * @param string $id
+     * @return JsonResponse
      */
-    public function create()
+    public function show(string $id)
     {
-        //
+        $donation = Donation::with('user')->findOrFail($id);
+        return response()->json($donation, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Accept the specified donation
      */
-    public function store(Request $request)
+    public function accept(string $id)
     {
-        //
+        $donation = Donation::with('user')->findOrFail($id);
+        $donation->update(['status' => 'تم التسليم']);
+        return response()->json($donation, 200);
     }
 
     /**
-     * Display the specified resource.
+     * Reject the specified donation
+     *@param string $id
+     * @return JsonResponse
      */
-    public function show(Donation $donation)
+    public function reject(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Donation $donation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Donation $donation)
-    {
-        //
+        $donation = Donation::with('user')->findOrFail($id);
+        $donation->update(['status' => 'الرفض']);
+        return response()->json($donation, 200);
     }
 
     /**
