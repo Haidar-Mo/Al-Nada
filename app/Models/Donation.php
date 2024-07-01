@@ -23,6 +23,7 @@ class Donation extends Model
         'description',
         'phone_number',
         'address',
+        'status',
         'created_at',
         'updated_at',
     ];

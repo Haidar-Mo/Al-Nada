@@ -38,6 +38,7 @@ include __DIR__ . '/V1/Web/administration.php';
 include __DIR__ . '/V1/Web/employee.php';
 include __DIR__ . '/V1/Web/section.php';
 include __DIR__ . '/V1/Web/campaign.php';
+include __DIR__ . '/V1/Web/donation.php';
 include __DIR__ . '/V1/Web/volunteer.php';
 include __DIR__ . '/V1/Web/product.php';
 include __DIR__ . '/V1/Web/news.php';

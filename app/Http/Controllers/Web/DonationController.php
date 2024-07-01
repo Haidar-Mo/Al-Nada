@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class DonationController extends Controller
     public function index()
     {
         $donations = Donation::with('user')->get();
-        return response()->json([$donations, 200]);
+        return response()->json($donations, 200);
     }
 
     /**
@@ -35,6 +36,8 @@ class DonationController extends Controller
     public function accept(string $id)
     {
         $donation = Donation::with('user')->findOrFail($id);
+        if ($donation->status != 'جديد')
+            return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
         $donation->update(['status' => 'تم التسليم']);
         return response()->json($donation, 200);
     }
@@ -47,7 +50,9 @@ class DonationController extends Controller
     public function reject(string $id)
     {
         $donation = Donation::with('user')->findOrFail($id);
-        $donation->update(['status' => 'الرفض']);
+        if ($donation->status != 'جديد')
+            return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
+        $donation->update(['status' => 'مرفوض']);
         return response()->json($donation, 200);
     }
 }

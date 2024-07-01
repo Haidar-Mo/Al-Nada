@@ -18,15 +18,10 @@ class Volunteer extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'father_name',
-        'mother_name',
-        'nationality',
-        'id_serial_number',
-        'birh_date',
+        'birth_date',
         'phone_number',
         'academic_leve',
         'academic_specialization',
-        'social_situation',
         'status'
     ];
 

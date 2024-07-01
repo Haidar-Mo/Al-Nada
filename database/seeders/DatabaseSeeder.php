@@ -19,6 +19,7 @@ use App\Models\NewsImage;
 use App\Models\Report;
 use App\Models\Section;
 use App\Models\User;
+use App\Models\Volunteer;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Database\Seeder;
@@ -111,7 +112,7 @@ class DatabaseSeeder extends Seeder
         BillingHistory::factory(5)->create();
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
-
+        Volunteer::factory(10)->create();
         Report::factory(5)->create();
     }
 }
