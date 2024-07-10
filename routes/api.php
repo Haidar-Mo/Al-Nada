@@ -35,6 +35,7 @@ include __DIR__ . '/V1/Mobile/news.php';
 
 /** WEB ROUTE FILES */
 include __DIR__ . '/V1/Web/administration.php';
+include __DIR__ . '/V1/Web/user.php';
 include __DIR__ . '/V1/Web/employee.php';
 include __DIR__ . '/V1/Web/section.php';
 include __DIR__ . '/V1/Web/campaign.php';

@@ -17,7 +17,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -82,8 +81,8 @@ class AuthController extends Controller
     public function profile()
     {
         $user = User::with(['wallet', 'sposership.target'])->findOrfail(Auth::user()->id);
-        $total_private_donation = $user->donation()->where('status', '!=', 'جديد')->sum('amount');
-        $total_campaign_donation = $user->wallet->donationCampaign()->sum('amount');
+        $total_private_donation = strval($user->donation()->where('status', '!=', 'جديد')->sum('amount'));
+        $total_campaign_donation = strval($user->wallet->donationCampaign()->sum('amount'));
         return response()->json(array_merge([
             'user' => $user,
             'total donation ' => $total_private_donation,

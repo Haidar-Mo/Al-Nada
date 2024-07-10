@@ -6,7 +6,10 @@ use App\Http\Controllers\Web\EvaluationController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix('web/employee')->middleware('auth:sanctum', 'type.web')->group(function () {
+Route::prefix('web/employee')->middleware([
+    'auth:sanctum',
+    'type.web'
+])->group(function () {
 
     Route::get('index', [EmployeeController::class, 'index']);
     Route::get('show/{id}', [EmployeeController::class, 'show']);
@@ -26,7 +29,7 @@ Route::prefix('web/employee')->middleware('auth:sanctum', 'type.web')->group(fun
     });
 
     Route::prefix('evaluation')->group(function () {
-        
+
         Route::get('index', [EvaluationController::class, 'index']);
         Route::get('show/{id}', [EvaluationController::class, 'show']);
         Route::post('create/{id}', [EvaluationController::class, 'store']);

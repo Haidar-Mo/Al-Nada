@@ -2,51 +2,50 @@
 
 namespace App\Http\Controllers\Web;
 
-
-use App\Models\Product;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Web\ProductRequest;
+use App\Http\Requests\Web\KitchenRequest;
+use App\Models\kitchen;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class KitchenController extends Controller
 {
     /**
-     * Display a listing of the Product.
+     * Display a listing of the Kitchen dishes
      * @return JsonResponse
      */
     public function index()
     {
-        $products = Product::all();
-        return response()->json($products);
+        $dishes = kitchen::all();
+        return response()->json($dishes);
     }
 
     /**
-     * Display the specified Product.
+     * Display the specified Kitchen dish
      * @param string $id
      * @return JsonResponse
      */
     public function show(string $id)
     {
-        $product = Product::findOrfail($id);
-        return response()->json($product, 200);
+        $dish = kitchen::findOrFail($id);
+        return response()->json($dish, 200);
     }
 
 
     /**
-     * Store a newly created Product in storage.
-     * @param ProductRequest $request
+     * Store a newly created Dish in storage
+     * @param KitchenRequest $request
      * @return JsonResponse
      */
-    public function store(ProductRequest $request)
+    public function store(KitchenRequest $request)
     {
         DB::beginTransaction();
         try {
             $path = '';
             if ($request->file('image'))
-                $path = $request->file('image')->store('Product', 'public');
-            $product = Product::create([
+                $path = $request->file('image')->store('Kitchen', 'public');
+            $dish = Kitchen::create([
                 'name' => $request->name,
                 'maker_name' => $request->maker_name,
                 'description' => $request->description,
@@ -55,7 +54,7 @@ class ProductController extends Controller
                 'image' => $path,
             ]);
             DB::commit();
-            return response()->json($product, 200);
+            return response()->json($dish, 200);
         } catch (\Exception $e) {
             if (Storage::exists("public/" . $path))
                 Storage::delete("public/" . $path);
@@ -64,9 +63,8 @@ class ProductController extends Controller
         }
     }
 
-
     /**
-     * Make the specific Product available
+     * Make the specific Dish available
      * @param string $id
      * @return JsonResponse
      */
@@ -74,19 +72,19 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $product = Product::findOrFail($id);
-            $product->update([
+            $dish = kitchen::findOrFail($id);
+            $dish->update([
                 'is_available' => true,
             ]);
             DB::commit();
-            return response()->json($product, 200);
+            return response()->json($dish, 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
     }
     /**
-     * Make the specific Product Not available
+     * Make the specific Dish Not available
      * @param string $id
      * @return JsonResponse
      */
@@ -94,37 +92,36 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $product = Product::findOrFail($id);
-            $product->update([
+            $dish = Kitchen::findOrFail($id);
+            $dish->update([
                 'is_available' => false,
             ]);
             DB::commit();
-            return response()->json($product, 200);
+            return response()->json($dish, 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
     }
 
-
     /**
-     * Update the specified Product in storage.
-     * @param  ProductRequest $request
-     * @param stirng $id
+     * Update the specified resource in storage
+     * @param KitchenRequest $request
+     * @param string $id
      * @return JsonResponse
      */
-    public function update(ProductRequest $request, string $id)
+    public function update(KitchenRequest $request, string $id)
     {
         DB::beginTransaction();
         try {
-            $product = Product::findOrFail($id);
+            $dish = Kitchen::findOrFail($id);
             if ($request->file('image')) {
-                if ($product->image) {
-                    if (Storage::exists("public/" . $product->image))
-                        Storage::delete("public/" . $product->image);
+                if ($dish->image) {
+                    if (Storage::exists("public/" . $dish->image))
+                        Storage::delete("public/" . $dish->image);
                 }
-                $path = $request->file('image')->store('Product', 'public');
-                $product->update([
+                $path = $request->file('image')->store('Kitchen', 'public');
+                $dish->update([
                     'name' => $request->name,
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
@@ -132,7 +129,7 @@ class ProductController extends Controller
                     'image' => $path,
                 ]);
             } else {
-                $product->update([
+                $dish->update([
                     'name' => $request->name,
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
@@ -140,7 +137,7 @@ class ProductController extends Controller
                 ]);
             }
             DB::commit();
-            return response()->json($product, 200);
+            return response()->json($dish, 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
@@ -148,24 +145,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified Product from storage.
-     * @param string $id
-     * @return JsonResponse
+     * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(kitchen $kitchen)
     {
-        DB::beginTransaction();
-        try {
-            $product = Product::findOrFail($id);
-            if ($product->image)
-                if (Storage::exists("public/" . $product->image))
-                    Storage::delete("public/" . $product->image);
-            $product->delete();
-            DB::commit();
-            return response()->json(null, 204);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json($e->getMessage(), 500);
-        }
+        //
     }
 }

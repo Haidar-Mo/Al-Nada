@@ -16,9 +16,14 @@ class isActive
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (Auth::check() && Auth::user()->isActive()) {
+            return response()->json([
+                'message' => 'your account is not active, please call the support team',
+            ], 403);
+        }
         if (Auth::check() && Auth::user()->email_verified_at == null) {
             return response()->json([
-                'message' => 'حسابك غير نشط, قم بتنشيط حسابك أولاً',
+                'message' => 'please verify your Email first',
             ], 403);
         }
         return $next($request);
