@@ -8,7 +8,11 @@ use App\Http\Controllers\Mobile\DonationCampaignAlertController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('mobile/donation')->middleware('auth:sanctum', 'type.mobile', 'isActive')->group(function () {
+Route::prefix('mobile/donation')->middleware([
+    'auth:sanctum',
+    'type.mobile',
+    'isActive'
+])->group(function () {
 
     Route::get('index', [DonationController::class, 'index']);
     Route::get('show/{id}', [DonationController::class, 'show']);

@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Product extends Model
+class kitchen extends Model
 {
     use HasFactory;
 
@@ -15,7 +14,7 @@ class Product extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -23,15 +22,8 @@ class Product extends Model
         'description',
         'price',
         'is_available',
-        'image',
+        'image',  
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [];
 
     /**
      * The accessors to append to the model's array form.
@@ -40,10 +32,8 @@ class Product extends Model
      */
     protected $appends = [];
 
-
     public function order(): MorphMany
     {
         return $this->morphMany(Order::class, 'orderable');
     }
-
 }

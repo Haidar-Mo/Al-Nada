@@ -21,7 +21,7 @@ class BillingHistoryFactory extends Factory
     public function definition(): array
     {
         $wallet_IDs = Wallet::all()->pluck('id')->toArray();
-        $billable_type = $this->faker->randomElement([WalletCharge::class, Donation::class, DonationCampaign::class]);
+        $billable_type = $this->faker->randomElement([WalletCharge::class, DonationCampaign::class]);
         $billable_id = $billable_type::factory()->create();
         return [
             'wallet_id' => fake()->randomElement($wallet_IDs),

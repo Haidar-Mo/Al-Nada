@@ -6,7 +6,11 @@ use App\Http\Controllers\Mobile\CampaignController;
 use App\Http\Controllers\Mobile\FavoriteController;
 
 
-Route::prefix('mobile/campaign')->middleware('auth:sanctum', 'isActive', 'type.mobile')->group(function () {
+Route::prefix('mobile/campaign')->middleware([
+    'auth:sanctum',
+    'isActive',
+    'type.mobile'
+])->group(function () {
 
     Route::get('index', [CampaignController::class, 'index']);
     Route::get('donateable', [CampaignController::class, 'donateableCampaign']);

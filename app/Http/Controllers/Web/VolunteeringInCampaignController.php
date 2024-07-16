@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
-use App\Models\Donation;
+use App\Http\Controllers\Controller;
+use App\Models\VolunteeringInCampaign;
 use Illuminate\Http\Request;
 
-class DonationController extends Controller
+class VolunteeringInCampaignController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class DonationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Donation $donation)
+    public function show(VolunteeringInCampaign $volunteeringInCampaign)
     {
         //
     }
@@ -42,7 +43,7 @@ class DonationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Donation $donation)
+    public function edit(VolunteeringInCampaign $volunteeringInCampaign)
     {
         //
     }
@@ -50,7 +51,7 @@ class DonationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Donation $donation)
+    public function update(Request $request, VolunteeringInCampaign $volunteeringInCampaign)
     {
         //
     }
@@ -58,7 +59,7 @@ class DonationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Donation $donation)
+    public function destroy(VolunteeringInCampaign $volunteeringInCampaign)
     {
         //
     }

@@ -15,16 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('father_name');
-            $table->string('mother_name');
-            $table->string('nationality');
-            $table->string('id_serial_number')->unique();
             $table->date('birth_date');
             $table->string('phone_number', 10);
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
-            $table->string('academic_specialization');
-            $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'ارمل']);
-            $table->enum('status', ['نشط', 'غير نشط']);
+            $table->enum('status', ['نشط', 'غير نشط'])->default('نشط');
             $table->timestamps();
         });
     }

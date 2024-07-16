@@ -21,14 +21,15 @@ class Donation extends Model
         'type',
         'amount',
         'description',
-        'deliver_type',
+        'phone_number',
         'address',
+        'status',
         'created_at',
         'updated_at',
     ];
 
 
-   /**
+    /**
      * The accessors to append to the model's array form.
      * 
      * @var array<int, string>
@@ -46,14 +47,13 @@ class Donation extends Model
         'updated_at' => 'date:Y/m/d',
     ];
 
-    public function wallet(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function bill(): MorphMany
+    /*  public function bill(): MorphMany
     {
         return  $this->morphMany(BillingHistory::class, 'billable');
-    }
-
+    }*/
 }
