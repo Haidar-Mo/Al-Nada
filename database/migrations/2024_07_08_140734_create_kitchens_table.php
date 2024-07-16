@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('kitchens', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('maker_name');
+            $table->text('description');
+            $table->string('price');
+            $table->string('image');
+            $table->boolean('is_available')->default(1);
             $table->timestamps();
         });
     }

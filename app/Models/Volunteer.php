@@ -20,7 +20,7 @@ class Volunteer extends Model
         'last_name',
         'birth_date',
         'phone_number',
-        'academic_leve',
+        'academic_level',
         'academic_specialization',
         'status'
     ];
