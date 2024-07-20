@@ -62,7 +62,7 @@ class VolunteerController extends Controller
     public function deacticate(string $id)
     {
         $volunteer = Volunteer::findOrFail($id);
-        $volunteer->status = 'غير نشط';
+        $volunteer->active = 0;
         $volunteer->save();
         return response()->json($volunteer, 200);
     }
@@ -75,7 +75,7 @@ class VolunteerController extends Controller
     public function activate(string $id)
     {
         $volunteer = Volunteer::findOrFail($id);
-        $volunteer->status = 'نشط';
+        $volunteer->active = 1;
         $volunteer->save();
         return response()->json($volunteer, 200);
     }

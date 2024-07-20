@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Volunteer extends Model
+class VolunteerInCampaign extends Model
 {
     use HasFactory;
 
@@ -20,12 +20,12 @@ class Volunteer extends Model
         'first_name',
         'last_name',
         'phone_number',
-        'birth_date',
         'academic_level',
         'city_id',
         'address',
         'active',
         'request_id',
+        'campaign_id',
         'start_date',
         'end_date',
     ];
@@ -44,7 +44,6 @@ class Volunteer extends Model
      */
     protected $appends = [];
 
-
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -52,6 +51,11 @@ class Volunteer extends Model
 
     public function request(): HasOne
     {
-        return $this->hasOne(Volunteering::class, 'request_id');
+        return $this->hasOne(VolunteeringInCampaign::class, 'request_id');
+    }
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
     }
 }

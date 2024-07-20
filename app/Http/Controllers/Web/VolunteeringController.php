@@ -46,13 +46,15 @@ class VolunteeringController extends Controller
             'rejecting_reason' => null,
             'status' => 'مقبول'
         ]);
-        $volunteer = Volunteer::create([
+        $volunteer = $volunteer_request->volunteer()->create([
             'first_name' => $volunteer_request->first_name,
             'last_name' => $volunteer_request->last_name,
             'phone_number' => $volunteer_request->phone_number,
             'birth_date' => $volunteer_request->birth_date,
             'academic_level' => $volunteer_request->academic_level,
-            'status' => 'نشط'
+            'city_id' => $volunteer_request->city_id,
+            'address' => $volunteer_request->address,
+            'start_date' => $volunteer_request->start_date
         ]);
         return response()->json($volunteer, 200);
     }

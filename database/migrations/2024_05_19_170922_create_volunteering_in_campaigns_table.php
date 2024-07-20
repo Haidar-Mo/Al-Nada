@@ -14,16 +14,15 @@ return new class extends Migration
         Schema::create('volunteering_in_campaigns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('campaign_id')->constrained();
+            $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('phone_number');
             $table->string('reason_for_volunteering');
-            $table->enum('academic_level', ['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']);
+            $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
             $table->foreignId('city_id')->constrained();
             $table->string('address');
-            $table->enum('status', ['انتظار', 'مقبول', 'مرفوض', 'منتهى'])->default('انتظار');
-            $table->date('start_date')->nullable()->default(null);
-            $table->date('end_date')->nullable()->default(null);
+            $table->enum('status', ['انتظار', 'مقبول', 'مرفوض'])->default('انتظار');
             $table->timestamps();
         });
     }

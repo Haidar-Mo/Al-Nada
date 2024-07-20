@@ -17,9 +17,13 @@ class NewsController extends Controller
      * Display a listing of the News
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::all();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $news = News::orderBy($orderBy, $order)->paginate($perPage);
+
         return response()->json($news, 200);
     }
 

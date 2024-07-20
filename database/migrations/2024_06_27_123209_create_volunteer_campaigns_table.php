@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('volunteers', function (Blueprint $table) {
+        Schema::create('volunteer_campaigns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
-            $table->foreign('request_id')->references('id')->on('volunteerings')->onDelete('set null');
+            $table->foreign('request_id')->references('id')->on('volunteering_in_campaigns')->onDelete('set null');
             
+            $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('birth_date');
             $table->string('phone_number');
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
             $table->foreignId('city_id')->constrained();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('volunteers');
+        Schema::dropIfExists('volunteer_campaigns');
     }
 };

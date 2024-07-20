@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class VolunteeringInCampaign extends Model
 {
@@ -41,5 +42,10 @@ class VolunteeringInCampaign extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function volunteer(): HasOne
+    {
+        return $this->hasOne(VolunteerInCampaign::class,'request_id');
     }
 }
