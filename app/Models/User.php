@@ -92,12 +92,12 @@ class User extends Authenticatable
         return $this->hasMany(DonationCampaignAlert::class);
     }
 
-    public function volunteering(): HasMany
+    public function volunteeringRequest(): HasMany
     {
         return $this->hasMany(Volunteering::class);
     }
 
-    public function volunteeringInCampaign(): HasMany
+    public function volunteeringInCampaignRequest(): HasMany
     {
         return $this->hasMany(VolunteeringInCampaign::class);
     }

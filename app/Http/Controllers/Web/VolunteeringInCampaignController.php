@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\VolunteerInCampaign;
 use App\Models\VolunteeringInCampaign;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VolunteeringInCampaignController extends Controller
 {
@@ -38,15 +40,32 @@ class VolunteeringInCampaignController extends Controller
      */
     public function accept(string $id)
     {
-        $volunteer_request = VolunteeringInCampaign::find($id);
-        if ($volunteer_request->status != 'انتظار')
-            return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
-        $volunteer_request->update([
-            'rejecting_reason' => null,
-            'status' => 'مقبول'
-        ]);
-        $volunteer = $volunteer_request->volunteer()->create($volunteer_request->all());
-        return response()->json($volunteer, 200);
+        DB::beginTransaction();
+        try {
+            $volunteer_request = VolunteeringInCampaign::find($id);
+            if ($volunteer_request->status != 'انتظار')
+                return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
+            $volunteer_request->update([
+                'rejecting_reason' => null,
+                'status' => 'مقبول'
+            ]);
+            $volunteer = $volunteer_request->volunteer()->create([
+                'request_id'=>$volunteer_request->id,
+                'campaign_id'=>$volunteer_request->campaign_id,
+                'first_name'=>$volunteer_request->first_name,
+                'last_name'=>$volunteer_request->last_name,
+                'phone_number'=>$volunteer_request->phone_number,
+                'acadimic_level'=>$volunteer_request->academic_level,
+                'city_id'=>$volunteer_request->city_id,
+                'address'=>$volunteer_request->adress,
+                'start_date'=>Carbon::now()
+            ]);
+            DB::commit();
+            return response()->json($volunteer, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return  response()->json($e->getMessage(), 400);
+        }
     }
 
     /**

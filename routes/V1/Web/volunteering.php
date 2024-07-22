@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Web\VolunteerController;
 use App\Http\Controllers\Web\VolunteeringController;
 use App\Http\Controllers\Web\VolunteeringInCampaignController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('web/volunteering')->middleware([
+Route::prefix('web/volunteering/request')->middleware([
     'auth:sanctum',
     'type.web'
 ])->group(function () {
@@ -16,7 +17,20 @@ Route::prefix('web/volunteering')->middleware([
     Route::post('delete/{id}', [VolunteeringController::class, 'destroy']);
 });
 
-Route::prefix('web/volunteering/campaign')->middleware([
+Route::prefix('web/volunteering/person')->middleware([
+    'auth:sanctum',
+    'type.web'
+])->group(function () {
+
+    Route::get('index', [VolunteerController::class, 'index']);
+    Route::get('show/{id}', [VolunteerController::class, 'show']);
+    Route::post('delete/{id}', [VolunteerController::class, 'destroy']);
+});
+
+
+
+
+Route::prefix('web/volunteering/campaign/request')->middleware([
     'auth:sanctum',
     'type.web'
 ])->group(function () {

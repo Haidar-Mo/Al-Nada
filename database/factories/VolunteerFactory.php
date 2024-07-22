@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,10 +20,13 @@ class VolunteerFactory extends Factory
         return [
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
-            'birh_date' => fake()->date(),
+            'birth_date' => fake()->date(),
             'phone_number' => fake()->phoneNumber(),
-            'academic_leve' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
-            'status' => fake()->randomElement(['نشط', 'غير نشط'])
+            'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
+            'city_id' => 1,
+            'address' => fake()->address(),
+            'active' => 1,
+            'start_date' => Carbon::now()
         ];
     }
 }

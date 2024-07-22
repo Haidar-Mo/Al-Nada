@@ -49,9 +49,9 @@ class VolunteerInCampaign extends Model
         return $this->belongsTo(City::class);
     }
 
-    public function request(): HasOne
+    public function request(): BelongsTo
     {
-        return $this->hasOne(VolunteeringInCampaign::class, 'request_id');
+        return $this->belongsTo(VolunteeringInCampaign::class, 'request_id');
     }
 
     public function campaign(): BelongsTo

@@ -16,7 +16,7 @@ class isActive
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->isActive()) {
+        if (Auth::check() && !Auth::user()->isActive()) {
             return response()->json([
                 'message' => 'your account is not active, please call the support team',
             ], 403);

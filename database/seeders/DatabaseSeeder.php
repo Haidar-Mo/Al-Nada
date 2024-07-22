@@ -22,6 +22,7 @@ use App\Models\Report;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Models\VolunteerInCampaign;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Database\Seeder;
@@ -291,30 +292,31 @@ class DatabaseSeeder extends Seeder
         $this->campaign();
         $this->employeeAndAccount();
         $this->newsWithImages();
-        
+
         //Administration::factory(5)->create();
         //Employee::factory(5)->create();
         //Evaluation::factory(2)->create();
         //Campaign::factory(4)->create();
-        
+
         //News::factory(10)->create();
         //NewsImage::factory(10)->create();
-        
+
         User::factory(5)->create();
         Wallet::factory(5)->create();
         Donation::factory(15)->create();
-        
+
         //WalletCharge::factory(20)->create();
         //DonationCampaign::factory(15)->create();
-        
         BillingHistory::factory(5)->create();
+        
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
+
         Volunteer::factory(10)->create();
+        VolunteerInCampaign::factory(10)->create();
+
         Report::factory(5)->create();
-        
         Product::factory(5)->create();
         kitchen::factory(5)->create();
-        
     }
 }

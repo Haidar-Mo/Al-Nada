@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('volunteer_campaigns', function (Blueprint $table) {
+        Schema::create('volunteer_in_campaigns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
             $table->foreign('request_id')->references('id')->on('volunteering_in_campaigns')->onDelete('set null');
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('volunteer_campaigns');
+        Schema::dropIfExists('volunteer_in_campaigns');
     }
 };
