@@ -27,12 +27,11 @@ class VolunteerRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'nationality' => 'required|string|max:255',
-            'id_serial_number' => 'required|string|max:255|unique:volunteers,id_serial_number,' . $volunteer,
             'birth_date' => 'required|date|before:today',
-            'phone_number' => 'required|string|' . new SyrianPhoneNumber . '|unique:volunteers,phone_number,' . $volunteer,
+            'phone_number' => ['required', new SyrianPhoneNumber, 'unique:volunteers,phone_number,' . $volunteer],
             'academic_level' => 'required|string|max:255',
-            'academic_specialization' => 'required|string|max:255',
+            'city_id' => ['required'],
+            'address' => ['required', 'string']
         ];
     }
 }

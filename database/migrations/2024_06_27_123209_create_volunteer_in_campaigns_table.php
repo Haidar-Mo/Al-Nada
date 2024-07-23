@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
             $table->foreign('request_id')->references('id')->on('volunteering_in_campaigns')->onDelete('set null');
-            
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
@@ -24,8 +23,6 @@ return new class extends Migration
             $table->foreignId('city_id')->constrained();
             $table->string('address');
             $table->boolean('active')->default(1);
-            $table->date('start_date')->nullable()->default(null);
-            $table->date('end_date')->nullable()->default(null);
             $table->timestamps();
         });
     }

@@ -45,7 +45,9 @@ class VolunteeringController extends Controller
         try {
             $volunteer_request = Volunteering::find($id);
             if ($volunteer_request->status != 'انتظار')
-                return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
+                return response()->json(['message' => 'the request is already done'], 422);
+            if ($volunteer_request->user->is_volunteer)
+                return response()->json(['message' => 'this user is alreade a Volunteer'], 422);
             $volunteer_request->update([
                 'rejecting_reason' => null,
                 'status' => 'مقبول'
@@ -58,6 +60,8 @@ class VolunteeringController extends Controller
                 'academic_level' => $volunteer_request->academic_level,
                 'city_id' => $volunteer_request->city_id,
                 'address' => $volunteer_request->address,
+            ]);
+            $volunteer->workPeriod()->create([
                 'start_date' => Carbon::now()
             ]);
             $volunteer_request->user()->update(['is_volunteer' => 1]);

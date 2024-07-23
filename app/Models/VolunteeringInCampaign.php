@@ -20,9 +20,7 @@ class VolunteeringInCampaign extends Model
         'academic_level',
         'city_id',
         'address',
-        'Status',
-        'start_date',
-        'end_date',
+        'status',
     ];
 
     protected $casts = [

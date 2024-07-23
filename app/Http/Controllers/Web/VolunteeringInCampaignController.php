@@ -19,7 +19,7 @@ class VolunteeringInCampaignController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $requests = VolunteeringInCampaign::with('city')->orderBy($orderBy, $order)->paginate($perPage);
+        $requests = VolunteeringInCampaign::with('city','campaign')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($requests, 200);
     }
 
@@ -29,7 +29,7 @@ class VolunteeringInCampaignController extends Controller
      */
     public function show(string $id)
     {
-        $request = VolunteeringInCampaign::with('city')->findOrFail($id);
+        $request = VolunteeringInCampaign::with('city','campaign')->findOrFail($id);
         return response()->json($request, 200);
     }
 
@@ -44,23 +44,25 @@ class VolunteeringInCampaignController extends Controller
         try {
             $volunteer_request = VolunteeringInCampaign::find($id);
             if ($volunteer_request->status != 'انتظار')
-                return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
+                return response()->json(['message' => 'the request is already done'], 422);
+            if ($volunteer_request->user->is_volunteer)
+                return response()->json(['message' => 'this user is alreade a Volunteer'], 422);
             $volunteer_request->update([
                 'rejecting_reason' => null,
                 'status' => 'مقبول'
             ]);
             $volunteer = $volunteer_request->volunteer()->create([
-                'request_id'=>$volunteer_request->id,
-                'campaign_id'=>$volunteer_request->campaign_id,
-                'first_name'=>$volunteer_request->first_name,
-                'last_name'=>$volunteer_request->last_name,
-                'phone_number'=>$volunteer_request->phone_number,
-                'acadimic_level'=>$volunteer_request->academic_level,
-                'city_id'=>$volunteer_request->city_id,
-                'address'=>$volunteer_request->adress,
-                'start_date'=>Carbon::now()
+                'request_id' => $volunteer_request->id,
+                'campaign_id' => $volunteer_request->campaign_id,
+                'first_name' => $volunteer_request->first_name,
+                'last_name' => $volunteer_request->last_name,
+                'phone_number' => $volunteer_request->phone_number,
+                'acadimic_level' => $volunteer_request->academic_level,
+                'city_id' => $volunteer_request->city_id,
+                'address' => $volunteer_request->address,
             ]);
             DB::commit();
+            $volunteer->load('city','campaign');
             return response()->json($volunteer, 200);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -83,6 +85,7 @@ class VolunteeringInCampaignController extends Controller
             'rejecting_reason' => $request->rejecting_reason,
             'status' => 'مرفوض'
         ]);
+        $volunteer_request->load('campaign','city');
         return response()->json($volunteer_request, 200);
     }
 

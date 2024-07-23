@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Campaign;
+use App\Models\User;
+use App\Models\VolunteeringInCampaign;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VolunteerCampaign>
  */
-class VolunteerCampaignFactory extends Factory
+class VolunteerInCampaignFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,17 +19,18 @@ class VolunteerCampaignFactory extends Factory
      */
     public function definition(): array
     {
-        $campaign_IDs = Campaign::all()->pluck('id')->toArray();
+
+        $request = VolunteeringInCampaign::factory()->create();
         return [
-            'campaign_id' => fake()->randomElement($campaign_IDs),
-            'first_name' => fake()->name(),
-            'last_name' => fake()->name(),
-            'phone_number' => fake()->phoneNumber(),
+            'campaign_id' => $request->campaign_id,
+            'request_id' => $request->id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone_number' => $request->phone_number,
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'city_id' => 1,
             'address' => fake()->address(),
             'active' => 1,
-            'start_date' => Carbon::now()
         ];
     }
 }

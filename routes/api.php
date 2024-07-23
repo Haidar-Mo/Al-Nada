@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('a', function () {
-    $user = Administration::find(1);
-    $user->assignRole('admin');
-    return $user;
-});
-
 /** MOBILE ROUTE FILES */
 include __DIR__ . '/V1/Mobile/auth.php';
 include __DIR__ . '/V1/Mobile/notification.php';

@@ -19,7 +19,6 @@ class Volunteering extends Model
         'birth_date',
         'social_situation',
         'partner_name',
-        'email',
         'phone_number',
         'fixed_phone_number',
         'user_work',
@@ -34,7 +33,8 @@ class Volunteering extends Model
         'address',
         'languages',
         'assistance_can_be_provided',
-        'copmuter_useability_level',
+        'academic_level',
+        'computer_useability_level',
         'old_experience',
         'hopies',
         'recognation_way',
@@ -69,6 +69,6 @@ class Volunteering extends Model
 
     public function volunteer(): HasOne
     {
-        return $this->hasOne(Volunteer::class,'request_id');
+        return $this->hasOne(Volunteer::class);
     }
 }

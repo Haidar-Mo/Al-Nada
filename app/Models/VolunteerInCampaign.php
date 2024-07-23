@@ -17,6 +17,8 @@ class VolunteerInCampaign extends Model
      * @var array
      */
     protected $fillable = [
+        'request_id',
+        'campaign_id',
         'first_name',
         'last_name',
         'phone_number',
@@ -24,10 +26,6 @@ class VolunteerInCampaign extends Model
         'city_id',
         'address',
         'active',
-        'request_id',
-        'campaign_id',
-        'start_date',
-        'end_date',
     ];
 
     /**

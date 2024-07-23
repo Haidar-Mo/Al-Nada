@@ -24,12 +24,10 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'phone_number',
-        'id_serial_number',
         'email',
         'password',
         'birth_date',
         'image',
-        'verification_code',
         'deviceToken',
         'is_volunteer',
         'is_active'

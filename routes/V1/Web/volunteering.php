@@ -24,7 +24,12 @@ Route::prefix('web/volunteering/person')->middleware([
 
     Route::get('index', [VolunteerController::class, 'index']);
     Route::get('show/{id}', [VolunteerController::class, 'show']);
-    Route::post('delete/{id}', [VolunteerController::class, 'destroy']);
+    Route::post('create', [VolunteerController::class, 'store']);
+    Route::post('update/{id}', [VolunteerController::class, 'update']);
+    Route::post('activate/{id}', [VolunteerController::class, 'activate']);
+    Route::post('deactivate/{id}', [VolunteerController::class, 'deactivate']);
+    Route::post('rate/{id}', [VolunteerController::class, 'rate']);
+    Route::delete('delete/{id}', [VolunteerController::class, 'destroy']);
 });
 
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Volunteering;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,16 +18,18 @@ class VolunteerFactory extends Factory
      */
     public function definition(): array
     {
+        $request = Volunteering::factory()->create();
         return [
-            'first_name' => fake()->name(),
-            'last_name' => fake()->name(),
-            'birth_date' => fake()->date(),
-            'phone_number' => fake()->phoneNumber(),
+            'request_id' => $request->id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'birth_date' => $request->birth_date,
+            'phone_number' => $request->phone_number,
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'city_id' => 1,
-            'address' => fake()->address(),
+            'address' => $request->address,
             'active' => 1,
-            'start_date' => Carbon::now()
+            'rate' => fake()->randomFloat(null, 0.1, 5.0)
         ];
     }
 }

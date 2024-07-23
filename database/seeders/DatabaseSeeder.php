@@ -23,6 +23,9 @@ use App\Models\Section;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\VolunteerInCampaign;
+use App\Models\Volunteering;
+use App\Models\VolunteeringInCampaign;
+use App\Models\VolunteerWorkPeriod;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Database\Seeder;
@@ -62,33 +65,60 @@ class DatabaseSeeder extends Seeder
     }
     private function employeeAndAccount()
     {
-        Employee::insert([[
-            'first_name' => 'ادمن',
-            'last_name' => 'ادمن',
-            'father_name' => 'اسم الاب',
-            'mother_name' => 'اسم الام',
-            'phone_number' => '0900000000',
-            'id_serial_number' => '00000000000',
-            'nationality' => 'سوري',
-            'birth_date' => '2000-01-01',
-            'city_id' => 1,
-            'address' => 'عنوان',
-            'academic_level' => 'جامعي',
-            'academic_specialization' => 'الهندسة المعلوماتية',
-            'social_situation' => 'أعزب',
-            'section_id' => 1,
-            'date_start_working' => '2020-12-12',
-            'date_end_working' => null,
-            'image' => 'Employee/image.png'
-        ]]);
+        Employee::insert([
+            [
+                'first_name' => 'ادمن',
+                'last_name' => 'ادمن',
+                'father_name' => 'اسم الاب',
+                'mother_name' => 'اسم الام',
+                'phone_number' => '0900000000',
+                'id_serial_number' => '00000000000',
+                'nationality' => 'سوري',
+                'birth_date' => '2000-01-01',
+                'city_id' => 1,
+                'address' => 'عنوان',
+                'academic_level' => 'جامعي',
+                'academic_specialization' => 'الهندسة المعلوماتية',
+                'social_situation' => 'أعزب',
+                'section_id' => 1,
+                'date_start_working' => '2020-12-12',
+                'date_end_working' => null,
+                'image' => 'Employee/image.png'
+            ],
+            [
+                'first_name' => 'ادمن2',
+                'last_name' => '2ادمن',
+                'father_name' => 'اسم الاب',
+                'mother_name' => 'اسم الام',
+                'phone_number' => '0911111111',
+                'id_serial_number' => '00000000000',
+                'nationality' => 'سوري',
+                'birth_date' => '2000-01-01',
+                'city_id' => 1,
+                'address' => 'عنوان',
+                'academic_level' => 'جامعي',
+                'academic_specialization' => 'الهندسة المعلوماتية',
+                'social_situation' => 'أعزب',
+                'section_id' => 1,
+                'date_start_working' => '2020-12-12',
+                'date_end_working' => null,
+                'image' => 'Employee/image.png'
+            ],
+
+        ]);
 
         Administration::insert([
             'employee_id' => 1,
+            'user_name' => 'mohammad',
+            'password' => bcrypt('password')
+        ],[
+            'employee_id' => 2,
             'user_name' => 'admin',
             'password' => bcrypt('password')
         ]);
 
         Administration::find(1)->assignRole('admin');
+        Administration::find(2)->assignRole('admin');
     }
 
     private function campaign()
@@ -308,12 +338,16 @@ class DatabaseSeeder extends Seeder
         //WalletCharge::factory(20)->create();
         //DonationCampaign::factory(15)->create();
         BillingHistory::factory(5)->create();
-        
+
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
 
-        Volunteer::factory(10)->create();
-        VolunteerInCampaign::factory(10)->create();
+        //Volunteering::factory(5)->create();
+        //Volunteer::factory(10)->create();
+        VolunteerWorkPeriod::factory(5)->create();
+
+        //VolunteeringInCampaign::factory(5)->create();
+        VolunteerInCampaign::factory(5)->create();
 
         Report::factory(5)->create();
         Product::factory(5)->create();
