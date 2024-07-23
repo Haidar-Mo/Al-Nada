@@ -4,7 +4,11 @@ use App\Http\Controllers\Mobile\VolunteeringController;
 use App\Http\Controllers\Mobile\VolunteeringInCampaignController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('mobile/volunteering/demand')->middleware('auth:sanctum', 'type.mobile','isActive')->group(function () {
+Route::prefix('mobile/volunteering/demand')->middleware([
+    'auth:sanctum',
+    'type.mobile',
+    'isActive'
+])->group(function () {
 
     Route::get('index', [VolunteeringController::class, 'index']);
     Route::get('show/{id}', [VolunteeringController::class, 'show']);

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Wallet;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,13 +17,15 @@ class DonationFactory extends Factory
      */
     public function definition(): array
     {
-        $wallet_IDs = Wallet::all()->pluck('id');
+        $user_IDs = User::all()->pluck('id');
         return [
-            'wallet_id' => fake()->randomElement($wallet_IDs),
+            'user_id' => fake()->randomElement($user_IDs),
             'type' => 'مالي',
             'amount' => fake()->randomNumber(7),
-            'deliver_type' => 'الكتروني',
-            'description' => 'لايوجد',
+            'description' => null,
+            'phone_number' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            'status' => fake()->randomElement(['جديد', 'تم التسليم', 'مرفوض']),
 
         ];
     }

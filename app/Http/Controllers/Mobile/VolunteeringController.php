@@ -19,7 +19,7 @@ class VolunteeringController extends Controller
      */
     public function index()
     {
-        $list = Auth::user()->volunteering;
+        $list = Auth::user()->volunteeringRequest;
         return response()->json($list, 200);
     }
     /**
@@ -37,7 +37,7 @@ class VolunteeringController extends Controller
                 return response()->json(['message' => 'أنت بالفعل متطوع لدى الجمعية, شكراً لك'], 422);
 
             // check if he has a volunteering request on pending
-            $last_volunteering = $user->volunteering->last();
+            $last_volunteering = $user->volunteeringRequest->last();
             if ($last_volunteering) {
                 if ($last_volunteering->status == 'انتظار')
                     return response()->json(['message' => 'عذراً, طلبك السابق قيد الانتظار'], 422);
@@ -50,7 +50,7 @@ class VolunteeringController extends Controller
             // store the request    
             $id_card_path = $request->file('id_card_image')->store('Volunteering/Id_card_image', 'public');
             $personal_image_path = $request->file('personal_image')->store('Volunteering/Personal_image', 'public');
-            $volunteer = $user->volunteering()->create(array_merge($request->all(), [
+            $volunteer = $user->volunteeringRequest()->create(array_merge($request->all(), [
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'phone_number' => $user->phone_number,
@@ -92,7 +92,7 @@ class VolunteeringController extends Controller
         DB::beginTransaction();
         try {
             $user = User::findOrFail(Auth::user()->id);
-            $volunteer = $user->volunteering()->findOrFail($id);
+            $volunteer = $user->volunteeringRequest()->findOrFail($id);
 
             if ($volunteer->status != 'انتظار')
                 return response()->json(['message' => 'لا يمكن تعديل الطلب بعد الموافقة عليه أو رفضه'], 422);
@@ -137,7 +137,7 @@ class VolunteeringController extends Controller
         DB::beginTransaction();
         try {
             $user = User::findOrFail(Auth::user()->id);
-            $volunteer = $user->volunteering()->findOrFail($id);
+            $volunteer = $user->volunteeringRequest()->findOrFail($id);
 
             // Check if the volunteer request is not approved or rejected
             if ($volunteer->status != 'انتظار')

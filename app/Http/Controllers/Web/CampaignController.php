@@ -56,7 +56,7 @@ class CampaignController extends Controller
             // send Notifications :
             $user = User::all();
             Notification::send($user, new NewCampaignNotification($campaign));
-            //$this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', ["بدأ العمل بحملة" . $campaign->name]);
+            $this->sendNotificationToTopic('mobile_user', 'إطلاق حملة جديدة', "بدأ العمل بحملة" . $campaign->name);
             DB::commit();
             return response()->json($campaign, 201);
         } catch (\Exception $e) {

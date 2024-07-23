@@ -13,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
+        $news = News::paginate(3);
         return response()->json($news, 200);
     }
 
@@ -25,5 +25,4 @@ class NewsController extends Controller
         $news = News::findOrfail($id);
         return response()->json($news, 200);
     }
-
 }

@@ -32,6 +32,7 @@ class User extends Authenticatable
         'verification_code',
         'deviceToken',
         'is_volunteer',
+        'is_active'
     ];
 
     /**
@@ -72,6 +73,11 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
+    public function donation(): HasMany
+    {
+        return $this->hasMany(Donation::class);
+    }
+
     public function sposership(): HasOne
     {
         return $this->hasOne(Sponsership::class);
@@ -86,27 +92,12 @@ class User extends Authenticatable
         return $this->hasMany(DonationCampaignAlert::class);
     }
 
-    public function TotalPrivateDonations()
-    {
-        return $this->donation()->sum('amount');
-    }
-
-    public function TotalCampaignDonations()
-    {
-        return $this->donationCampaign()->sum('amount');
-    }
-
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
-    }
-
-    public function volunteering(): HasMany
+    public function volunteeringRequest(): HasMany
     {
         return $this->hasMany(Volunteering::class);
     }
 
-    public function volunteeringInCampaign(): HasMany
+    public function volunteeringInCampaignRequest(): HasMany
     {
         return $this->hasMany(VolunteeringInCampaign::class);
     }
@@ -119,5 +110,11 @@ class User extends Authenticatable
     public function order(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    /***    ***/
+    public function isActive()
+    {
+        return $this->is_active;
     }
 }

@@ -4,7 +4,10 @@ use App\Http\Controllers\Web\NewsController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix('web/news')->middleware('auth:sanctum', 'type.web')->group(function () {
+Route::prefix('web/news')->middleware([
+    'auth:sanctum',
+    'type.web'
+])->group(function () {
 
     Route::get('index', [NewsController::class, 'index']);
     Route::get('show/{id}', [NewsController::class, 'show']);

@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Web;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\ProductRequest;
-use App\Models\SellingHistory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,9 +17,12 @@ class ProductController extends Controller
      * Display a listing of the Product.
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $products = Product::orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($products);
     }
 
@@ -64,6 +67,8 @@ class ProductController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+
     /**
      * Make the specific Product available
      * @param string $id
@@ -104,6 +109,8 @@ class ProductController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
+
+
     /**
      * Update the specified Product in storage.
      * @param  ProductRequest $request
@@ -120,7 +127,7 @@ class ProductController extends Controller
                     if (Storage::exists("public/" . $product->image))
                         Storage::delete("public/" . $product->image);
                 }
-                $path = $request->file('image')->store('products');
+                $path = $request->file('image')->store('Product', 'public');
                 $product->update([
                     'name' => $request->name,
                     'maker_name' => $request->maker_name,
@@ -165,5 +172,4 @@ class ProductController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
-
 }

@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('request_id')->nullable();
+            $table->foreign('request_id')->references('id')->on('volunteerings')->onDelete('set null');
+            
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('father_name');
-            $table->string('mother_name');
-            $table->string('nationality');
-            $table->string('id_serial_number')->unique();
             $table->date('birth_date');
-            $table->string('phone_number', 10);
+            $table->string('phone_number');
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
-            $table->string('academic_specialization');
-            $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'ارمل']);
-            $table->enum('status', ['نشط', 'غير نشط']);
+            $table->foreignId('city_id')->constrained();
+            $table->string('address');
+            $table->boolean('active')->default(1);
+            $table->date('start_date')->nullable()->default(null);
+            $table->date('end_date')->nullable()->default(null);
             $table->timestamps();
         });
     }

@@ -23,10 +23,11 @@ class AuthController extends Controller
         $user = Administration::find(Auth::guard('web')->user()->id);
         $user->tokens()->delete();
         $token = $user->createToken('access_token', ['role:web'])->plainTextToken;
-
+        $user->load('roles');
         return response()->json([
             'message' => 'تم تسجيل الدخول بنجاح.',
             'access_token' => $token,
+            'user' => $user
         ]);
     }
 

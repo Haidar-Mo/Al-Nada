@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['مالي','عيني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
-            $table->enum('deliver_type', ['مندوب توصيل', 'يدوي', 'الكتروني']);
+            $table->enum('delivery_type', ['مندوب توصيل', 'يدوي', 'الكتروني']);
             $table->string('address')->nullable();
             $table->timestamps();
         });

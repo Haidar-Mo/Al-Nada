@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Volunteer extends Model
 {
@@ -18,16 +19,15 @@ class Volunteer extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'father_name',
-        'mother_name',
-        'nationality',
-        'id_serial_number',
-        'birh_date',
         'phone_number',
-        'academic_leve',
-        'academic_specialization',
-        'social_situation',
-        'status'
+        'birth_date',
+        'academic_level',
+        'city_id',
+        'address',
+        'active',
+        'request_id',
+        'start_date',
+        'end_date',
     ];
 
     /**
@@ -43,4 +43,15 @@ class Volunteer extends Model
      * @var array<int, string>
      */
     protected $appends = [];
+
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function request(): HasOne
+    {
+        return $this->hasOne(Volunteering::class, 'request_id');
+    }
 }

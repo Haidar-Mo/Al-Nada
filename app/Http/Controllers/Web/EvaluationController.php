@@ -7,7 +7,6 @@ use App\Http\Requests\Web\EvaluationRequest;
 use App\Models\Employee;
 use App\Models\Evaluation;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
@@ -41,7 +40,12 @@ class EvaluationController extends Controller
     public function store(EvaluationRequest $request, string $id)
     {
         $employee = Employee::findOrFail($id);
-        $evaluation = $employee->evaluation()->create($request->all());
+        $total_score = array_sum($request->all());
+        $evaluation = $employee->evaluation()
+            ->create(array_merge(
+                $request->all(),
+                ['total_score' => $total_score]
+            ));
         return response()->json($evaluation, 201);
     }
 

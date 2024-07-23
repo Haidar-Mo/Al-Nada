@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,11 @@ class FavoriteFactory extends Factory
      */
     public function definition(): array
     {
+        $campaign_IDs = Campaign::all()->pluck('id')->toArray();
+        $user_IDs = User::all()->pluck('id')->toArray();
         return [
-            //
+            'campaign_id' => fake()->randomElement($campaign_IDs),
+            'user_id' => fake()->randomElement($user_IDs),
         ];
     }
 }

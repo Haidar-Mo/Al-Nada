@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Mobile\DonationRequest;
 use App\Models\User;
 use App\Services\DonationService;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class DonationController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        $donations = $user->wallet->donation;
+        $donations = $user->donation;
         return response()->json($donations, 200);
     }
     /**
@@ -29,21 +30,41 @@ class DonationController extends Controller
     public function show(string $id)
     {
         $user = User::find(Auth::user()->id);
-        $donation = $user->wallet->donation()->findOrFail($id);
+        $donation = $user->donation()->findOrFail($id);
         return Response()->json($donation, 200);
     }
 
     /**
      * Store New Donation in database
-     * @param Request $request
+     * @param DonationRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(DonationRequest $request)
     {
         $user = User::findOrFail(Auth::user()->id);
-        $donation_service = new DonationService;
-        $donation = $donation_service->donate($user, $request);
-
+        $donation = $user->donation()->create($request->all());
+        // notification for dash
         return response()->json($donation, 201);
+    }
+
+    public function update(DonationRequest $request, string $id)
+    {
+        $user = User::find(Auth::user()->id);
+        $donation = $user->donation()->findOrFail($id);
+        if ($donation->status != 'جديد')
+            return response()->json(['message' => 'لايمكنك التعديل على هذا الطلب'], 422);
+        $donation->update($request->all());
+        return response()->json($donation, 200);
+    }
+
+    public function destroy(string $id)
+    {
+        $user = User::find(Auth::user()->id);
+        $donation = $user->donation()->findOrFail($id);
+        if ($donation->status != 'جديد')
+            return response()->json(['message' => 'لايمكنك الغاء هذا الطلب'], 422);
+        $donation->delete();
+        // delete notification
+        return response()->json(['message'=>'تم الغاء الطلب '],200);
     }
 }

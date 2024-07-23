@@ -4,7 +4,7 @@ namespace App\Http\Requests\Mobile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CampaignRequest extends FormRequest
+class DonationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,11 @@ class CampaignRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'type' => ['required', 'in:مالي,عيني'],
+            'amount' => ['nullable', 'numeric'],
+            'description' => ['nullable', 'string'],
+            'address' => ['required', 'string'],
+            'phone_number' => ['required', 'string']
         ];
     }
 }
