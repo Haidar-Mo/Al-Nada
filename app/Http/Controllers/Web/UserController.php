@@ -13,9 +13,12 @@ class UserController extends Controller
      * Display a listing of the Mobile Users
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(20);
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $users = User::orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($users, 200);
     }
 

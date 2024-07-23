@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Volunteering;
+use App\Models\User;
+use App\Models\VolunteeringInCampaign;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Volunteer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VolunteerCampaign>
  */
-class VolunteerFactory extends Factory
+class VolunteerInCampaignFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,18 +19,18 @@ class VolunteerFactory extends Factory
      */
     public function definition(): array
     {
-        $request = Volunteering::factory()->create();
+
+        $request = VolunteeringInCampaign::factory()->create();
         return [
+            'campaign_id' => $request->campaign_id,
             'request_id' => $request->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'birth_date' => $request->birth_date,
             'phone_number' => $request->phone_number,
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'city_id' => 1,
-            'address' => $request->address,
+            'address' => fake()->address(),
             'active' => 1,
-            'rate' => fake()->randomFloat(null, 0.1, 5.0)
         ];
     }
 }

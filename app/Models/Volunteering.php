@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Volunteering extends Model
 {
@@ -18,7 +19,6 @@ class Volunteering extends Model
         'birth_date',
         'social_situation',
         'partner_name',
-        'email',
         'phone_number',
         'fixed_phone_number',
         'user_work',
@@ -33,7 +33,8 @@ class Volunteering extends Model
         'address',
         'languages',
         'assistance_can_be_provided',
-        'copmuter_useability_level',
+        'academic_level',
+        'computer_useability_level',
         'old_experience',
         'hopies',
         'recognation_way',
@@ -64,5 +65,10 @@ class Volunteering extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function volunteer(): HasOne
+    {
+        return $this->hasOne(Volunteer::class);
     }
 }

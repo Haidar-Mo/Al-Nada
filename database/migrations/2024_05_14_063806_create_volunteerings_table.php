@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('father_name');
             $table->string('mother_name');
             $table->date('birth_date');
-            $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'ارمل']);
+            $table->enum('social_situation', ['أعزب', 'متزوج', 'مطلق', 'أرمل']);
             $table->string('partner_name')->default('---');
             $table->string('phone_number');
             $table->string('fixed_phone_number')->default('---');

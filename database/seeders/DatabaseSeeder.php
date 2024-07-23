@@ -22,6 +22,10 @@ use App\Models\Report;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Models\VolunteerInCampaign;
+use App\Models\Volunteering;
+use App\Models\VolunteeringInCampaign;
+use App\Models\VolunteerWorkPeriod;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Database\Seeder;
@@ -61,36 +65,65 @@ class DatabaseSeeder extends Seeder
     }
     private function employeeAndAccount()
     {
-        Employee::insert([[
-            'first_name' => 'ادمن',
-            'last_name' => 'ادمن',
-            'father_name' => 'اسم الاب',
-            'mother_name' => 'اسم الام',
-            'phone_number' => '0900000000',
-            'id_serial_number' => '00000000000',
-            'nationality' => 'سوري',
-            'birth_date' => '2000-01-01',
-            'city_id' => 1,
-            'address' => 'عنوان',
-            'academic_level' => 'جامعي',
-            'academic_specialization' => 'الهندسة المعلوماتية',
-            'social_situation' => 'أعزب',
-            'section_id' => 1,
-            'date_start_working' => '2020-12-12',
-            'date_end_working' => null,
-            'image' => 'Employee/image.png'
-        ]]);
+        Employee::insert([
+            [
+                'first_name' => 'ادمن',
+                'last_name' => 'ادمن',
+                'father_name' => 'اسم الاب',
+                'mother_name' => 'اسم الام',
+                'phone_number' => '0900000000',
+                'id_serial_number' => '00000000000',
+                'nationality' => 'سوري',
+                'birth_date' => '2000-01-01',
+                'city_id' => 1,
+                'address' => 'عنوان',
+                'academic_level' => 'جامعي',
+                'academic_specialization' => 'الهندسة المعلوماتية',
+                'social_situation' => 'أعزب',
+                'section_id' => 1,
+                'date_start_working' => '2020-12-12',
+                'date_end_working' => null,
+                'image' => 'Employee/image.png'
+            ],
+            [
+                'first_name' => 'ادمن2',
+                'last_name' => '2ادمن',
+                'father_name' => 'اسم الاب',
+                'mother_name' => 'اسم الام',
+                'phone_number' => '0911111111',
+                'id_serial_number' => '00000000000',
+                'nationality' => 'سوري',
+                'birth_date' => '2000-01-01',
+                'city_id' => 1,
+                'address' => 'عنوان',
+                'academic_level' => 'جامعي',
+                'academic_specialization' => 'الهندسة المعلوماتية',
+                'social_situation' => 'أعزب',
+                'section_id' => 1,
+                'date_start_working' => '2020-12-12',
+                'date_end_working' => null,
+                'image' => 'Employee/image.png'
+            ],
+
+        ]);
 
         Administration::insert([
             'employee_id' => 1,
+            'user_name' => 'mohammad',
+            'password' => bcrypt('password')
+        ],[
+            'employee_id' => 2,
             'user_name' => 'admin',
             'password' => bcrypt('password')
         ]);
 
         Administration::find(1)->assignRole('admin');
+        Administration::find(2)->assignRole('admin');
     }
 
-    private function campaign(){
+    private function campaign()
+    {
+
         Campaign::insert([
             [
                 'id' => 1,
@@ -100,7 +133,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'image' => '',
+                'image' => 'Campaign/سلات رمضان.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
                 'created_at' => now(),
@@ -114,7 +147,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'image' => '',
+                'image' => 'Campaign/دفء الشتاء.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
                 'created_at' => now(),
@@ -128,7 +161,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'image' => '',
+                'image' => 'Campaign/أضاحي العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
                 'created_at' => now(),
@@ -142,7 +175,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 1,
-                'image' => '',
+                'image' => 'Campaign/حقيبة الأمل.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
                 'created_at' => now(),
@@ -156,14 +189,127 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 0,
                 'is_volunteerable' => 1,
-                'image' => '',
+                'image' => 'Campaign/ملابس العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
         ]);
+    }
 
+    private function newsWithImages()
+    {
+        News::insert([
+            [
+                'id' => 1,
+                'title' => 'يوم مميز لسيدات المشاريع الصغيرة',
+                'description' => 'يوم مميز للمستفيدات المتميزات في جمعية الندى سواء المشاريع الصغيرة أو حضور المحاضرات التوعوية أو الالتزام بالنادي الصيفي في إحدى منتزهات الربوة ..\nعبارة عن مسابقات متنوعة تشجيعية وتقديم جوائز تحفيزية ووجبة غداء ( صفيحة وكبة مقلية وبرك ولبن عيران) مع ضيافة حلو..\nبحضور كريم من بعض عضوات مجلس الإدارة ومشرفات لجنة التنمية ..\nكل الشكر للجهود المبذولة والمتبرعين والداعمين.. \nدمتم ودام عطاؤكم.\nساهموا معنا بدعم المشاريع الصغيرة \nللتبرع بمقر جمعية الندى مزة اتوستراد نزلة جامع الأكرم بعد السفارة الأوكرانية',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 2,
+                'title' => 'احتفال باليوم العالمي للتوحد',
+                'description' => 'احتفالاً باليوم العالمي للتوحد وتاكيداً على أهمية التوعية\nعن التنمر.\nشارك بعض من أطفال جمعية الندى بمركز المليحة المجتمعي بفرح بالأنشطة الترفيهية والحركية النفسية. \nبالإضافة لتقديم برنامج الرعاية الشاملة لذوي الإعاقة لبرامج تدريبية تساهم في تنمية قدرات الأطفال ومقدمي الرعاية..\nقسم الدعم النفسي الاجتماعي',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 3,
+                'title' => 'يوم مميز لأطفال الجمعية',
+                'description' => 'وم مرح استمتع به بعض من أطفال جمعية الندى\n في مطعم البيت السويسري..\nتم فيه ألعاب ومسابقات ووجبة غداء وجوائز نقدية..\nكل الشكر لإدارة المطعم على حسن الاستقبال وكرم الضيافة لأطفالنا...\nلجنة اليتيم\nبدعمكم نستمر\nللتبرع بكفالة اليتيم بمقر جمعية الندى مزة اتوستراد نزلة جامع الأكرم بعد السفارة الاوكرانية',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 4,
+                'title' => 'همة حتى القمة',
+                'description' => 'همة حتى القمة..  شعار التميز لهذا العام أطلقته جمعية الندى\nلجنة طالب العلم الجامعي لتفوق عدد من الطلاب والطالبات في اختصاصتهم  الجامعية..\nفكرمتهم بيوم ساده الفرح تقديراً لتميزهم رغم ظروفهم الخاصة.. بحضور كريم من مجلس إدارة جمعية الندى.. \nكل الشكر لجهودكم المبذولة ولعطائكم المستمر..\nدمتم ودامت أياديكم البيضاء..\nلجنة طالب العلم الجامعي',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 5,
+                'title' => 'يوم الفضاء العالمي',
+                'description' => 'بمناسبة يوم الفضاء العالمي \nلبت جمعية الندى دعوة المركز الثقافي الروسي بالتعاون مع سفيرة النوايا الحسنة للطفولة..\nفتم عرض فيلم وثائقي عن رائد الفضاء وتحفيز الإبداع من خلال رسومات للأطفال وتقديم هدايا تشجيعية أدخلت البهجة والفرح على قلوب الأطفال..\nكل الشكر للقائمين على هذه الدعوة الكريمة لأطفال الندى المشاركين 320 طفل وطفلة.\nبدعمكم نستمر\nمجلس إدارة جمعية الندى',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+        ]);
+
+        NewsImage::insert([
+            [
+                'id' => 1,
+                'news_id' => 1,
+                'url' => 'News/المشاريع الصغيرة1.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 2,
+                'news_id' => 1,
+                'url' => 'News/المشاريع الصغيرة2.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 3,
+                'news_id' => 2,
+                'url' => 'News/اطفال1.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 4,
+                'news_id' => 2,
+                'url' => 'News/اطفال2.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 5,
+                'news_id' => 3,
+                'url' => 'News/اطفال3.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 6,
+                'news_id' => 4,
+                'url' => 'News/طلاب1.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 7,
+                'news_id' => 4,
+                'url' => 'News/طلاب2.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 8,
+                'news_id' => 5,
+                'url' => 'News/فضاء1.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 9,
+                'news_id' => 5,
+                'url' => 'News/فضاء2.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+            [
+                'id' => 10,
+                'news_id' => 5,
+                'url' => 'News/فضاء3.jpg',
+                'created_at' => '2024-06-04 07:53:19',
+                'updated_at' => '2024-06-04 07:53:19',
+            ],
+        ]);
     }
     /**
      * Seed the application's database.
@@ -173,8 +319,9 @@ class DatabaseSeeder extends Seeder
         $this->rolesAndPermissions();
         $this->section();
         $this->city();
-        $this->employeeAndAccount();
         $this->campaign();
+        $this->employeeAndAccount();
+        $this->newsWithImages();
 
         //Administration::factory(5)->create();
         //Employee::factory(5)->create();
@@ -182,7 +329,7 @@ class DatabaseSeeder extends Seeder
         //Campaign::factory(4)->create();
 
         //News::factory(10)->create();
-        NewsImage::factory(10)->create();
+        //NewsImage::factory(10)->create();
 
         User::factory(5)->create();
         Wallet::factory(5)->create();
@@ -190,13 +337,19 @@ class DatabaseSeeder extends Seeder
 
         //WalletCharge::factory(20)->create();
         //DonationCampaign::factory(15)->create();
-
         BillingHistory::factory(5)->create();
+
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
-        Volunteer::factory(10)->create();
-        Report::factory(5)->create();
 
+        //Volunteering::factory(5)->create();
+        //Volunteer::factory(10)->create();
+        VolunteerWorkPeriod::factory(5)->create();
+
+        //VolunteeringInCampaign::factory(5)->create();
+        VolunteerInCampaign::factory(5)->create();
+
+        Report::factory(5)->create();
         Product::factory(5)->create();
         kitchen::factory(5)->create();
     }

@@ -3,64 +3,100 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\VolunteerInCampaign;
 use App\Models\VolunteeringInCampaign;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VolunteeringInCampaignController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Volunteering  Requests
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $requests = VolunteeringInCampaign::with('city','campaign')->orderBy($orderBy, $order)->paginate($perPage);
+        return response()->json($requests, 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified Volunteering Request
+     * @param string $id
      */
-    public function create()
+    public function show(string $id)
     {
-        //
+        $request = VolunteeringInCampaign::with('city','campaign')->findOrFail($id);
+        return response()->json($request, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Accept volunteering request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function accept(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $volunteer_request = VolunteeringInCampaign::find($id);
+            if ($volunteer_request->status != 'انتظار')
+                return response()->json(['message' => 'the request is already done'], 422);
+            if ($volunteer_request->user->is_volunteer)
+                return response()->json(['message' => 'this user is alreade a Volunteer'], 422);
+            $volunteer_request->update([
+                'rejecting_reason' => null,
+                'status' => 'مقبول'
+            ]);
+            $volunteer = $volunteer_request->volunteer()->create([
+                'request_id' => $volunteer_request->id,
+                'campaign_id' => $volunteer_request->campaign_id,
+                'first_name' => $volunteer_request->first_name,
+                'last_name' => $volunteer_request->last_name,
+                'phone_number' => $volunteer_request->phone_number,
+                'acadimic_level' => $volunteer_request->academic_level,
+                'city_id' => $volunteer_request->city_id,
+                'address' => $volunteer_request->address,
+            ]);
+            DB::commit();
+            $volunteer->load('city','campaign');
+            return response()->json($volunteer, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return  response()->json($e->getMessage(), 400);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Reject volunteering request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function show(VolunteeringInCampaign $volunteeringInCampaign)
+    public function reject(Request $request, string $id)
     {
-        //
+        $request->validate(['rejecting_reason' => ['required', 'string']]);
+        $volunteer_request = VolunteeringInCampaign::find($id);
+        if ($volunteer_request->status != 'انتظار')
+            return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
+        $volunteer_request->update([
+            'rejecting_reason' => $request->rejecting_reason,
+            'status' => 'مرفوض'
+        ]);
+        $volunteer_request->load('campaign','city');
+        return response()->json($volunteer_request, 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Remove the specified Volunteering  Request from storage.
+     * @param string $id
      */
-    public function edit(VolunteeringInCampaign $volunteeringInCampaign)
+    public function destroy(string $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, VolunteeringInCampaign $volunteeringInCampaign)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(VolunteeringInCampaign $volunteeringInCampaign)
-    {
-        //
+        $request = VolunteeringInCampaign::findOrFail($id);
+        $request->delete();
+        return response()->json(null, 204);
     }
 }

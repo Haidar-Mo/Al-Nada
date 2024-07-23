@@ -8,7 +8,6 @@ use App\Models\Campaign;
 use App\Models\User;
 use App\Models\VolunteeringInCampaign;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VolunteeringInCampaignController extends Controller
@@ -20,7 +19,7 @@ class VolunteeringInCampaignController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $volunteering_request = $user->volunteeringInCampaign;
+        $volunteering_request = $user->volunteeringInCampaignRequest;
         return response()->json($volunteering_request, 200);
     }
 
@@ -49,12 +48,12 @@ class VolunteeringInCampaignController extends Controller
             return response()->json(['message' => 'أنت بالفعل متطوع لدى الجمعية, شكراً لك'], 422);
 
         $campaign = Campaign::findOrfail($id);
-        $old_request =  $user->volunteeringInCampaign()->where('campaign_id', $id)->where('status', 'انتظار')->first();
+        $old_request =  $user->volunteeringInCampaignRequest()->where('campaign_id', $id)->where('status', 'انتظار')->first();
         if ($old_request)
             return response()->json(['message' => 'طلبك السابق لهذه الحملة قيد الإنتظار'], 422);
         if ($campaign->is_volunteerable == 0)
             return response()->json(['message' => 'لايمكنك الإنضمام لهذه الحملة حالباً'], 422);
-        $volunteering_request =  $user->volunteeringInCampaign()->create(array_merge($request->all(), [
+        $volunteering_request =  $user->volunteeringInCampaignRequest()->create(array_merge($request->all(), [
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'city_id' => 1,
@@ -88,7 +87,7 @@ class VolunteeringInCampaignController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrfail(Auth::user()->id);
-        $volunteering_request = $user->volunteeringInCampaign()->findOrFail($id);
+        $volunteering_request = $user->volunteeringInCampaignRequest()->findOrFail($id);
         if ($volunteering_request->status != 'انتظار')
             return response()->json(['message' => 'عذراً, لايمكنك الغاء الطلب'], 422);
         $volunteering_request->delete();

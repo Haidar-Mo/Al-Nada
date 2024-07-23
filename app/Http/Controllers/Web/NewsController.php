@@ -17,9 +17,13 @@ class NewsController extends Controller
      * Display a listing of the News
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::all();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $news = News::orderBy($orderBy, $order)->paginate($perPage);
+
         return response()->json($news, 200);
     }
 
@@ -113,7 +117,7 @@ class NewsController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function deleteImages(Request $request, string $id)
+    /* public function deleteImages(Request $request, string $id)
     {
         DB::beginTransaction();
         try {
@@ -133,7 +137,7 @@ class NewsController extends Controller
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
-    }
+    }*/
 
 
     /**
@@ -166,10 +170,10 @@ class NewsController extends Controller
         DB::beginTransaction();
         try {
             $news = News::findOrFail($id);
-            $paths = $news->image;
-            foreach ($paths as $path) {
-                if (Storage::exists("public/" . $path))
-                    Storage::delete("public/" . $path);
+            $images = $news->images;
+            foreach ($images as $image) {
+                if (Storage::exists("public/" . $image->url))
+                    Storage::delete("public/" . $image->url);
             }
             $news->image()->delete();
             $news->delete();

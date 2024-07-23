@@ -24,12 +24,10 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'phone_number',
-        'id_serial_number',
         'email',
         'password',
         'birth_date',
         'image',
-        'verification_code',
         'deviceToken',
         'is_volunteer',
         'is_active'
@@ -92,12 +90,12 @@ class User extends Authenticatable
         return $this->hasMany(DonationCampaignAlert::class);
     }
 
-    public function volunteering(): HasMany
+    public function volunteeringRequest(): HasMany
     {
         return $this->hasMany(Volunteering::class);
     }
 
-    public function volunteeringInCampaign(): HasMany
+    public function volunteeringInCampaignRequest(): HasMany
     {
         return $this->hasMany(VolunteeringInCampaign::class);
     }

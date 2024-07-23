@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\VolunteerRequest;
 use App\Models\Volunteer;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 class VolunteerController extends Controller
@@ -15,7 +16,7 @@ class VolunteerController extends Controller
      */
     public function index()
     {
-        $volunteers = Volunteer::all();
+        $volunteers = Volunteer::with('request','city')->get();
         return response()->json($volunteers);
     }
 
@@ -26,7 +27,7 @@ class VolunteerController extends Controller
      */
     public function show(string $id)
     {
-        $volunteer = Volunteer::findOrfail($id);
+        $volunteer = Volunteer::with('request','city')->findOrfail($id);
         return response()->json($volunteer, 200);
     }
 
@@ -38,6 +39,8 @@ class VolunteerController extends Controller
     public function store(VolunteerRequest $request)
     {
         $volunteer = Volunteer::create($request->all());
+        $volunteer->workPeriod()->create(['start_date' => Carbon::now()]);
+        $volunteer->load('city');
         return response()->json($volunteer, 201);
     }
 
@@ -51,6 +54,7 @@ class VolunteerController extends Controller
     {
         $volunteer = Volunteer::findOrFail($id);
         $volunteer->update($request->all());
+        $volunteer->load('request','city');
         return response()->json($volunteer, 200);
     }
 
@@ -59,11 +63,12 @@ class VolunteerController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function deacticate(string $id)
+    public function deactivate(string $id)
     {
         $volunteer = Volunteer::findOrFail($id);
-        $volunteer->status = 'غير نشط';
+        $volunteer->active = 0;
         $volunteer->save();
+        $volunteer->load('request','city');
         return response()->json($volunteer, 200);
     }
 
@@ -75,8 +80,9 @@ class VolunteerController extends Controller
     public function activate(string $id)
     {
         $volunteer = Volunteer::findOrFail($id);
-        $volunteer->status = 'نشط';
+        $volunteer->active = 1;
         $volunteer->save();
+        $volunteer->load('request','city');
         return response()->json($volunteer, 200);
     }
 

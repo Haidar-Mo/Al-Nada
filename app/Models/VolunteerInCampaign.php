@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Volunteer extends Model
+class VolunteerInCampaign extends Model
 {
     use HasFactory;
 
@@ -19,15 +18,14 @@ class Volunteer extends Model
      */
     protected $fillable = [
         'request_id',
+        'campaign_id',
         'first_name',
         'last_name',
-        'birth_date',
         'phone_number',
         'academic_level',
         'city_id',
         'address',
         'active',
-        'rate',
     ];
 
     /**
@@ -44,7 +42,6 @@ class Volunteer extends Model
      */
     protected $appends = [];
 
-
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -52,11 +49,11 @@ class Volunteer extends Model
 
     public function request(): BelongsTo
     {
-        return $this->belongsTo(Volunteering::class);
+        return $this->belongsTo(VolunteeringInCampaign::class, 'request_id');
     }
 
-    public function workPeriod(): HasMany
+    public function campaign(): BelongsTo
     {
-        return $this->hasMany(VolunteerWorkPeriod::class, 'volunteer_id');
+        return $this->belongsTo(Campaign::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Mobile;
 
+use App\Rules\SyrianPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VolunteeringInCampaignRequest extends FormRequest
@@ -22,6 +23,7 @@ class VolunteeringInCampaignRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'phone_number'=>['required',new SyrianPhoneNumber],
             'reason_for_volunteering' => ['required', 'string'],
             'academic_level' => ['required',],
             'address' => ['required', 'string']

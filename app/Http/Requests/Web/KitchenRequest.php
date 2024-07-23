@@ -27,7 +27,7 @@ class KitchenRequest extends FormRequest
             'price' => ['required'],
             'description' => ['required'],
             'is_available' => ['required', 'boolean'],
-            'image' => ['nullabel', 'image']
+            'image' => ['nullable', 'image']
         ];
     }
 }

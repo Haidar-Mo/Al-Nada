@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\KitchenRequest;
 use App\Models\kitchen;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,10 +16,13 @@ class KitchenController extends Controller
      * Display a listing of the Kitchen dishes
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dishes = kitchen::all();
-        return response()->json($dishes);
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $dishes = kitchen::orderBy($orderBy, $order)->paginate($perPage);
+        return response()->json($dishes, 200);
     }
 
     /**
@@ -146,9 +150,24 @@ class KitchenController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function destroy(kitchen $kitchen)
+    public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $dish = Kitchen::findOrFail($id);
+            if ($dish->image) {
+                if (Storage::exists("public/" . $dish->image))
+                    Storage::delete("public/" . $dish->image);
+            }
+            $dish->delete();
+            DB::commit();
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }

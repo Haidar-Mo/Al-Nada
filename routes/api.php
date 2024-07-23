@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('a', function () {
-    $user = Administration::find(1);
-    $user->assignRole('admin');
-    return $user;
-});
-
 /** MOBILE ROUTE FILES */
 include __DIR__ . '/V1/Mobile/auth.php';
 include __DIR__ . '/V1/Mobile/notification.php';
@@ -40,7 +34,8 @@ include __DIR__ . '/V1/Web/employee.php';
 include __DIR__ . '/V1/Web/section.php';
 include __DIR__ . '/V1/Web/campaign.php';
 include __DIR__ . '/V1/Web/donation.php';
-include __DIR__ . '/V1/Web/volunteer.php';
+include __DIR__ . '/V1/Web/volunteering.php';
 include __DIR__ . '/V1/Web/product.php';
+include __DIR__ . '/V1/Web/kitchen.php';
 include __DIR__ . '/V1/Web/news.php';
 include __DIR__ . '/V1/Web/wallet.php';

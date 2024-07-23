@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\ProductRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,9 +17,12 @@ class ProductController extends Controller
      * Display a listing of the Product.
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $products = Product::orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($products);
     }
 
