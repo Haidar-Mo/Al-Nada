@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('volunteer_in_campaigns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
-            $table->foreign('request_id')->references('id')->on('volunteering_in_campaigns')->onDelete('set null');
+            $table->foreign('request_id')->references('id')->on('volunteering_in_campaign_requests')->onDelete('set null');
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');

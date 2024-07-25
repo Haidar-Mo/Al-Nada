@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class VolunteeringInCampaign extends Model
+class VolunteeringInCampaignRequest extends Model
 {
     use HasFactory;
 

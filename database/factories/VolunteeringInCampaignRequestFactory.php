@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VolunteeringInCampaign>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VolunteeringInCampaignRequest>
  */
-class VolunteeringInCampaignFactory extends Factory
+class VolunteeringInCampaignRequestFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -31,7 +31,7 @@ class VolunteeringInCampaignFactory extends Factory
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'city_id' => 1, // Assuming city IDs range from 1 to 100
             'address' => fake()->address(),
-            'status' => fake()->randomElement(['مقبول', 'مرفوض', 'انتظار']),
+            'status' => 'مقبول',
         ];
     }
 }

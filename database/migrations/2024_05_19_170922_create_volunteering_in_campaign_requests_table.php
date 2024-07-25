@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('volunteering_in_campaigns', function (Blueprint $table) {
+        Schema::create('volunteering_in_campaign_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('volunteering_in_campaigns');
+        Schema::dropIfExists('volunteering_in_campaign_requests');
     }
 };

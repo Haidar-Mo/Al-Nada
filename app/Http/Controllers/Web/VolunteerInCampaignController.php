@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\VolunteerInCampaignRequest;
 use App\Models\VolunteerInCampaign;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,47 +20,46 @@ class VolunteerInCampaignController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $campaigns = VolunteerInCampaign::with('city')->orderBy($orderBy, $order)->paginate($perPage);
+        $campaigns = VolunteerInCampaign::with('request', 'campaign', 'city')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($campaigns);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VolunteerInCampaignRequest $request)
     {
-        //
+        $volunteer = VolunteerInCampaign::create($request->all());
+        $volunteer->load(['request', 'campaign', 'city']);
+        return response()->json($volunteer, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $volunteerCampaign)
+    public function show(string $id)
     {
-        //
+        $volunteer = VolunteerInCampaign::with(['request', 'campaign', 'city'])->findOrFail($id);
+        return response()->json($volunteer, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $volunteerCampaign)
+    public function update(VolunteerInCampaignRequest $request, string $id)
     {
-        //
+        $volunteer = VolunteerInCampaign::with(['request', 'campaign', 'city'])->findOrFail($id);
+        $volunteer->update($request->all());
+        return response()->json($volunteer, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $volunteerCampaign)
+    public function destroy(string $id)
     {
-        //
+        $volunteer = VolunteerInCampaign::with(['request', 'campaign', 'city'])->findOrFail($id);
+        $volunteer->delete();
+        return response()->json(null, 204);
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Mobile\VolunteeringInCampaignRequest;
+use App\Http\Requests\Mobile\VolunteeringInCampaignRequest as Vrequest;
 use App\Models\Campaign;
 use App\Models\User;
-use App\Models\VolunteeringInCampaign;
+use App\Models\VolunteeringInCampaignRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +30,7 @@ class VolunteeringInCampaignController extends Controller
      */
     public function show(string $id)
     {
-        $volunteering_request = VolunteeringInCampaign::findOrFail($id);
+        $volunteering_request = VolunteeringInCampaignRequest::findOrFail($id);
         return response()->json($volunteering_request, 200);
     }
 
@@ -40,7 +40,7 @@ class VolunteeringInCampaignController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function store(VolunteeringInCampaignRequest $request, string $id)
+    public function store(Vrequest $request, string $id)
     {
         $user = User::findOrfail(Auth::user()->id);
         // check if he is already a volunteer
@@ -68,9 +68,9 @@ class VolunteeringInCampaignController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function update(VolunteeringInCampaignRequest $request, string $id)
+    public function update(Vrequest $request, string $id)
     {
-        $volunteering_request = VolunteeringInCampaign::findOrfail($id);
+        $volunteering_request = VolunteeringInCampaignRequest::findOrfail($id);
         if ($volunteering_request->user_id != Auth::user()->id)
             return response()->json(['message' => 'Unauthorized'], 401);
         if ($volunteering_request->status != 'انتظار')
