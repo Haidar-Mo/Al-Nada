@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Volunteering>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VolunteeringRequest>
  */
-class VolunteeringFactory extends Factory
+class VolunteeringRequestFactory extends Factory
 {
     /**
      * Define the model's default state.

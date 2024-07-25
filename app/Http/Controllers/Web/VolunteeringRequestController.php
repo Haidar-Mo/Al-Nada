@@ -4,38 +4,38 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Volunteer;
-use App\Models\Volunteering;
+use App\Models\VolunteeringRequest;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class VolunteeringController extends Controller
+class VolunteeringRequestController extends Controller
 {
     /**
-     * Display a listing of the Volunteer Requests.
+     * Display a listing of the Volunteering Request 
      * @return JsonResponse
      */
     public function index()
     {
-        $volunteer_request = Volunteering::with('city')->get();
+        $volunteer_request = VolunteeringRequest::with('city')->get();
         return response()->json($volunteer_request, 200);
     }
 
     /**
-     * Display the specified Voulnteer request
+     * Display the specified Volunteering Request 
      * @param string $id
      * @return JsonResponse
      */
     public function show(string $id)
     {
-        $volunteer_request = Volunteering::with('city')->findOrFail($id);
+        $volunteer_request = VolunteeringRequest::with('city')->findOrFail($id);
         return response()->json($volunteer_request, 200);
     }
 
 
     /**
-     * Accept volunteering request
+     * Accept Volunteering Request 
      * @param string $id
      * @return JsonResponse
      */
@@ -43,7 +43,7 @@ class VolunteeringController extends Controller
     {
         DB::beginTransaction();
         try {
-            $volunteer_request = Volunteering::find($id);
+            $volunteer_request = VolunteeringRequest::find($id);
             if ($volunteer_request->status != 'انتظار')
                 return response()->json(['message' => 'the request is already done'], 422);
             if ($volunteer_request->user->is_volunteer)
@@ -74,14 +74,14 @@ class VolunteeringController extends Controller
     }
 
     /**
-     * Reject volunteering request
+     * Reject Volunteering Request 
      * @param string $id
      * @return JsonResponse
      */
     public function reject(Request $request, string $id)
     {
         $request->validate(['rejecting_reason' => ['required', 'string']]);
-        $volunteer_request = Volunteering::find($id);
+        $volunteer_request = VolunteeringRequest::find($id);
         if ($volunteer_request->status != 'انتظار')
             return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
         $volunteer_request->update([
@@ -92,13 +92,13 @@ class VolunteeringController extends Controller
     }
 
     /**
-     * Remove the specified voulnteer request from storage
+     * Remove the specified Volunteering Request  from storage
      * @param string $id
      * @return JsonResponse
      */
     public function destroy(string $id)
     {
-        $volunteer_request = Volunteering::findOrFail($id);
+        $volunteer_request = VolunteeringRequest::findOrFail($id);
         $volunteer_request->delete();
         return response()->json(null, 204);
     }

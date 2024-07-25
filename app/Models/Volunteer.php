@@ -52,7 +52,7 @@ class Volunteer extends Model
 
     public function request(): BelongsTo
     {
-        return $this->belongsTo(Volunteering::class);
+        return $this->belongsTo(VolunteeringRequest::class);
     }
 
     public function workPeriod(): HasMany

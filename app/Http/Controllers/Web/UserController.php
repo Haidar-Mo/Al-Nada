@@ -18,7 +18,9 @@ class UserController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $users = User::orderBy($orderBy, $order)->paginate($perPage);
+        $users = User::orderBy($orderBy, $order)->paginate($perPage)->through(function ($user) {
+            return $user->makeVisible(['is_active', 'email_verified_at']);
+        });
         return response()->json($users, 200);
     }
 
@@ -29,7 +31,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrfail($id);
+        $user = User::findOrfail($id)->makeVisible(['is_active', 'email_verified_at']);
         return response()->json($user, 200);
     }
 

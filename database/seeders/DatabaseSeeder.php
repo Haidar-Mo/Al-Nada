@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
     {
         Employee::insert([
             [
+                'id' => 1,
                 'first_name' => 'ادمن',
                 'last_name' => 'ادمن',
                 'father_name' => 'اسم الاب',
@@ -86,12 +87,13 @@ class DatabaseSeeder extends Seeder
                 'image' => 'Employee/image.png'
             ],
             [
+                'id' => 2,
                 'first_name' => 'ادمن2',
                 'last_name' => '2ادمن',
                 'father_name' => 'اسم الاب',
                 'mother_name' => 'اسم الام',
                 'phone_number' => '0911111111',
-                'id_serial_number' => '00000000000',
+                'id_serial_number' => '00000000001',
                 'nationality' => 'سوري',
                 'birth_date' => '2000-01-01',
                 'city_id' => 1,
@@ -108,13 +110,18 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Administration::insert([
-            'employee_id' => 1,
-            'user_name' => 'mohammad',
-            'password' => bcrypt('password')
-        ],[
-            'employee_id' => 2,
-            'user_name' => 'admin',
-            'password' => bcrypt('password')
+            [
+                'id' => 1,
+                'employee_id' => 1,
+                'user_name' => 'mohammad',
+                'password' => bcrypt('password')
+            ],
+            [
+                'id' => 2,
+                'employee_id' => 2,
+                'user_name' => 'admin',
+                'password' => bcrypt('password')
+            ]
         ]);
 
         Administration::find(1)->assignRole('admin');
@@ -342,11 +349,11 @@ class DatabaseSeeder extends Seeder
         DonationAlert::factory(4)->create();
         DonationCampaignAlert::factory(4)->create();
 
-        //Volunteering::factory(5)->create();
+        //VolunteeringRequest::factory(5)->create();
         //Volunteer::factory(10)->create();
         VolunteerWorkPeriod::factory(5)->create();
 
-        //VolunteeringInCampaign::factory(5)->create();
+        //VolunteeringInCampaignRequest::factory(5)->create();
         VolunteerInCampaign::factory(5)->create();
 
         Report::factory(5)->create();

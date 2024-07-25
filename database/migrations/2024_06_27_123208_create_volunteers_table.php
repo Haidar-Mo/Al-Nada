@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
-            $table->foreign('request_id')->references('id')->on('volunteerings')->onDelete('set null');
+            $table->foreign('request_id')->references('id')->on('volunteering_requests')->onDelete('set null');
 
             $table->string('first_name');
             $table->string('last_name');

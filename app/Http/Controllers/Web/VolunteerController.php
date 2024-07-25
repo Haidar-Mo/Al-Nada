@@ -52,9 +52,8 @@ class VolunteerController extends Controller
      */
     public function update(VolunteerRequest $request, string $id)
     {
-        $volunteer = Volunteer::findOrFail($id);
+        $volunteer = Volunteer::with(['request','city'])->findOrFail($id);
         $volunteer->update($request->all());
-        $volunteer->load('request','city');
         return response()->json($volunteer, 200);
     }
 

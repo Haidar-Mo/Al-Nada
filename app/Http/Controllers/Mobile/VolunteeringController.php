@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Mobile\VolunteeringRequest;
+use App\Http\Requests\Mobile\VolunteeringRequest as Vrequest;
 use App\Models\User;
-use App\Models\Volunteering;
+use App\Models\VolunteeringRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +27,7 @@ class VolunteeringController extends Controller
      * @param VolunteeringRequest $request
      * @return JsonResponse
      */
-    public function store(VolunteeringRequest $request)
+    public function store(Vrequest $request)
     {
         DB::beginTransaction();
         try {
@@ -77,7 +77,7 @@ class VolunteeringController extends Controller
      */
     public function show(string $id)
     {
-        $volunteering_request = Volunteering::findOrFail($id);
+        $volunteering_request = VolunteeringRequest::findOrFail($id);
         return response()->json($volunteering_request, 200);
     }
 
@@ -87,7 +87,7 @@ class VolunteeringController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function update(VolunteeringRequest $request, string $id)
+    public function update(Vrequest $request, string $id)
     {
         DB::beginTransaction();
         try {

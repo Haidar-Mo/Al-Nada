@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,7 +49,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'verification_code',
+        'email_verified_at',
         'deviceToken',
+        'is_active'
     ];
 
     /**
@@ -92,12 +93,12 @@ class User extends Authenticatable
 
     public function volunteeringRequest(): HasMany
     {
-        return $this->hasMany(Volunteering::class);
+        return $this->hasMany(VolunteeringRequest::class);
     }
 
     public function volunteeringInCampaignRequest(): HasMany
     {
-        return $this->hasMany(VolunteeringInCampaign::class);
+        return $this->hasMany(VolunteeringInCampaignRequest::class);
     }
 
     public function favorite(): HasMany

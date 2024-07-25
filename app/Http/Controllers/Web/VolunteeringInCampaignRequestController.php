@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\VolunteerInCampaign;
-use App\Models\VolunteeringInCampaign;
+use App\Models\VolunteeringInCampaignRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class VolunteeringInCampaignController extends Controller
+class VolunteeringInCampaignRequestController extends Controller
 {
     /**
      * Display a listing of the Volunteering  Requests
@@ -19,7 +19,7 @@ class VolunteeringInCampaignController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $requests = VolunteeringInCampaign::with('city','campaign')->orderBy($orderBy, $order)->paginate($perPage);
+        $requests = VolunteeringInCampaignRequest::with('city','campaign')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($requests, 200);
     }
 
@@ -29,7 +29,7 @@ class VolunteeringInCampaignController extends Controller
      */
     public function show(string $id)
     {
-        $request = VolunteeringInCampaign::with('city','campaign')->findOrFail($id);
+        $request = VolunteeringInCampaignRequest::with('city','campaign')->findOrFail($id);
         return response()->json($request, 200);
     }
 
@@ -42,7 +42,7 @@ class VolunteeringInCampaignController extends Controller
     {
         DB::beginTransaction();
         try {
-            $volunteer_request = VolunteeringInCampaign::find($id);
+            $volunteer_request = VolunteeringInCampaignRequest::find($id);
             if ($volunteer_request->status != 'انتظار')
                 return response()->json(['message' => 'the request is already done'], 422);
             if ($volunteer_request->user->is_volunteer)
@@ -78,7 +78,7 @@ class VolunteeringInCampaignController extends Controller
     public function reject(Request $request, string $id)
     {
         $request->validate(['rejecting_reason' => ['required', 'string']]);
-        $volunteer_request = VolunteeringInCampaign::find($id);
+        $volunteer_request = VolunteeringInCampaignRequest::find($id);
         if ($volunteer_request->status != 'انتظار')
             return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
         $volunteer_request->update([
@@ -95,7 +95,7 @@ class VolunteeringInCampaignController extends Controller
      */
     public function destroy(string $id)
     {
-        $request = VolunteeringInCampaign::findOrFail($id);
+        $request = VolunteeringInCampaignRequest::findOrFail($id);
         $request->delete();
         return response()->json(null, 204);
     }

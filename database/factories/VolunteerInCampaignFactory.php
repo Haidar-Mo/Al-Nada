@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\VolunteeringInCampaign;
+use App\Models\VolunteeringInCampaignRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +20,7 @@ class VolunteerInCampaignFactory extends Factory
     public function definition(): array
     {
 
-        $request = VolunteeringInCampaign::factory()->create();
+        $request = VolunteeringInCampaignRequest::factory()->create();
         return [
             'campaign_id' => $request->campaign_id,
             'request_id' => $request->id,

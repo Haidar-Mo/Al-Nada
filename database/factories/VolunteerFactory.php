@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Volunteering;
+use App\Models\VolunteeringRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +18,7 @@ class VolunteerFactory extends Factory
      */
     public function definition(): array
     {
-        $request = Volunteering::factory()->create();
+        $request = VolunteeringRequest::factory()->create();
         return [
             'request_id' => $request->id,
             'first_name' => $request->first_name,

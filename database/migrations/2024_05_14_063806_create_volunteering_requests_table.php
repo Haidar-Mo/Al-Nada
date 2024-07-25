@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('volunteerings', function (Blueprint $table) {
+        Schema::create('volunteering_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('first_name');
@@ -57,6 +57,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('volunteerings');
+        Schema::dropIfExists('volunteering_requests');
     }
 };

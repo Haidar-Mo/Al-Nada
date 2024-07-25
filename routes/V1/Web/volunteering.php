@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Web\VolunteerController;
-use App\Http\Controllers\Web\VolunteeringController;
-use App\Http\Controllers\Web\VolunteeringInCampaignController;
+use App\Http\Controllers\Web\VolunteerInCampaignController;
+use App\Http\Controllers\Web\VolunteeringRequestController;
+use App\Http\Controllers\Web\VolunteeringInCampaignRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('web/volunteering/request')->middleware([
@@ -10,11 +11,11 @@ Route::prefix('web/volunteering/request')->middleware([
     'type.web'
 ])->group(function () {
 
-    Route::get('index', [VolunteeringController::class, 'index']);
-    Route::get('show/{id}', [VolunteeringController::class, 'show']);
-    Route::post('accept/{id}', [VolunteeringController::class, 'accept']);
-    Route::post('reject/{id}', [VolunteeringController::class, 'reject']);
-    Route::post('delete/{id}', [VolunteeringController::class, 'destroy']);
+    Route::get('index', [VolunteeringRequestController::class, 'index']);
+    Route::get('show/{id}', [VolunteeringRequestController::class, 'show']);
+    Route::post('accept/{id}', [VolunteeringRequestController::class, 'accept']);
+    Route::post('reject/{id}', [VolunteeringRequestController::class, 'reject']);
+    Route::post('delete/{id}', [VolunteeringRequestController::class, 'destroy']);
 });
 
 Route::prefix('web/volunteering/person')->middleware([
@@ -40,9 +41,24 @@ Route::prefix('web/volunteering/campaign/request')->middleware([
     'type.web'
 ])->group(function () {
 
-    Route::get('index', [VolunteeringInCampaignController::class, 'index']);
-    Route::get('show/{id}', [VolunteeringInCampaignController::class, 'show']);
-    Route::post('accept/{id}', [VolunteeringInCampaignController::class, 'accept']);
-    Route::post('reject/{id}', [VolunteeringInCampaignController::class, 'reject']);
-    Route::post('delete/{id}', [VolunteeringInCampaignController::class, 'destory']);
+    Route::get('index', [VolunteeringInCampaignRequestController::class, 'index']);
+    Route::get('show/{id}', [VolunteeringInCampaignRequestController::class, 'show']);
+    Route::post('accept/{id}', [VolunteeringInCampaignRequestController::class, 'accept']);
+    Route::post('reject/{id}', [VolunteeringInCampaignRequestController::class, 'reject']);
+    Route::post('delete/{id}', [VolunteeringInCampaignRequestController::class, 'destory']);
+});
+
+Route::prefix('web/volunteering/campaign/person')->middleware([
+    'auth:sanctum',
+    'type.web'
+])->group(function () {
+
+    Route::get('index', [VolunteerInCampaignController::class, 'index']);
+    Route::get('show/{id}', [VolunteerInCampaignController::class, 'show']);
+    Route::post('create', [VolunteerInCampaignController::class, 'store']);
+    Route::post('update/{id}', [VolunteerInCampaignController::class, 'update']);
+    Route::post('activate/{id}', [VolunteerInCampaignController::class, 'activate']);
+    Route::post('deactivate/{id}', [VolunteerInCampaignController::class, 'deactivate']);
+    Route::post('rate/{id}', [VolunteerInCampaignController::class, 'rate']);
+    Route::delete('delete/{id}', [VolunteerInCampaignController::class, 'destroy']);
 });
