@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateCampaignRequest;
-use Illuminate\Http\Request;
 use App\Models\Campaign;
 use App\Models\User;
 use App\Notifications\NewCampaignNotification;
 use App\Traits\NotificationTrait;
+use App\Services\Web\FinishCampaignService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -18,7 +18,7 @@ class CampaignController extends Controller
 {
     use NotificationTrait;
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Campaign.
      */
     public function index()
     {
@@ -30,7 +30,7 @@ class CampaignController extends Controller
 
     /**
      * Display the specified campaign.
-     * @param string $id
+     * @param string $id The ID of the campaign.
      * @return JsonResponse
      */
     public function show(string $id)
@@ -42,7 +42,7 @@ class CampaignController extends Controller
 
     /**
      * Store a newly created campaign in storage.
-     * @param Request $request
+     * @param CreateCampaignRequest $request
      * @return JsonResponse
      */
     public function store(CreateCampaignRequest $request)
@@ -70,7 +70,7 @@ class CampaignController extends Controller
     /**
      * Update the specified resource in storage.
      * @param CreateCampaignRequest $request
-     * @param string $id
+     * @param string $id The ID of the campaign.
      * @return JsonResponse
      */
     public function update(CreateCampaignRequest $request, string $id)
@@ -94,22 +94,67 @@ class CampaignController extends Controller
             return response()->json($e->getMessage(), $e->getCode() ?: 500);
         }
     }
+
     /**
-     * finish the Campaign ( set end-date )
-     * @param string $id
+     * Retrieve all volunteers associated with the campaign's accepted requests.
+     * This function fetches the campaign and filters its requests to include only those
+     * with a status of 'مقبول' (accepted). It then retrieves the volunteers linked to these requests.
+     *
+     * @param string $id The ID of the campaign.
      * @return JsonResponse
      */
-    public function FinishCampaign(string $id)
+    public function getAllVolunteers(string $id)
     {
-        $campaign = Campaign::findOrFail($id);
-        $campaign->end_date = now();
-        $campaign->save();
+        $campaign = Campaign::with(['request' => function ($query) {
+            $query->where('status', 'مقبول');
+        }, 'request.volunteer'])->findOrFail($id);
+
         return response()->json($campaign, 200);
     }
 
     /**
+     * Retrieve all unique donors associated with the campaign.
+     * This function fetches the campaign along with its donations and extracts
+     * the user information from the associated wallets. It returns a list of unique donors.
+     *
+     * @param string $id The ID of the campaign.
+     * @return JsonResponse
+     */
+    public function getAllDonors(string $id)
+    {
+        $campaign = Campaign::findOrFail($id);
+        $donors = $campaign->donation->map(function ($donation) {
+            return $donation->wallet->user;
+        })->unique('id')->values();
+        $campaign->makeHidden('donation');
+        $data = array_merge(['campaign' => $campaign, 'donors' => $donors]);
+        return response()->json($data, 200);
+    }
+
+
+    /**
+     * finish the Campaign ( set end-date )
+     * @param string $id The ID of the campaign.
+     * @return JsonResponse
+     */
+    public function Finish(string $id)
+    {
+        DB::beginTransaction();
+        try {
+            $service = new FinishCampaignService;
+            $campaign = Campaign::findOrFail($id);
+            $service->endCampaign($campaign);
+            DB::commit();
+            return response()->json($campaign, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    /**
      * Remove the specified campaign from storage.
-     * @param string $id
+     * @param string $id The ID of the campaign.
      * @return null
      */
     public function destroy(string $id)

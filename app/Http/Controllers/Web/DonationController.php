@@ -11,11 +11,15 @@ class DonationController extends Controller
 {
     /**
      * Display a listing of the donations
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $donations = Donation::with('user')->get();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $donations = Donation::with('user')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($donations, 200);
     }
 

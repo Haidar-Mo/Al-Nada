@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Campaign;
-use App\Models\Wallet;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,10 +18,10 @@ class DonationCampaignFactory extends Factory
      */
     public function definition(): array
     {
-        $wallet_IDs = Wallet::all()->pluck('id')->toArray();
+        $user_IDs = User::all()->pluck('id')->toArray();
         $campaign_IDs = Campaign::all()->pluck('id')->toArray();
         return [
-            'wallet_id' => fake()->randomElement($wallet_IDs),
+            'user_id' => fake()->randomElement($user_IDs),
             'campaign_id' => fake()->randomElement($campaign_IDs),
             'type' => 'مالي',
             'amount' => fake()->randomNumber(7),

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Campaign extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,24 +23,20 @@ class Campaign extends Model
         'is_donateable',
         'is_volunteerable',
         'number_of_Beneficiary',
+        'min_limit_for_donation',
         'image',
-        'end_date',
         'start_date',
+        'end_date',
     ];
 
-    protected $casts =[
-        'created_at'=>'date:Y/m/d',
-        'updated_at'=>'date:Y/m/d',
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
 
-    public function volinteeringInCampaign(): HasMany
+    public function request(): HasMany
     {
-        return $this->hasMany(volunteeringInCampaign::class);
-    }
-
-    public function favorite(): HasMany
-    {
-        return $this->hasMany(Favorite::class);
+        return $this->hasMany(VolunteeringInCampaignRequest::class);
     }
 
     public function donation(): HasMany
@@ -48,9 +44,13 @@ class Campaign extends Model
         return $this->hasMany(DonationCampaign::class);
     }
 
+    public function favorite(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function alert(): HasMany
     {
         return $this->hasMany(DonationCampaignAlert::class);
     }
-
 }

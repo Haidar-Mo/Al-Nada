@@ -77,6 +77,11 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
+    public function donationCampaign(): HasMany
+    {
+        return $this->hasMany(DonationCampaign::class);
+    }
+
     public function sposership(): HasOne
     {
         return $this->hasOne(Sponsership::class);

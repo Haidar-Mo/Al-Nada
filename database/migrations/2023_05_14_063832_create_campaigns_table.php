@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('number_of_Beneficiary', 10, 0)->default(0.00);
             $table->boolean('is_donateable');
             $table->boolean('is_volunteerable');
+            $table->decimal('min_limit_for_donation')->nullable();
             $table->string('image');
             $table->date('start_date')->nullable()->default(null);
             $table->date('end_date')->nullable()->default(null);

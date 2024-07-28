@@ -7,16 +7,21 @@ use App\Http\Requests\Web\VolunteerRequest;
 use App\Models\Volunteer;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class VolunteerController extends Controller
 {
     /**
      * Display a listing of the volunteers
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $volunteers = Volunteer::with('request','city')->get();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $volunteers = Volunteer::with('request','city')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($volunteers);
     }
 

@@ -34,12 +34,7 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function donationCampaign(): HasMany
-    {
-        return $this->hasMany(DonationCampaign::class);
-    }
-
+    
     public function billingHistory(): HasMany
     {
         return $this->hasMany(BillingHistory::class);

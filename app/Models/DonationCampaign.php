@@ -22,16 +22,16 @@ class DonationCampaign extends Model
         'type',
         'amount',
         'description',
-        'deliver_type',
+        'delivery_type',
         'address',
         'created_at',
         'updated_at',
     ];
 
 
-    public function wallet(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class);
+        return $this->belongsTo(User::class);
     }
 
     public function campaign(): BelongsTo

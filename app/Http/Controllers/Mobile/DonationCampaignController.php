@@ -44,8 +44,8 @@ class DonationCampaignController extends Controller
     {
         $user = User::findOrFail(Auth::user()->id);
         $donation_service = new DonationCampaignService;
-        $donation = $donation_service->donate($user, $request, $id);
+        $response = $donation_service->donate($user, $request, $id);
 
-        return response()->json($donation, 201);
+        return response()->json(['message' => $response['message']], $response['code']);
     }
 }
