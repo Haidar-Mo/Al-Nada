@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
-use App\Models\DonationCampaign;
 use App\Models\User;
-use App\Services\DonationCampaignService;
+use App\Services\DonationToCampaignService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DonationCampaignController extends Controller
+class DonationToCampaignController extends Controller
 {
     /**
      * Display list of user Donations for Campaign
@@ -43,7 +42,7 @@ class DonationCampaignController extends Controller
     public function store(Request $request, string $id)
     {
         $user = User::findOrFail(Auth::user()->id);
-        $donation_service = new DonationCampaignService;
+        $donation_service = new DonationToCampaignService;
         $response = $donation_service->donate($user, $request, $id);
 
         return response()->json(['message' => $response['message']], $response['code']);

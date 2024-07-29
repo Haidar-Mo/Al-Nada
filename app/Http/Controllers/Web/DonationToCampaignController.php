@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Donation;
+use App\Models\DonationToCampaign;
 use App\Traits\NotificationTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class DonationController extends Controller
+class DonationToCampaignController extends Controller
 {
     use NotificationTrait;
     /**
-     * Display a listing of the donations
+     * Display a listing of the Donation
      * @param Request $request
      * @return JsonResponse
      */
@@ -21,18 +21,18 @@ class DonationController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $donations = Donation::with('user')->orderBy($orderBy, $order)->paginate($perPage);
+        $donations = DonationToCampaign::with('user')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($donations, 200);
     }
 
     /**
-     * Display the specified donation
+     * Display the specified Donation
      * @param string $id
      * @return JsonResponse
      */
     public function show(string $id)
     {
-        $donation = Donation::with('user')->findOrFail($id);
+        $donation = DonationToCampaign::with('user')->findOrFail($id);
         return response()->json($donation, 200);
     }
 
@@ -41,7 +41,7 @@ class DonationController extends Controller
      */
     public function accept(string $id)
     {
-        $donation = Donation::with('user')->findOrFail($id);
+        $donation = DonationToCampaign::with('user')->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
         $donation->update(['status' => 'تم الاستلام']);
@@ -52,17 +52,25 @@ class DonationController extends Controller
 
     /**
      * Reject the specified donation
-     *@param string $id
+     * @param string $id
      * @return JsonResponse
      */
     public function reject(string $id)
     {
-        $donation = Donation::with('user')->findOrFail($id);
+        $donation = DonationToCampaign::with('user')->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
         $donation->update(['status' => 'مرفوض']);
         $user = $donation->user;
         $this->sendNotification($user->deviceToken, 'تبرع مرفوض', 'عذراً تم رفض تبرعك');
         return response()->json($donation, 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

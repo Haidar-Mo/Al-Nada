@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Donation;
-use App\Models\DonationCampaign;
+use App\Models\DonationToCampaign;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +21,7 @@ class BillingHistoryFactory extends Factory
     public function definition(): array
     {
         $wallet_IDs = Wallet::all()->pluck('id')->toArray();
-        $billable_type = $this->faker->randomElement([WalletCharge::class, DonationCampaign::class]);
+        $billable_type = $this->faker->randomElement([WalletCharge::class, DonationToCampaign::class]);
         $billable_id = $billable_type::factory()->create();
         return [
             'wallet_id' => fake()->randomElement($wallet_IDs),

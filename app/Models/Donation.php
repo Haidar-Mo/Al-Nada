@@ -52,8 +52,8 @@ class Donation extends Model
         return $this->belongsTo(User::class);
     }
 
-    /*  public function bill(): MorphMany
+    public function bill(): MorphMany
     {
         return  $this->morphMany(BillingHistory::class, 'billable');
-    }*/
+    }
 }

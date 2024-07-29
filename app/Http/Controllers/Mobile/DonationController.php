@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller
 {
+
     /**
      * Display list of user Donations
      * @return JsonResponse
@@ -42,9 +43,10 @@ class DonationController extends Controller
     public function store(DonationRequest $request)
     {
         $user = User::findOrFail(Auth::user()->id);
-        $donation = $user->donation()->create($request->all());
+        $service = new DonationService;
+        $response = $service->donate($user, $request);
         // notification for dash
-        return response()->json($donation, 201);
+        return response()->json(['message' => $response['message']], $response['code']);
     }
 
     public function update(DonationRequest $request, string $id)
@@ -65,6 +67,6 @@ class DonationController extends Controller
             return response()->json(['message' => 'لايمكنك الغاء هذا الطلب'], 422);
         $donation->delete();
         // delete notification
-        return response()->json(['message'=>'تم الغاء الطلب '],200);
+        return response()->json(['message' => 'تم الغاء الطلب '], 200);
     }
 }

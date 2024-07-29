@@ -13,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::paginate(3);
+        $news = News::orderBy('created_at', 'desc')->paginate(5);
         return response()->json($news, 200);
     }
 

@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DonationCampaign>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DonationToCampaign>
  */
-class DonationCampaignFactory extends Factory
+class DonationToCampaignFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -24,9 +24,10 @@ class DonationCampaignFactory extends Factory
             'user_id' => fake()->randomElement($user_IDs),
             'campaign_id' => fake()->randomElement($campaign_IDs),
             'type' => 'مالي',
+            'delivery_type' => 'الكتروني',
             'amount' => fake()->randomNumber(7),
             'description' => null,
-            'delivery_type' => 'الكتروني',
+            'phone_number'=>fake()->phoneNumber(),
             'address' => null
         ];
     }

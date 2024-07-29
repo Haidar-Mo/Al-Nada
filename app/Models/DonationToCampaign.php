@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class DonationCampaign extends Model
+class DonationToCampaign extends Model
 {
     use HasFactory;
 
@@ -20,10 +20,12 @@ class DonationCampaign extends Model
         'user_id',
         'campaign_id',
         'type',
+        'delivery_type',
         'amount',
         'description',
-        'delivery_type',
+        'phone_number',
         'address',
+        'status',
         'created_at',
         'updated_at',
     ];

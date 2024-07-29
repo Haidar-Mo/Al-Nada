@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donations', function (Blueprint $table) {
+        Schema::create('donation_to_campaigns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['مالي', 'عيني']);
             $table->enum('delivery_type', ['مندوب توصيل', 'الكتروني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
-            $table->string('address')->nullable();
             $table->string('phone_number');
+            $table->string('address')->nullable();
             $table->enum('status', ['جديد', 'تم الاستلام', 'مرفوض'])->default('جديد');
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donations');
+        Schema::dropIfExists('donation_to_campaigns');
     }
 };

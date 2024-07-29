@@ -25,7 +25,7 @@ class DonationRequest extends FormRequest
             'type' => ['required', 'in:مالي,عيني'],
             'amount' => ['nullable', 'numeric'],
             'description' => ['nullable', 'string'],
-            'address' => ['required', 'string'],
+            'address' => ['nullable', 'string'],
             'phone_number' => ['required', 'string']
         ];
     }
