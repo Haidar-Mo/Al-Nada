@@ -22,8 +22,10 @@ class NewsController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $news = News::orderBy($orderBy, $order)->paginate($perPage);
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
 
+        $news = News::where($filter, 'LIKE', '%' . $search . '%')->orderBy($orderBy, $order)->paginate($perPage);
         return response()->json($news, 200);
     }
 

@@ -27,7 +27,7 @@ class VolunteerInCampaignRequest extends FormRequest
             'campaign_id'=>'required',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone_number' => ['required', new SyrianPhoneNumber, 'unique:volunteerInCampaigns,phone_number,' . $volunteer],
+            'phone_number' => ['required', new SyrianPhoneNumber, 'unique:volunteer_in_campaigns,phone_number,' . $volunteer],
             'academic_level' => 'required|string|max:255',
             'city_id' => ['required'],
             'address' => ['required', 'string']

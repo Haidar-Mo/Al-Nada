@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function donationCampaign(): HasMany
     {
-        return $this->hasMany(DonationCampaign::class);
+        return $this->hasMany(DonationToCampaign::class);
     }
 
     public function sposership(): HasOne

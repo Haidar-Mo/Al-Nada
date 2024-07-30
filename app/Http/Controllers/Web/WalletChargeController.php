@@ -57,9 +57,9 @@ class WalletChargeController extends Controller
         $wallet->balance += $request->amount;
         $wallet->save();
 
-        // notifications :
-        Notification::send($user, new NewCampaignNotification($bill));
+        ////Notification::send($user, new NewCampaignNotification($bill));
         //$this->sendNotification($user->deviceToken, "محفظة الندى", "تم شحن محفظتك بمبلغ" . $request->amount);
+
         return response()->json($wallet_charge, 200);
     }
 
@@ -72,6 +72,8 @@ class WalletChargeController extends Controller
     {
         $wallet_charge = WalletCharge::findOrFail($id);
         $wallet_charge->update(['status' => 'ملغي']);
+
+        //$this->sendNotification($user->deviceToken, "محفظة الندى", "عذراً لم يتم قبول طلب شحن المحفظة... راجع الجمعية");
         return response()->json($wallet_charge, 200);
     }
     /**

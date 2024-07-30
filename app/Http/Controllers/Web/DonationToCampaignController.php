@@ -21,7 +21,13 @@ class DonationToCampaignController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $donations = DonationToCampaign::with('user')->orderBy($orderBy, $order)->paginate($perPage);
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $donations = DonationToCampaign::with('user')
+            ->where($filter, 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($donations, 200);
     }
 

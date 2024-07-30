@@ -22,7 +22,13 @@ class VolunteeringRequestController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $volunteer_request = VolunteeringRequest::with('user','city')->orderBy($orderBy, $order)->paginate($perPage);
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $volunteer_request = VolunteeringRequest::with('user', 'city')
+            ->where($filter, 'LIKE', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($volunteer_request, 200);
     }
 
