@@ -16,7 +16,7 @@ class DonationToCampaignController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donations = $user->wallet->donationCampaign()->with('campaign')->get();
         return response()->json($donations, 200);
     }
@@ -28,7 +28,7 @@ class DonationToCampaignController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donation = $user->wallet->donationCampaign()->with('campaign')->findOrFail($id);
         return Response()->json($donation, 200);
     }
@@ -41,7 +41,7 @@ class DonationToCampaignController extends Controller
      */
     public function store(Request $request, string $id)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donation_service = new DonationToCampaignService;
         $response = $donation_service->donate($user, $request, $id);
 

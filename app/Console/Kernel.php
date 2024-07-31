@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
         Commands\SendDonationCampaignAlerts::class,
         Commands\DeleteUnverifiedUser::class,
         Commands\DeleteDonationCampaignAlert::class,
+        Commands\CheckIfOrphanStillSupported::class,
     ];
     /**
      * Define the application's command schedule.
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('alerts:send-donation-campaign-alerts')->daily();
         $schedule->command('app:delete-unverified-user')->daily();
         $schedule->command('app:delete-donation-campaign-alert')->daily();
+        $schedule->command('orphan:check-still-supported')->monthly();
     }
 
     /**

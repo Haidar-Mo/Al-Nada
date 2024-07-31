@@ -17,7 +17,7 @@ class DonationCampaignAlertController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alerts = $user->donationCampaignAlert()->with('campaign')->get();
         return response()->json($alerts, 200);
     }
@@ -35,7 +35,7 @@ class DonationCampaignAlertController extends Controller
             'title' => ['required'],
             'frequency' => ['required', 'in:يومي,اسبوعي,شهري']
         ]);
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         if ($user->donationCampaignAlert()->where('campaign_id', $id)->first())
             return response()->json(['message' => 'هنالك منبه مُضاف لهذه الحملة بالفعل'], 422);
         $campaign = Campaign::findOrFail($id);
@@ -52,7 +52,7 @@ class DonationCampaignAlertController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationCampaignAlert()->with('campaign')->findOrFail($id);
         return response()->json($alert, 200);
     }
@@ -69,7 +69,7 @@ class DonationCampaignAlertController extends Controller
             'title' => ['required'],
             'frequency' => ['required', 'in:يومي,اسبوعي,شهري']
         ]);
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationCampaignAlert()->findOrFail($id);
         $alert->update($request->only('title', 'frequency'));
         return response()->json($alert, 200);
@@ -80,7 +80,7 @@ class DonationCampaignAlertController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationcampaignAlert()->findOrFail($id);
         $alert->delete();
         return response()->json(null, 204);

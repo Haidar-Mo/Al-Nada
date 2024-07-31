@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('orphans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('family_id')->constrained('orphan_families')->onDelete('cascade');
+            $table->string('name');
+            $table->date('birth_date');
+            $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
+            $table->boolean('is_supported');
             $table->timestamps();
         });
     }

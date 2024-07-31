@@ -20,6 +20,7 @@ Route::prefix('mobile/campaign')->middleware([
     Route::prefix('favorite')->group(function () {
 
         Route::get('index', [FavoriteController::class, 'index']);
+        Route::get('show/{id}', [FavoriteController::class, 'show']);
         Route::post('create/{id}', [FavoriteController::class, 'store']);
         Route::delete('delete/{id}', [FavoriteController::class, 'destroy']);
     });

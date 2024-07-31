@@ -17,7 +17,7 @@ class DonationAlertController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alerts = $user->donationAlert;
         return response()->json($alerts, 200);
     }
@@ -34,7 +34,7 @@ class DonationAlertController extends Controller
             'title' => ['required'],
             'frequency' => ['required', 'in:يومي,اسبوعي,شهري']
         ]);
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationAlert()->create($request->only('title', 'requency'));
         return response()->json($alert, 201);
     }
@@ -46,7 +46,7 @@ class DonationAlertController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationAlert()->findOrFail($id);
         return response()->json($alert, 200);
     }
@@ -63,7 +63,7 @@ class DonationAlertController extends Controller
             'title' => ['required'],
             'frequency' => ['required', 'in:يومي,اسبوعي,شهري']
         ]);
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationAlert()->findOrFail($id);
         $alert->update($request->only('title', 'frequency'));
         return response()->json($alert, 200);
@@ -74,7 +74,7 @@ class DonationAlertController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $alert = $user->donationAlert()->findOrFail($id);
         $alert->delete();
         return response()->json(null, 204);

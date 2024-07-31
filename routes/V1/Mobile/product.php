@@ -14,6 +14,4 @@ Route::prefix('mobile/product')->middleware([
     Route::get('index', [ProductController::class, 'index']);
     Route::get('show/{id}', [ProductController::class, 'show']);
     Route::post('buy/{id}', [ProductController::class, 'orderProduct']);
-
-    Route::get('order', [OrderController::class, 'index']);
 });

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Orphan extends Model
+class OrphanFamilyStatement extends Model
 {
     use HasFactory;
 
@@ -17,10 +17,18 @@ class Orphan extends Model
      */
     protected $fillable = [
         'family_id',
-        'name',
-        'birth_date',
-        'academic_level',
-        'is_supported'
+        'statement_first_date',
+        'income_source',
+        'mony_saving',
+        'poor_level',
+        'other_association',
+        'supply',
+        'note',
+        'committee',
+        'committee_report',
+        'remove_statement_number',
+        'remove_date',
+        'remove_reson',
     ];
 
     /**
@@ -29,6 +37,7 @@ class Orphan extends Model
      * @var array<int, string>
      */
     protected $hidden = [];
+
 
 
     public function orphanFamily(): BelongsTo

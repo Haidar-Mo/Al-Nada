@@ -19,7 +19,7 @@ class DonationController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donations = $user->donation;
         return response()->json($donations, 200);
     }
@@ -30,7 +30,7 @@ class DonationController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donation = $user->donation()->findOrFail($id);
         return Response()->json($donation, 200);
     }
@@ -42,7 +42,7 @@ class DonationController extends Controller
      */
     public function store(DonationRequest $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::find(Auth::id());
         $service = new DonationService;
         $response = $service->donate($user, $request);
         // notification for dash
@@ -51,7 +51,7 @@ class DonationController extends Controller
 
     public function update(DonationRequest $request, string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());;
         $donation = $user->donation()->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'لايمكنك التعديل على هذا الطلب'], 422);
@@ -61,7 +61,7 @@ class DonationController extends Controller
 
     public function destroy(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donation = $user->donation()->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'لايمكنك الغاء هذا الطلب'], 422);
