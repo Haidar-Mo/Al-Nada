@@ -25,7 +25,7 @@ class DonationFactory extends Factory
             'description' => null,
             'phone_number' => fake()->phoneNumber(),
             'address' => fake()->address(),
-            'status' => fake()->randomElement(['جديد', 'تم التسليم', 'مرفوض']),
+            'status' => fake()->randomElement(['جديد', 'تم الاستلام', 'قيد المعالجة', 'ملغي']),
 
         ];
     }

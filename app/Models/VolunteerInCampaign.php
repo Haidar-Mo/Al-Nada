@@ -54,6 +54,6 @@ class VolunteerInCampaign extends Model
 
     public function campaign(): BelongsTo
     {
-        return $this->belongsTo(Campaign::class);
+        return $this->belongsTo(Campaign::class, 'campaign_id');
     }
 }

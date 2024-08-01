@@ -43,3 +43,4 @@ include __DIR__ . '/V1/Web/order.php';
 include __DIR__ . '/V1/Web/news.php';
 include __DIR__ . '/V1/Web/wallet.php';
 include __DIR__ . '/V1/Web/report.php';
+include __DIR__ . '/V1/Web/statistics.php';

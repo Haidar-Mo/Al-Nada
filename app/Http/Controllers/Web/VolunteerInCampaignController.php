@@ -23,7 +23,7 @@ class VolunteerInCampaignController extends Controller
         $filter = $request->input('filter', 'id');
         $search  = $request->input('search');
 
-        $campaigns = VolunteerInCampaign::with('request', 'campaign', 'city')
+        $campaigns = VolunteerInCampaign::with(['request', 'campaign', 'city'])
             ->where($filter, 'LIKE', "%{$search}%")
             ->orderBy($orderBy, $order)
             ->paginate($perPage);

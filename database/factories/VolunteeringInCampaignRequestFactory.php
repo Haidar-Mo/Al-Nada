@@ -23,13 +23,13 @@ class VolunteeringInCampaignRequestFactory extends Factory
         $campaign_IDs = Campaign::all()->pluck('id')->toArray();
         return [
             'user_id' => $user->id,
-            'campaign_id' => fake()->randomElement($campaign_IDs), // Assuming campaign IDs range from 1 to 10
+            'campaign_id' => fake()->randomElement($campaign_IDs), 
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'phone_number' => $user->phone_number,
             'reason_for_volunteering' => fake()->sentence(),
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
-            'city_id' => 1, // Assuming city IDs range from 1 to 100
+            'city_id' => 1, 
             'address' => fake()->address(),
             'status' => 'مقبول',
         ];

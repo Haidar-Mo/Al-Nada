@@ -96,18 +96,15 @@ class CampaignController extends Controller
     }
 
     /**
-     * Retrieve all volunteers associated with the campaign's accepted requests.
-     * This function fetches the campaign and filters its requests to include only those
-     * with a status of 'مقبول' (accepted). It then retrieves the volunteers linked to these requests.
+     * Retrieve all volunteers associated with the campaign.
+     * This function fetches the campaign along with its Volunteers
      *
      * @param string $id The ID of the campaign.
      * @return JsonResponse
      */
     public function getAllVolunteers(string $id)
     {
-        $campaign = Campaign::with(['request' => function ($query) {
-            $query->where('status', 'مقبول');
-        }, 'request.volunteer'])->findOrFail($id);
+        $campaign = Campaign::with('volunteer')->findOrFail($id);
 
         return response()->json($campaign, 200);
     }

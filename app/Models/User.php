@@ -90,7 +90,7 @@ class User extends Authenticatable
 
     public function sponserships(): HasMany
     {
-        return $this->hasMany(SponsershipType::class);
+        return $this->hasMany(SponsershipCase::class);
     }
 
     public function donationAlert(): HasMany

@@ -39,9 +39,14 @@ class Campaign extends Model
         return $this->hasMany(VolunteeringInCampaignRequest::class);
     }
 
+    public function volunteer(): HasMany
+    {
+        return $this->hasMany(VolunteerInCampaign::class, 'campaign_id');
+    }
+
     public function donation(): HasMany
     {
-        return $this->hasMany(DonationCampaign::class);
+        return $this->hasMany(DonationToCampaign::class);
     }
 
     public function favorite(): HasMany
