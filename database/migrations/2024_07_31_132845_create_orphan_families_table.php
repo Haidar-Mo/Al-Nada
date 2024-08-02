@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('mother_last_name');
             $table->string('mother_birthplace');
             $table->date('mother_birthdate');
-            $table->string('mother_id_serial_number');
+            $table->string('mother_id_serial_number')->unique();
             $table->string('mother_nationality');
             $table->string('phone_number');
             $table->string('mother_health_condition');
             $table->enum('mother_academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
-            $table->string('family_register_book_number');
-            $table->string('side_from');
+            $table->string('family_register_book_number')->unique();
+            $table->string('via_person');
             $table->string('father_first_name');
             $table->string('father_last_name');
             $table->string('father_nationality');

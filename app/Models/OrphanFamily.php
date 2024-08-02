@@ -27,7 +27,7 @@ class OrphanFamily extends Model
         'mother_health_condition',
         'mother_academic_level',
         'family_register_book_number',
-        'side_from',
+        'via_person',
         'father_first_name',
         'father_last_name',
         'father_nationality',
@@ -56,9 +56,9 @@ class OrphanFamily extends Model
         return $this->morphMany(SponsershipCase::class, 'sponsershipable');
     }
 
-    public function orphans(): HasMany
+    public function orphan(): HasMany
     {
-        return $this->hasMany(Orphan::class, 'family_id');
+        return $this->hasMany(OrphanFamilyChild::class, 'family_id');
     }
 
     public function statement(): HasMany

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Orphan extends Model
+class OrphanFamilyChild extends Model
 {
     use HasFactory;
 
@@ -35,4 +35,5 @@ class Orphan extends Model
     {
         return $this->belongsTo(OrphanFamily::class, 'family_id');
     }
+    
 }

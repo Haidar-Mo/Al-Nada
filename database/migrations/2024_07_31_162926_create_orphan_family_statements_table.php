@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orphan_family_statements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('family_id')->constrained('orphan_families')->onDelete('cascade');
-            $table->date('statement_first_date');
+            $table->date('statement_date');
             $table->string('income_source');
             $table->decimal('mony_saving', 10, 0)->nullable();
             $table->string('poor_level');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('committee_report')->nullable();
             $table->string('remove_statement_number')->nullable();
             $table->date('remove_date')->nullable();
-            $table->string('remove_reson')->nullable();
+            $table->string('remove_reason')->nullable();
             $table->timestamps();
         });
     }

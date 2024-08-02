@@ -24,6 +24,7 @@ class Donation extends Model
         'phone_number',
         'address',
         'status',
+        'reject_reason',
         'created_at',
         'updated_at',
     ];

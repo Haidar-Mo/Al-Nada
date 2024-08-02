@@ -61,12 +61,15 @@ class DonationToCampaignController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function reject(string $id)
+    public function reject(Request $request, string $id)
     {
         $donation = DonationToCampaign::with('user')->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'الطلب معالج بالفعل'], 422);
-        $donation->update(['status' => 'مرفوض']);
+        $donation->update([
+            'status' => 'مرفوض',
+            'reject_reason' => $request->reject_reason
+        ]);
         $user = $donation->user;
         $this->sendNotification($user->deviceToken, 'تبرع مرفوض', 'عذراً تم رفض تبرعك');
         return response()->json($donation, 200);

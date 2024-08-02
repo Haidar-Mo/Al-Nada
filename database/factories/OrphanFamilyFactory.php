@@ -27,7 +27,7 @@ class OrphanFamilyFactory extends Factory
             'mother_health_condition' => $this->faker->sentence,
             'mother_academic_level' => $this->faker->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'family_register_book_number' => $this->faker->unique()->numerify('FRB########'),
-            'side_from' => $this->faker->city,
+            'via_person' => $this->faker->city,
             'father_first_name' => $this->faker->firstNameMale,
             'father_last_name' => $this->faker->lastName,
             'father_nationality' => $this->faker->country,

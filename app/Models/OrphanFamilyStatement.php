@@ -17,7 +17,7 @@ class OrphanFamilyStatement extends Model
      */
     protected $fillable = [
         'family_id',
-        'statement_first_date',
+        'statement_date',
         'income_source',
         'mony_saving',
         'poor_level',
@@ -28,7 +28,7 @@ class OrphanFamilyStatement extends Model
         'committee_report',
         'remove_statement_number',
         'remove_date',
-        'remove_reson',
+        'remove_reason',
     ];
 
     /**

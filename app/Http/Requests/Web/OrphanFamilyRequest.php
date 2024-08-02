@@ -33,7 +33,7 @@ class OrphanFamilyRequest extends FormRequest
             'mother_health_condition' => 'nullable|string|max:255',
             'mother_academic_level' => 'nullable|string|in:غير محدد,ابتدائي ,اعدادي,ثانوي,جامعي',
             'family_register_book_number' => 'required|string|max:255|unique:orphan_families,family_register_book_number,' . $record . ',id',
-            'side_from' => 'required|string|max:255',
+            'via_person' => 'required|string|max:255',
             'father_first_name' => 'required|string|max:255',
             'father_last_name' => 'required|string|max:255',
             'father_nationality' => 'required|string|max:255',

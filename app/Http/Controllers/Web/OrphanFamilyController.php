@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\OrphanFamilyChildRequest;
 use App\Http\Requests\Web\OrphanFamilyRequest;
+use App\Http\Requests\Web\OrphanFamilyStatementRequest;
 use App\Models\OrphanFamily;
+use App\Models\OrphanFamilyChild;
+use App\Models\OrphanFamilyStatement;
 use Illuminate\Http\Request;
 
 class OrphanFamilyController extends Controller
@@ -29,13 +33,13 @@ class OrphanFamilyController extends Controller
         $family = OrphanFamily::findOrFail($id);
         return response()->json($family, 200);
     }
-    public function getFamilyChildren(Request $request, string $id)
+    public function getFamilyChildren(string $id)
     {
-        $family = OrphanFamily::with('orphans')->findOrFail($id);
+        $family = OrphanFamily::with('orphan')->findOrFail($id);
         return response()->json($family->orphans, 200);
     }
 
-    public function getFamilyStatement(Request $request, string $id)
+    public function getFamilyStatement(string $id)
     {
         $family = OrphanFamily::with('statement')->findOrFail($id);
         return response()->json($family->statement, 200);
@@ -47,37 +51,59 @@ class OrphanFamilyController extends Controller
         return response()->json($family, 201);
     }
 
-    public function addChild(Request $request, string $id)
+    public function addChild(OrphanFamilyChildRequest $request, string $id)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'academic_level' => 'required|in:غير محدد,ابتدائي ,اعدادي,ثانوي,جامعي',
-            'is_supported' => 'boolean'
-        ]);
         $family = OrphanFamily::findOrFail($id);
-        $child = $family->orphans()->create($data);
+        $child = $family->orphan()->create($request->all());
         return response()->json($child, 201);
     }
 
-    public function addStatement(Request $request, string $id)
+    public function addStatement(OrphanFamilyStatementRequest $request, string $id)
     {
-        $data = $request->validate([
-            'statement_first_date' => 'required|date',
-            'income_source' => 'required|string',
-            'mony_saving' => 'required|decimal:0,9999999',
-            'poor_level' => 'required|string',
-            'other_association' => 'nullable|string',
-            'supply' => 'nullable|string',
-            'note' => 'nullable|string',
-            'committee' => 'required|string',
-            'committee_report' => 'required|string',
-            'remove_statement_number' => 'nullable',
-            'remove_date' => 'nullable|date',
-            'remove_reson' => 'nullable|string',
-        ]);
         $family = OrphanFamily::findOrFail($id);
-        $statement =  $family->statement()->create($data);
+        $statement =  $family->statement()->create($request->all());
         return response()->json($statement, 201);
+    }
+
+    public function update(OrphanFamilyRequest $request, string $id)
+    {
+        $family = OrphanFamily::findOrFail($id);
+        $family->update($request->all());
+
+        return response()->json($family, 200);
+    }
+    public function updateChild(OrphanFamilyChildRequest $request, string $id)
+    {
+        $child = OrphanFamilyChild::findOrFail($id);
+        $child->update($request->all());
+        return response()->json($child, 200);
+    }
+
+    public function updateStatement(OrphanFamilyStatementRequest $request, string $id)
+    {
+        $statement = OrphanFamilyStatement::findOrFail($id);
+        $statement->update($request->all());
+        return response()->json($statement, 200);
+    }
+
+    public function destroy(string $id)
+    {
+        $family = OrphanFamily::findOrFail($id);
+        $family->delete();
+        return response()->json(null, 204);
+    }
+
+    public function destroyChild(string $id)
+    {
+        $child = OrphanFamilyChild::findOrFail($id);
+        $child->delete();
+        return response()->json(null, 204);
+    }
+
+    public function destroyStatement(string $id)
+    {
+        $statement = OrphanFamilyStatement::findOrFail($id);
+        $statement->delete();
+        return response()->json(null, 204);
     }
 }

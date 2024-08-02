@@ -6,9 +6,9 @@ use App\Models\OrphanFamily;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Orphan>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OrphanFamilyChild>
  */
-class OrphanFactory extends Factory
+class OrphanFamilyChildFactory extends Factory
 {
     /**
      * Define the model's default state.
