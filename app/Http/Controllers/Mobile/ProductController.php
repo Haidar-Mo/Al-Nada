@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\OrderRequest;
+use App\Models\Administration;
 use App\Models\Product;
+use App\Notifications\OrderProductNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ProductController extends Controller
 {
@@ -44,6 +47,11 @@ class ProductController extends Controller
         if (!$product->is_available)
             return response()->json(['message' => 'المنتج غير متاح حالياً'], 422);
         $order = $product->order()->create(array_merge($request->all(), ['user_id' => $user->id]));
+
+        // Send Notification :
+        $target  = Administration::all();
+        Notification::send($target, new OrderProductNotification($order));
+        
         return response()->json($order, 201);
     }
 }

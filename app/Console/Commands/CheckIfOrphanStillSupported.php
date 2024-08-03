@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Orphan;
+use App\Models\OrphanFamilyChild;
 use Illuminate\Console\Command;
 
 class CheckIfOrphanStillSupported extends Command
@@ -19,14 +19,14 @@ class CheckIfOrphanStillSupported extends Command
      *
      * @var string
      */
-    protected $description = 'Check all the orphans child are under 18 y';
+    protected $description = 'Remove the support from orphans if the become +18';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $orphan = Orphan::all();
+        $orphan = OrphanFamilyChild::all();
         $orphan->each(function ($child) {
             if ($child->birth_date < now()->subMonths(216)) {
                 $child->update(['is_supported' => 0]);

@@ -21,12 +21,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('alerts:send-donation-alerts')->daily();
-        $schedule->command('alerts:send-donation-campaign-alerts')->daily();
         $schedule->command('app:delete-unverified-user')->daily();
         $schedule->command('app:delete-donation-campaign-alert')->daily();
-        $schedule->command('orphan:check-still-supported')->monthly();
+        $schedule->command('alerts:send-donation-alerts')->daily();
+        $schedule->command('alerts:send-donation-campaign-alerts')->daily();
+        $schedule->command('app:check-still-supported')->monthly();
     }
 
     /**

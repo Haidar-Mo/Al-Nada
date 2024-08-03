@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Mobile\OrderController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Mobile\ProductController;

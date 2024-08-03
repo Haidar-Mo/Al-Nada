@@ -10,7 +10,7 @@ Route::prefix('web/donation')->middleware([
     'type.web'
 ])->group(function () {
     Route::get('index', [DonationController::class, 'index']);
-    Route::get('show/{id}', [DonationController::class, 'show']);
+    Route::get('show/{id}', [DonationController::class, 'show'])->name('web.show.donation');
     Route::post('accept/{id}', [DonationController::class, 'accept']);
     Route::post('reject/{id}', [DonationController::class, 'reject']);
 });
@@ -21,7 +21,7 @@ Route::prefix('web/donation/campaign')->middleware([
     'type.web'
 ])->group(function (){
     Route::get('index', [DonationToCampaignController::class, 'index']);
-    Route::get('show/{id}', [DonationToCampaignController::class, 'show']);
+    Route::get('show/{id}', [DonationToCampaignController::class, 'show'])->name('web.show.donation.campaign');
     Route::post('accept/{id}', [DonationToCampaignController::class, 'accept']);
     Route::post('reject/{id}', [DonationToCampaignController::class, 'reject']);
 });

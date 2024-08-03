@@ -25,6 +25,7 @@ include __DIR__ . '/V1/Mobile/sponsership.php';
 include __DIR__ . '/V1/Mobile/volunteering.php';
 include __DIR__ . '/V1/Mobile/campaign.php';
 include __DIR__ . '/V1/Mobile/product.php';
+include __DIR__ . '/V1/Mobile/kitchen.php';
 include __DIR__ . '/V1/Mobile/order.php';
 include __DIR__ . '/V1/Mobile/news.php';
 
@@ -44,3 +45,4 @@ include __DIR__ . '/V1/Web/news.php';
 include __DIR__ . '/V1/Web/wallet.php';
 include __DIR__ . '/V1/Web/report.php';
 include __DIR__ . '/V1/Web/statistics.php';
+include __DIR__ . '/V1/Web/notification.php';

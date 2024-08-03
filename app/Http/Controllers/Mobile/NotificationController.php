@@ -16,7 +16,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $notifications = $user->notifications()->orderBy('created_at', 'desc')->paginate(5);
         return response()->json($notifications, 200);
     }
@@ -27,7 +27,7 @@ class NotificationController extends Controller
      */
     public function markAsRead(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $notification = $user->notifications()->find($id);
         $notification->markAsRead();
         $notification->save();
@@ -40,7 +40,7 @@ class NotificationController extends Controller
      */
     public function markAsUnRead(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $notification = $user->notifications()->find($id);
         $notification->markAsUnRead();
         $notification->save();
@@ -53,12 +53,8 @@ class NotificationController extends Controller
      */
     public function markAllAsRead()
     {
-        $user = User::find(Auth::user()->id);
-        $notifications = $user->notifications;
-        foreach ($notifications as $notification) {
-            $notification->markAsRead();
-            $notification->save();
-        }
+        $user = auth()->user();
+        $notifications = $user->unreadNotifications->markAsRead();
         return response()->json($notifications, 200);
     }
 
@@ -68,7 +64,7 @@ class NotificationController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $notification = $user->notifications()->find($id);
         $notification->delete();
         return response()->json(null, 204);

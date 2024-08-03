@@ -18,7 +18,7 @@ Route::prefix('mobile/sponsership')->middleware([
         Route::delete('', [SponsershipDocumentController::class,]);
     });
 
-    Route::prefix('')->group(function () {
+    Route::prefix('')->middleware('isSponser')->group(function () {
 
         Route::get('', []);
         Route::get('', []);
@@ -27,7 +27,7 @@ Route::prefix('mobile/sponsership')->middleware([
         Route::delete('', []);
     });
 
-    Route::prefix('')->group(function () {
+    Route::prefix('')->middleware('isSponser')->group(function () {
 
         Route::get('', []);
         Route::get('', []);
@@ -36,7 +36,7 @@ Route::prefix('mobile/sponsership')->middleware([
         Route::delete('', []);
     });
 
-    Route::prefix('')->group(function () {
+    Route::prefix('')->middleware('isSponser')->group(function () {
 
         Route::get('', []);
         Route::get('', []);

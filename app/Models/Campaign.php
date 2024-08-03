@@ -29,9 +29,19 @@ class Campaign extends Model
         'end_date',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'created_at' => 'date:Y/m/d',
         'updated_at' => 'date:Y/m/d',
+    ];
+
+
+    protected $appends = [
+        'total_donation'
     ];
 
     public function request(): HasMany
@@ -57,5 +67,12 @@ class Campaign extends Model
     public function alert(): HasMany
     {
         return $this->hasMany(DonationCampaignAlert::class);
+    }
+
+
+    /** Appends attribute  */
+    public function getTotalDonationAttribute()
+    {
+        return $this->donation()->sum('amount');
     }
 }

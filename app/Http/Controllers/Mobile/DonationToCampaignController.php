@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Administration;
 use App\Models\User;
-use App\Services\DonationToCampaignService;
+use App\Notifications\SendDonationToCampaignNotification;
+use App\Services\Mobile\DonationToCampaignService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class DonationToCampaignController extends Controller
 {
@@ -45,6 +48,11 @@ class DonationToCampaignController extends Controller
         $donation_service = new DonationToCampaignService;
         $response = $donation_service->donate($user, $request, $id);
 
+        // Send Notification : 
+        if ($response['code'] === 201) {
+            $employee = Administration::all();
+            Notification::send($employee, new SendDonationToCampaignNotification($response['message']));
+        }
         return response()->json(['message' => $response['message']], $response['code']);
     }
 }

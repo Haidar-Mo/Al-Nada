@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\DonationToCampaign;
 use App\Models\Employee;
@@ -82,7 +83,10 @@ class StatisticsController extends Controller
     }
     public function campaigns()
     {
-        // TODO: Implement campaigns statistics
+        $campaigns = Campaign::all();
+        $campaign_count = $campaigns->count();
+        $number_of_Beneficiary_from_campaign = $campaigns->sum('number_of_Beneficiary');
+        $total_cost_of_all_campaign = $campaigns->sum('cost');
     }
 
     public function donationsByCampaign(Request $request)
