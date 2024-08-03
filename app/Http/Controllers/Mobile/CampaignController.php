@@ -21,7 +21,7 @@ class CampaignController extends Controller
 
         $is_donateable_campaigns = Campaign::where('is_donateable', 1)
             ->where('end_date', null)
-            ->latest()
+            ->latest('updated_at')
             ->take(3)
             ->get()
             ->map(function ($campaign) use ($favoriteCampaignIds) {

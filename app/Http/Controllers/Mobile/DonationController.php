@@ -4,21 +4,26 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\DonationRequest;
+use App\Models\Administration;
 use App\Models\User;
-use App\Services\DonationService;
+use App\Notifications\SendDonationNotification;
+use App\Services\Mobile\DonationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class DonationController extends Controller
 {
+
     /**
      * Display list of user Donations
      * @return JsonResponse
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
+
         $donations = $user->donation;
         return response()->json($donations, 200);
     }
@@ -29,7 +34,7 @@ class DonationController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $donation = $user->donation()->findOrFail($id);
         return Response()->json($donation, 200);
     }
@@ -41,16 +46,22 @@ class DonationController extends Controller
      */
     public function store(DonationRequest $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
-        $donation = $user->donation()->create($request->all());
-        // notification for dash
-        return response()->json($donation, 201);
+        $user = auth()->user();
+        $service = new DonationService;
+        $response = $service->donate($user, $request);
+
+        // Send Notiication to Dashboard
+        if ($response['code'] === 201) {
+            $employee = Administration::all();
+            Notification::send($employee, new SendDonationNotification($response['message']));
+        }
+        return response()->json(['message' => $response['message']], $response['code']);
     }
 
     public function update(DonationRequest $request, string $id)
     {
-        $user = User::find(Auth::user()->id);
-        $donation = $user->donation()->findOrFail($id);
+        $user = auth()->user();
+        $donation = auth()->user()->donation()->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'لايمكنك التعديل على هذا الطلب'], 422);
         $donation->update($request->all());
@@ -59,12 +70,12 @@ class DonationController extends Controller
 
     public function destroy(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $donation = $user->donation()->findOrFail($id);
         if ($donation->status != 'جديد')
             return response()->json(['message' => 'لايمكنك الغاء هذا الطلب'], 422);
         $donation->delete();
         // delete notification
-        return response()->json(['message'=>'تم الغاء الطلب '],200);
+        return response()->json(['message' => 'تم الغاء الطلب '], 200);
     }
 }

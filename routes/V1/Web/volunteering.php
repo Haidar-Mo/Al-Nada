@@ -59,6 +59,5 @@ Route::prefix('web/volunteering/campaign/person')->middleware([
     Route::post('update/{id}', [VolunteerInCampaignController::class, 'update']);
     Route::post('activate/{id}', [VolunteerInCampaignController::class, 'activate']);
     Route::post('deactivate/{id}', [VolunteerInCampaignController::class, 'deactivate']);
-    Route::post('rate/{id}', [VolunteerInCampaignController::class, 'rate']);
     Route::delete('delete/{id}', [VolunteerInCampaignController::class, 'destroy']);
 });

@@ -32,7 +32,7 @@ return [
     ],
     'firebase' => [
         'credentials' => [
-            'file' => storage_path('app\google-services.json'),
+            'file' => storage_path('app/google-services.json'),
         ],
     ],
 

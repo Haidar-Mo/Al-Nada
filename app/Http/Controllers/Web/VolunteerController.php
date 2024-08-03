@@ -5,18 +5,30 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\VolunteerRequest;
 use App\Models\Volunteer;
+use App\Models\VolunteerWorkPeriod;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class VolunteerController extends Controller
 {
     /**
      * Display a listing of the volunteers
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $volunteers = Volunteer::with('request','city')->get();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $volunteers = Volunteer::with('request', 'city')
+            ->where($filter, 'LIKE', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($volunteers);
     }
 
@@ -27,7 +39,7 @@ class VolunteerController extends Controller
      */
     public function show(string $id)
     {
-        $volunteer = Volunteer::with('request','city')->findOrfail($id);
+        $volunteer = Volunteer::with('request', 'workPeriod', 'city')->findOrfail($id);
         return response()->json($volunteer, 200);
     }
 
@@ -52,7 +64,7 @@ class VolunteerController extends Controller
      */
     public function update(VolunteerRequest $request, string $id)
     {
-        $volunteer = Volunteer::with(['request','city'])->findOrFail($id);
+        $volunteer = Volunteer::with(['request', 'city'])->findOrFail($id);
         $volunteer->update($request->all());
         return response()->json($volunteer, 200);
     }
@@ -67,7 +79,9 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::findOrFail($id);
         $volunteer->active = 0;
         $volunteer->save();
-        $volunteer->load('request','city');
+        $period = $volunteer->workPeriod()->latest()->first();
+        $period->update(['end_date' => now()]);
+        $volunteer->load('request', 'city');
         return response()->json($volunteer, 200);
     }
 
@@ -81,7 +95,20 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::findOrFail($id);
         $volunteer->active = 1;
         $volunteer->save();
-        $volunteer->load('request','city');
+        $volunteer->workPeriod()->create(['start_date' => now()]);
+        $volunteer->load('request', 'city');
+        return response()->json($volunteer, 200);
+    }
+
+    public function rate(Request $request, string $id)
+    {
+        $request->validate(['rate' => 'required|between:0,5']);
+        $period = VolunteerWorkPeriod::findOrFail($id);
+        $volunteer = $period->volunteer;
+        $period->rate = $request->input('rate');
+        $period->save();
+        $volunteer->rate = $volunteer->workPeriod()->sum('rate') / $volunteer->workPeriod()->count();
+        $volunteer->save();
         return response()->json($volunteer, 200);
     }
 

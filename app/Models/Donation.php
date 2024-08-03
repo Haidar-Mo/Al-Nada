@@ -24,6 +24,7 @@ class Donation extends Model
         'phone_number',
         'address',
         'status',
+        'reject_reason',
         'created_at',
         'updated_at',
     ];
@@ -52,8 +53,8 @@ class Donation extends Model
         return $this->belongsTo(User::class);
     }
 
-    /*  public function bill(): MorphMany
+    public function bill(): MorphMany
     {
         return  $this->morphMany(BillingHistory::class, 'billable');
-    }*/
+    }
 }

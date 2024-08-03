@@ -14,11 +14,21 @@ class VolunteeringRequestController extends Controller
 {
     /**
      * Display a listing of the Volunteering Request 
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $volunteer_request = VolunteeringRequest::with('city')->get();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $volunteer_request = VolunteeringRequest::with('user', 'city')
+            ->where($filter, 'LIKE', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($volunteer_request, 200);
     }
 

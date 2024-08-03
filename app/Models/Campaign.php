@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Campaign extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,19 +23,40 @@ class Campaign extends Model
         'is_donateable',
         'is_volunteerable',
         'number_of_Beneficiary',
+        'min_limit_for_donation',
         'image',
-        'end_date',
         'start_date',
+        'end_date',
     ];
 
-    protected $casts =[
-        'created_at'=>'date:Y/m/d',
-        'updated_at'=>'date:Y/m/d',
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'created_at' => 'date:Y/m/d',
+        'updated_at' => 'date:Y/m/d',
     ];
 
-    public function volinteeringInCampaign(): HasMany
+
+    protected $appends = [
+        'total_donation'
+    ];
+
+    public function request(): HasMany
     {
-        return $this->hasMany(volunteeringInCampaign::class);
+        return $this->hasMany(VolunteeringInCampaignRequest::class);
+    }
+
+    public function volunteer(): HasMany
+    {
+        return $this->hasMany(VolunteerInCampaign::class, 'campaign_id');
+    }
+
+    public function donation(): HasMany
+    {
+        return $this->hasMany(DonationToCampaign::class);
     }
 
     public function favorite(): HasMany
@@ -43,14 +64,15 @@ class Campaign extends Model
         return $this->hasMany(Favorite::class);
     }
 
-    public function donation(): HasMany
-    {
-        return $this->hasMany(DonationCampaign::class);
-    }
-
     public function alert(): HasMany
     {
         return $this->hasMany(DonationCampaignAlert::class);
     }
 
+
+    /** Appends attribute  */
+    public function getTotalDonationAttribute()
+    {
+        return $this->donation()->sum('amount');
+    }
 }

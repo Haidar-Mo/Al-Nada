@@ -29,6 +29,7 @@ class User extends Authenticatable
         'image',
         'deviceToken',
         'is_volunteer',
+        'is_sponser',
         'is_active'
     ];
 
@@ -77,9 +78,19 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
-    public function sposership(): HasOne
+    public function donationCampaign(): HasMany
     {
-        return $this->hasOne(Sponsership::class);
+        return $this->hasMany(DonationToCampaign::class);
+    }
+
+    public function sponsershipDocument(): HasOne
+    {
+        return $this->hasOne(sponsershipDocument::class);
+    }
+
+    public function sponserships(): HasMany
+    {
+        return $this->hasMany(SponsershipCase::class);
     }
 
     public function donationAlert(): HasMany
@@ -115,5 +126,15 @@ class User extends Authenticatable
     public function isActive()
     {
         return $this->is_active;
+    }
+
+    public function isVolunteer()
+    {
+        return $this->is_volunteer;
+    }
+
+    public function isSponser()
+    {
+        return $this->is_sponser;
     }
 }

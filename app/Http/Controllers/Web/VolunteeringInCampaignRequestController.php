@@ -19,7 +19,13 @@ class VolunteeringInCampaignRequestController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $requests = VolunteeringInCampaignRequest::with('city','campaign')->orderBy($orderBy, $order)->paginate($perPage);
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $requests = VolunteeringInCampaignRequest::where($filter, 'LIKE', "%{$search}%")
+            ->with('city', 'campaign')
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($requests, 200);
     }
 
@@ -29,7 +35,7 @@ class VolunteeringInCampaignRequestController extends Controller
      */
     public function show(string $id)
     {
-        $request = VolunteeringInCampaignRequest::with('city','campaign')->findOrFail($id);
+        $request = VolunteeringInCampaignRequest::with('city', 'campaign')->findOrFail($id);
         return response()->json($request, 200);
     }
 
@@ -62,7 +68,7 @@ class VolunteeringInCampaignRequestController extends Controller
                 'address' => $volunteer_request->address,
             ]);
             DB::commit();
-            $volunteer->load('city','campaign');
+            $volunteer->load('city', 'campaign');
             return response()->json($volunteer, 200);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -85,7 +91,7 @@ class VolunteeringInCampaignRequestController extends Controller
             'rejecting_reason' => $request->rejecting_reason,
             'status' => 'مرفوض'
         ]);
-        $volunteer_request->load('campaign','city');
+        $volunteer_request->load('campaign', 'city');
         return response()->json($volunteer_request, 200);
     }
 

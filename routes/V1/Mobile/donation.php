@@ -3,7 +3,7 @@
 use App\Http\Controllers\Mobile\DonationController;
 use App\Http\Controllers\Mobile\DonationAlertController;
 
-use App\Http\Controllers\Mobile\DonationCampaignController;
+use App\Http\Controllers\Mobile\DonationToCampaignController;
 use App\Http\Controllers\Mobile\DonationCampaignAlertController;
 
 use Illuminate\Support\Facades\Route;
@@ -20,9 +20,9 @@ Route::prefix('mobile/donation')->middleware([
 
     Route::prefix('campaign')->group(function () {
 
-        Route::get('index', [DonationCampaignController::class, 'index']);
-        Route::get('show/{id}', [DonationCampaignController::class, 'show']);
-        Route::post('create/{id}', [DonationCampaignController::class, 'store']);
+        Route::get('index', [DonationToCampaignController::class, 'index']);
+        Route::get('show/{id}', [DonationToCampaignController::class, 'show']);
+        Route::post('create/{id}', [DonationToCampaignController::class, 'store']);
     });
 
 

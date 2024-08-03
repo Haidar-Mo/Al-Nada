@@ -13,9 +13,18 @@ class ReportController extends Controller
      * Display a listing of the reports
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::with('user')->get();
+        $perPage = $request->input('per_page', 20);
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'asc');
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $reports = Report::with('user')
+            ->where($filter, 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($reports);
     }
 

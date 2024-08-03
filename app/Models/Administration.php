@@ -15,8 +15,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Administration extends Authenticatable
 {
-    use HasFactory;
-
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
@@ -63,5 +61,13 @@ class Administration extends Authenticatable
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+
+
+    /*** ***/
+    public function isAdmin()
+    {
+        return $this->hasRole(['super_admin', 'amin']);
     }
 }

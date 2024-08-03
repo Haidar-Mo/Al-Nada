@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->enum('type', ['مالي', 'عيني']);
+            $table->enum('delivery_type', ['مندوب توصيل', 'الكتروني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('phone_number');
-            $table->enum('status', ['جديد', 'تم التسليم', 'مرفوض'])->default('جديد');
+            $table->enum('status', ['جديد', 'تم الاستلام', 'قيد المعالجة', 'ملغي'])->default('جديد');
+            $table->string('reject_reason')->nullable();
             $table->timestamps();
         });
     }

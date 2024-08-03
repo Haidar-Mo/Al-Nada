@@ -18,9 +18,15 @@ class UserController extends Controller
         $perPage = $request->input('per_page', 20);
         $orderBy = $request->input('order_by', 'id');
         $order = $request->input('order', 'asc');
-        $users = User::orderBy($orderBy, $order)->paginate($perPage)->through(function ($user) {
-            return $user->makeVisible(['is_active', 'email_verified_at']);
-        });
+        $filter = $request->input('filter', 'id');
+        $search  = $request->input('search');
+
+        $users = User::where($filter, 'LIKE', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage)
+            ->through(function ($user) {
+                return $user->makeVisible(['is_active', 'email_verified_at']);
+            });
         return response()->json($users, 200);
     }
 

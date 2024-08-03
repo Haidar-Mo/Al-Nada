@@ -14,7 +14,7 @@ use App\Models\DonationCampaign;
 use App\Models\DonationCampaignAlert;
 use App\Models\Employee;
 use App\Models\Evaluation;
-use App\Models\kitchen;
+use App\Models\Kitchen;
 use App\Models\News;
 use App\Models\NewsImage;
 use App\Models\Product;
@@ -140,6 +140,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
+                'min_limit_for_donation'=>100000,
                 'image' => 'Campaign/سلات رمضان.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -154,6 +155,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
+                'min_limit_for_donation'=>100000,
                 'image' => 'Campaign/دفء الشتاء.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -168,6 +170,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
+                'min_limit_for_donation'=>100000,
                 'image' => 'Campaign/أضاحي العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -182,6 +185,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 1,
+                'min_limit_for_donation'=>100000,
                 'image' => 'Campaign/حقيبة الأمل.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -196,6 +200,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 0,
                 'is_volunteerable' => 1,
+                'min_limit_for_donation'=>100000,
                 'image' => 'Campaign/ملابس العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -343,7 +348,7 @@ class DatabaseSeeder extends Seeder
         Donation::factory(15)->create();
 
         //WalletCharge::factory(20)->create();
-        //DonationCampaign::factory(15)->create();
+        //DonationToCampaign::factory(15)->create();
         BillingHistory::factory(5)->create();
 
         DonationAlert::factory(4)->create();
@@ -358,6 +363,6 @@ class DatabaseSeeder extends Seeder
 
         Report::factory(5)->create();
         Product::factory(5)->create();
-        kitchen::factory(5)->create();
+        Kitchen::factory(5)->create();
     }
 }

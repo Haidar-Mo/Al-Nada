@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('web/employee')->middleware([
     'auth:sanctum',
-    'type.web'
+    'type.web',
+    'isAdmin'
 ])->group(function () {
 
     Route::get('index', [EmployeeController::class, 'index']);

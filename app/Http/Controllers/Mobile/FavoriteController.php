@@ -27,7 +27,7 @@ class FavoriteController extends Controller
      */
     public function store(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         $campaign = Campaign::findOrFail($id);
         $favorite = $user->favorite()->where('campaign_id', $id)->first();
         if ($favorite)
@@ -41,7 +41,7 @@ class FavoriteController extends Controller
      */
     public function show(string $id)
     {
-        $favorite = Favorite::with(['user', 'campaign'])->findOrafail($id);
+        $favorite = Favorite::with(['campaign'])->findOrfail($id);
         return response()->json($favorite, 200);
     }
 
