@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use App\Models\SponsershipDocument;
+use App\Models\SponsorshipDocument;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SponsershipDocumentController extends Controller
+class SponsorshipDocumentController extends Controller
 {
     /**
-     * Display a listing of the Sponsership Documentations
+     * Display a listing of the Sponsorship Documentations
      * @param Request $request => User filter input
      * @return JsonResponse
      */
@@ -23,7 +23,7 @@ class SponsershipDocumentController extends Controller
         $filter = $request->input('filter', 'id');
         $search  = $request->input('search');
 
-        $documents = SponsershipDocument::with('user')
+        $documents = SponsorshipDocument::with('user')
             ->where($filter, 'LIKE', '%' . $search . '%')
             ->orderBy($orderBy, $order)
             ->paginate($perPage);
@@ -38,7 +38,7 @@ class SponsershipDocumentController extends Controller
      */
     public function show(string $id)
     {
-        $document = SponsershipDocument::with('user')->findOrFail($id);
+        $document = SponsorshipDocument::with('user')->findOrFail($id);
         return response()->json($document, 200);
     }
 
@@ -49,9 +49,9 @@ class SponsershipDocumentController extends Controller
      */
     public function activate(string $id)
     {
-        $document = SponsershipDocument::findorFail($id);
+        $document = SponsorshipDocument::findorFail($id);
         $document->update(['active' => 1]);
-        $document->user->update(['is_sponser' => 1]);
+        $document->user->update(['is_sponsor' => 1]);
         return response()->json($document, 200);
     }
 
@@ -66,27 +66,27 @@ class SponsershipDocumentController extends Controller
         DB::beginTransaction();
         try {
             // Deactive the Document
-            $document = SponsershipDocument::findorFail($id);
+            $document = SponsorshipDocument::findorFail($id);
             $document->update(['active' => 0]);
 
             // Deactivate the User from being a Sponsor
             $user = $document->user;
-            $user->update(['is_sponser' => 0]);
+            $user->update(['is_sponsor' => 0]);
 
-            // Stop all active sponserships of the user and update their end_reason and end_date.
-            $activated_sponserships = $user->sponserships()->where('active', 1)->get();
-            $activated_sponserships->each(function ($sponsership) {
-                $sponsership->update([
+            // Stop all active Sponsorships of the user and update their end_reason and end_date.
+            $activated_sponsorships = $user->sponsorships()->where('active', 1)->get();
+            $activated_sponsorships->each(function ($sponsorship) {
+                $sponsorship->update([
                     'active' => 0,
                     'end_date' => now(),
                     'end_reason' => 'ايقاف الكفيل'
                 ]);
             });
 
-            // Reject all requested sponserships of the user and update their status and reject_reason
-            $unaccepted_sponserships = $user->sponserships()->where('status', 'انتظار')->get();
-            $unaccepted_sponserships->each(function ($sponsership) {
-                $sponsership->update([
+            // Reject all requested sponsorships of the user and update their status and reject_reason
+            $unaccepted_sponsorships = $user->sponsorships()->where('status', 'انتظار')->get();
+            $unaccepted_sponsorships->each(function ($sponsorship) {
+                $sponsorship->update([
                     'status' => 'مرفوض',
                     'reject_reason' => 'ايقاف كفيل'
                 ]);
@@ -94,8 +94,8 @@ class SponsershipDocumentController extends Controller
             DB::commit();
             return response()->json([
                 'document' => $document,
-                'stopped sponserships' => $activated_sponserships,
-                'rejected sponserships' => $unaccepted_sponserships
+                'stopped sponsorships' => $activated_sponsorships,
+                'rejected sponsorships' => $unaccepted_sponsorships
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
@@ -105,7 +105,7 @@ class SponsershipDocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SponsershipDocument $sponsershipDocument)
+    public function destroy(SponsorshipDocument $sponsorshipDocument)
     {
         //
     }

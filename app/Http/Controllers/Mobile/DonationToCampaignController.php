@@ -19,9 +19,10 @@ class DonationToCampaignController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::id());
-        $donations = $user->wallet->donationCampaign()->with('campaign')->get();
-        return response()->json($donations, 200);
+        $user = auth()->user();
+        $donations = $user->donationToCampaign()->with('campaign')->latest()->paginate(20);
+        $total_donation = strval($donations->where('type', 'مالي')->sum('amount'));
+        return response()->json(['donations' => $donations, 'total donations' => $total_donation], 200);
     }
 
     /**
@@ -31,8 +32,8 @@ class DonationToCampaignController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find(Auth::id());
-        $donation = $user->wallet->donationCampaign()->with('campaign')->findOrFail($id);
+        $user = auth()->user();
+        $donation = $user->donationToCampaign()->with('campaign')->findOrFail($id);
         return Response()->json($donation, 200);
     }
 

@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class sponsershipDocument extends Model
+class sponsorshipDocument extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'user_id',
         'fixed_phone_number',
@@ -29,6 +34,11 @@ class sponsershipDocument extends Model
         'document_status'
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'created_at' => 'date:Y/m/d',
         'updated_at' => 'date:Y/m/d',
@@ -37,10 +47,5 @@ class sponsershipDocument extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function target(): HasMany
-    {
-        return $this->hasMany(SponsershipCase::class, 'sponsership_id');
     }
 }

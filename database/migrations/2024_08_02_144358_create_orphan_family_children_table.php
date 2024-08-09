@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
             $table->boolean('is_supported');
-            $table->unique(['family_id', 'name'], 'unique_name_familyId');
+            $table->unique(['family_id', 'name'], 'unique_child');
             $table->timestamps();
         });
     }

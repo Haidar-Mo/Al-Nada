@@ -24,8 +24,9 @@ class DonationController extends Controller
     {
         $user = auth()->user();
 
-        $donations = $user->donation;
-        return response()->json($donations, 200);
+        $donations = $user->donation()->latest()->paginate(20);
+        $total_donation = strval($donations->where('type', 'مالي')->where('status', '!=', 'جديد')->sum('amount'));
+        return response()->json(['donations' => $donations, 'total donations' => $total_donation], 200);
     }
     /**
      * View specific Donation 

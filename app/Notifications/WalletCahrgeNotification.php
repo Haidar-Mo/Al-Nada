@@ -37,7 +37,7 @@ class WalletCahrgeNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'charge-wallet';
+        return get_class($this->charge);
     }
 
     /**
@@ -48,10 +48,8 @@ class WalletCahrgeNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'type' => $this->charge->transaction_type,
-            'amount' => $this->charge->amount,
-            'message' => 'تم إطلاق حملة جديدة',
-            'url' => url('mobile/wallet/billing-history')
+            'message' => 'طلب شحن محفظة جديد',
+            'model_id' => $this->charge->id,
         ];
     }
 }

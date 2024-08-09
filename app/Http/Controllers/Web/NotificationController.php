@@ -14,10 +14,64 @@ class NotificationController extends Controller
     use NotificationTrait;
 
 
-    public function index()
+    /**
+     * List all notifications order by time
+     * @return JsonResponse
+     */
+    public function index(Request $request)
     {
-        $notifications = auth()->user()->notifications()->orderBy('created_at', 'desc')->paginate(10);
+        $perPage = $request->input('per_page', 20);
+        $is_read = $request->input('is_read');
+
+        $query = auth()->user()->notifications()
+            ->latest();
+
+        if ($is_read) {
+            if ($is_read == 1) {
+                $query->where('read_at', '!=', null);
+            } else {
+                $query->where('read_at', null);
+            }
+        }
+        $notifications  = $query->paginate($perPage);
         return response()->json($notifications);
+    }
+
+    /**
+     * List todat's Notifications 
+     * @return JsonResponse 
+     */
+    public function getTodayNotifications(Request $request)
+    {
+        $perPage = $request->input('per_page', 20);
+        $is_read = $request->input('is_read');
+
+        $query = auth()->user()->notifications()
+            ->latest();
+
+        if ($is_read) {
+            if ($is_read == 1) {
+                $query->where('read_at', '!=', null);
+            } else {
+                $query->where('read_at', null);
+            }
+        }
+        $notifications  = $query->whereDate('created_at', today())->paginate($perPage);
+        return response()->json($notifications);
+    }
+
+    /**
+     * List Unread notifiactions
+     * @return JsonResponse
+     */
+    public function getUnreadNotifications(Request $request)
+    {
+        $perPage = $request->input('per_page');
+        $notification = auth()->user()->notifications()
+            ->where('read_at', null)
+            ->latest()
+            ->paginate($perPage);
+        return response()->json($notification, 200);
     }
 
     /**

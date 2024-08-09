@@ -37,6 +37,7 @@ return new class extends Migration
             $table->decimal('value_rent', 8, 2)->nullable();
             $table->string('zip_code');
             $table->string('supervisor_name');
+            $table->boolean('visible')->default(1);
             $table->timestamps();
         });
     }

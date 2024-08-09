@@ -27,7 +27,6 @@ class MobileRegisterRequest extends FormRequest
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email', 'string'],
             'phone_number' => ['required', 'string', new SyrianPhoneNumber],
-            'id_serial_number' => ['required', 'unique:users,id_serial_number', 'string', 'min:11', 'max:11'],
             'birth_date' => ['required', 'date'],
             'password' => ['required', 'confirmed', 'min:6'],
 

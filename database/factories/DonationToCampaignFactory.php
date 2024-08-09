@@ -27,8 +27,9 @@ class DonationToCampaignFactory extends Factory
             'delivery_type' => 'الكتروني',
             'amount' => fake()->randomNumber(7),
             'description' => null,
-            'phone_number'=>fake()->phoneNumber(),
-            'address' => null
+            'phone_number' => fake()->phoneNumber(),
+            'address' => null,
+            'created_at' => fake()->dateTimeBetween('2024-01-01', '2024-12-01')
         ];
     }
 }

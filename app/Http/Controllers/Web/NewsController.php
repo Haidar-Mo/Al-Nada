@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\NewsRequest;
 use App\Models\News;
 use App\Models\NewsImage;
+use App\Models\User;
+use App\Notifications\Mobile\NewsNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
@@ -50,12 +53,12 @@ class NewsController extends Controller
     public function store(NewsRequest $request)
     {
         DB::beginTransaction();
+        $path = '';
         try {
             $news = News::create([
                 'title' => $request->title,
                 'description' => $request->description,
             ]);
-
             // Handle the image files
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $image) {
@@ -66,6 +69,8 @@ class NewsController extends Controller
                     ]);
                 }
             }
+            $target = User::all();
+            Notification::send($target, new NewsNotification($news));
             DB::commit();
             return response()->json($news, 201);
         } catch (\Exception $e) {
@@ -112,35 +117,6 @@ class NewsController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
-
-    /**
-     * Delete news images (passing array of images)
-     * @param Request $request
-     * @param string $id
-     * @return JsonResponse
-     */
-    /* public function deleteImages(Request $request, string $id)
-    {
-        DB::beginTransaction();
-        try {
-            $images = $request->images;
-            foreach ($images as $image) {
-                $image = NewsImage::find($image);
-                if ($image) {
-                    if (Storage::exists("public/" . $image->url))
-                        Storage::delete("public/" . $image->url);
-                    $image->delete();
-                }
-            }
-            DB::commit();
-            $news = News::findOrFail($id);
-            return response()->json($news, 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json($e->getMessage(), 500);
-        }
-    }*/
-
 
     /**
      * Delete new image (singel Image)

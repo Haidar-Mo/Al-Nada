@@ -12,8 +12,10 @@ Route::prefix('web/statistics')->middleware([
     Route::get('employee', [StatisticsController::class, 'employee']);
     Route::get('volunteer', [StatisticsController::class, 'volunteer']);
 
-    Route::get('campaign', [StatisticsController::class, 'campaign']);
+    Route::get('campaign', [StatisticsController::class, 'campaigns']);
 
     Route::get('financial-donations', [StatisticsController::class, 'financialDonations']);
+    Route::get('financial-donations-day', [StatisticsController::class, 'financialDonationsByday']);
+    Route::get('financial-donations-week', [StatisticsController::class, 'financialDonationsByWeek']);
     Route::get('inKind-donations', [StatisticsController::class, 'inKindDonations']);
 });

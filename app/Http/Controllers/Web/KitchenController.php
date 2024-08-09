@@ -133,6 +133,7 @@ class KitchenController extends Controller
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
                     'price' => $request->price,
+                    'is_available' => $request->is_available,
                     'image' => $path,
                 ]);
             } else {
@@ -140,6 +141,7 @@ class KitchenController extends Controller
                     'name' => $request->name,
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
+                    'is_available' => $request->is_available,
                     'price' => $request->price,
                 ]);
             }

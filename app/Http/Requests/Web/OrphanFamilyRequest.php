@@ -46,7 +46,8 @@ class OrphanFamilyRequest extends FormRequest
             'daughter_number' => 'required|integer|min:0',
             'value_rent' => 'nullable|numeric|min:0',
             'zip_code' => 'required|string|max:10',
-            'supervisor_name' => 'required|string', 
+            'supervisor_name' => 'required|string',
+            'visible' => 'boolean'
 
         ];
     }

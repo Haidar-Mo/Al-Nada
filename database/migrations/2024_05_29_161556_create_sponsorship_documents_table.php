@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sponsership_documents', function (Blueprint $table) {
+        Schema::create('sponsorship_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('fixed_phone_number')->unique()->nullable();
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sponsership_documents');
+        Schema::dropIfExists('sponsorship_documents');
     }
 };

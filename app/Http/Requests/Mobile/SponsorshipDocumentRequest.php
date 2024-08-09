@@ -4,7 +4,7 @@ namespace App\Http\Requests\Mobile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SponsershipDocumentRequest extends FormRequest
+class SponsorshipDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class SponsershipDocumentRequest extends FormRequest
     {
         $document = $this->route('id');
         return [
-            'fixed_phone_number' => ['nullable', 'unique:sponsership_documents,fixed_phone_number,' . $document . ',id'],
+            'fixed_phone_number' => ['nullable', 'unique:sponsorship_documents,fixed_phone_number,' . $document . ',id'],
             'address' => ['required', 'string'],
             'academic_level' => ['required', 'in:غير محدد,ابتدائي,اعدادي,ثانوي,جامعي'],
             'job' => ['required', 'string'],

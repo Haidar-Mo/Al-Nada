@@ -21,8 +21,8 @@ class OrphanFamilyChildFactory extends Factory
         return [
             'family_id' => fake()->randomElement($families_IDs),
             'name' => fake()->firstName,
-            'birth_date'=>fake()->date(),
-            'academic_level'=>fake()->randomElement(['غير محدد','ابتدائي','اعدادي','ثانوي','جامعي']),
+            'birth_date' => fake()->dateTimeBetween('2010-01-01', 'now'),
+            'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'is_supported' => fake()->boolean(),
             'created_at' => now(),
             'updated_at' => now(),

@@ -37,7 +37,7 @@ class OrderDishNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-Donation';
+        return get_class($this->order);
     }
 
     /**
@@ -47,7 +47,7 @@ class OrderDishNotification extends Notification
     {
         return [
             'messsage' => 'طلب شراء طبق',
-            'url' => route('web.order.show', $this->order->id)
+            'model_id'=>$this->order->id,
         ];
     }
 

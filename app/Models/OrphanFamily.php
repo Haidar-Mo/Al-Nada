@@ -41,6 +41,7 @@ class OrphanFamily extends Model
         'value_rent',
         'zip_code',
         'supervisor_name',
+        'visible',
     ];
 
     /**
@@ -48,15 +49,22 @@ class OrphanFamily extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'visible'
+    ];
 
 
     public function case(): MorphMany
     {
-        return $this->morphMany(SponsershipCase::class, 'sponsershipable');
+        return $this->morphMany(SponsorshipCase::class, 'sponsorshipable');
     }
 
-    public function orphan(): HasMany
+    public function statusUpdate(): MorphMany
+    {
+        return $this->morphMany(StatusUpdate::class, 'sponsorshipable');
+    }
+
+    public function child(): HasMany
     {
         return $this->hasMany(OrphanFamilyChild::class, 'family_id');
     }

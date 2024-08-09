@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('address');
             $table->string('note')->nullable();
-            $table->enum('status', ['مرفوض', 'مقبول', 'تم التسليم', 'جاري التوصيل', 'انتظار'])->default('انتظار');
+            $table->enum('status', ['ملغي', 'تم الاستلام', 'قيد المعالجة', 'جديد'])->default('جديد');
             $table->timestamps();
         });
     }

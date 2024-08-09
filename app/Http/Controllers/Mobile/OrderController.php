@@ -63,7 +63,7 @@ class OrderController extends Controller
      */
     public function cancel(string $id)
     {
-        $user = User::find(Auth::user()->id);
+        $user = auth()->user();
         $order = $user->order()->with('orderable')->findorFail($id);
         if ($order->status != 'جديد')
             return response()->json(['message' => 'لايمكنك إلغاء هذا الطلب'], 422);

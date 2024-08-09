@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sponsership_cases', function (Blueprint $table) {
+        Schema::create('sponsorship_cases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->morphs('sponsershipable');
+            $table->morphs('sponsorshipable');
             $table->enum('status', ['انتظار', 'مقبول', 'مرفوض'])->default('انتظار');
-            $table->string('reject_reson')->nullable();
+            $table->string('reject_reason')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('end_reason')->nullable();
             $table->boolean('active')->default(0);
+            $table->unique(['user_id', 'sponsorshipable_id', 'sponsorshipable_type'], 'unique-case');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sponsership_cases');
+        Schema::dropIfExists('sponsorship_cases');
     }
 };

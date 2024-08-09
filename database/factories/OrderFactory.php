@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,21 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::all()->pluck('id')->toArray();
         return [
-            //
+            'user_id' => fake()->randomElement($user),
+            'orderable_type' => $this->faker->randomElement(['App\Models\Product', 'App\Models\Kitchen']), // Replace with your actual orderable models
+            'orderable_id' => function (array $attributes) {
+                // Dynamically get an existing ID from the orderable_type model's table
+                $model = app($attributes['orderable_type']);
+                return $model::inRandomOrder()->first()->id;
+            },
+            'phone_number' => $this->faker->phoneNumber,
+            'address' => $this->faker->address,
+            'note' => $this->faker->sentence,
+            'status' => $this->faker->randomElement(['ملغي', 'تم الاستلام', 'قيد المعالجة', 'جديد']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

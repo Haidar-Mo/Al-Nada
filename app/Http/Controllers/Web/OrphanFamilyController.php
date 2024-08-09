@@ -9,10 +9,15 @@ use App\Http\Requests\Web\OrphanFamilyStatementRequest;
 use App\Models\OrphanFamily;
 use App\Models\OrphanFamilyChild;
 use App\Models\OrphanFamilyStatement;
+use App\Models\StatusUpdate;
 use Illuminate\Http\Request;
 
 class OrphanFamilyController extends Controller
 {
+
+    /** SHOW SECTION  **/
+
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 20);
@@ -23,31 +28,40 @@ class OrphanFamilyController extends Controller
 
         $families = OrphanFamily::where($filter, 'LIKE', $search)
             ->orderBy($orderBy, $order)
-            ->paginate($perPage);
+            ->paginate($perPage)
+            ->through(function ($family) {
+                $family->makeVisible('visible');
+                return $family;
+            });
 
         return response()->json($families, 200);
     }
 
     public function show(string $id)
     {
-        $family = OrphanFamily::findOrFail($id);
+        $family = OrphanFamily::findOrFail($id)->makeVisible('visible');
         return response()->json($family, 200);
     }
     public function getFamilyChildren(string $id)
     {
-        $family = OrphanFamily::with('orphan')->findOrFail($id);
-        return response()->json($family->orphans, 200);
+        $family = OrphanFamily::with('child')->findOrFail($id)->makeVisible('visible');
+        return response()->json($family->child, 200);
     }
 
     public function getFamilyStatement(string $id)
     {
-        $family = OrphanFamily::with('statement')->findOrFail($id);
+        $family = OrphanFamily::with('statement')->findOrFail($id)->makeVisible('visible');
         return response()->json($family->statement, 200);
     }
+
+
+    /** STORE SECTION **/
+
 
     public function store(OrphanFamilyRequest $request)
     {
         $family = OrphanFamily::create($request->all());
+        $family->load('visible');
         return response()->json($family, 201);
     }
 
@@ -65,6 +79,19 @@ class OrphanFamilyController extends Controller
         return response()->json($statement, 201);
     }
 
+    public function addStatusUpdate(Request $request, string $id)
+    {
+        $data = $request->validate([
+            'description' => ['required', 'string']
+        ]);
+        $family = OrphanFamily::findOrFail($id);
+        $update =  $family->statusUpdate()->create($data);
+        return response()->json($update, 201);
+    }
+
+
+    /** UPDATE SECTION  **/
+
     public function update(OrphanFamilyRequest $request, string $id)
     {
         $family = OrphanFamily::findOrFail($id);
@@ -72,6 +99,23 @@ class OrphanFamilyController extends Controller
 
         return response()->json($family, 200);
     }
+
+    public function makeFamilyVisible(string $id)
+    {
+        $family = OrphanFamily::findOrFail($id);
+        $family->visible = true;
+        $family->save();
+        return response()->json($family, 200);
+    }
+
+    public function makeFamilyInvisible(string $id)
+    {
+        $family = OrphanFamily::findOrFail($id);
+        $family->visible = false;
+        $family->save();
+        return response()->json($family, 200);
+    }
+
     public function updateChild(OrphanFamilyChildRequest $request, string $id)
     {
         $child = OrphanFamilyChild::findOrFail($id);
@@ -86,6 +130,19 @@ class OrphanFamilyController extends Controller
         return response()->json($statement, 200);
     }
 
+    public function updateStatusUpdate(Request $request,string $id)
+    {
+        $update = StatusUpdate::findOrFail($id);
+        $data = $request->validate([
+            'description' => ['required','string']
+        ]);
+        $update->update($data);
+        return response()->json($update, 200);
+    }
+
+
+    /** DESTROY SECTION **/
+
     public function destroy(string $id)
     {
         $family = OrphanFamily::findOrFail($id);
@@ -93,17 +150,24 @@ class OrphanFamilyController extends Controller
         return response()->json(null, 204);
     }
 
-    public function destroyChild(string $id)
+    public function deleteChild(string $id)
     {
         $child = OrphanFamilyChild::findOrFail($id);
         $child->delete();
         return response()->json(null, 204);
     }
 
-    public function destroyStatement(string $id)
+    public function deleteStatement(string $id)
     {
         $statement = OrphanFamilyStatement::findOrFail($id);
         $statement->delete();
+        return response()->json(null, 204);
+    }
+
+    public function deleteStatusUpdate(string $id)
+    {
+        $update = StatusUpdate::findOrFail($id);
+        $update->delete();
         return response()->json(null, 204);
     }
 }

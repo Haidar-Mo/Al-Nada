@@ -49,8 +49,8 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         DB::beginTransaction();
+        $path = '';
         try {
-            $path = '';
             if ($request->file('image'))
                 $path = $request->file('image')->store('Product', 'public');
             $product = Product::create([
@@ -136,6 +136,7 @@ class ProductController extends Controller
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
                     'price' => $request->price,
+                    'is_available' => $request->is_available,
                     'image' => $path,
                 ]);
             } else {
@@ -144,6 +145,7 @@ class ProductController extends Controller
                     'maker_name' => $request->maker_name,
                     'description' => $request->description,
                     'price' => $request->price,
+                    'is_available' => $request->is_available,
                 ]);
             }
             DB::commit();

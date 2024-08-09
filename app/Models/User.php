@@ -29,7 +29,7 @@ class User extends Authenticatable
         'image',
         'deviceToken',
         'is_volunteer',
-        'is_sponser',
+        'is_sponsor',
         'is_active'
     ];
 
@@ -78,19 +78,19 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
-    public function donationCampaign(): HasMany
+    public function donationToCampaign(): HasMany
     {
         return $this->hasMany(DonationToCampaign::class);
     }
 
-    public function sponsershipDocument(): HasOne
+    public function sponsorshipDocument(): HasOne
     {
-        return $this->hasOne(sponsershipDocument::class);
+        return $this->hasOne(sponsorshipDocument::class);
     }
 
-    public function sponserships(): HasMany
+    public function sponsorshipCases(): HasMany
     {
-        return $this->hasMany(SponsershipCase::class);
+        return $this->hasMany(SponsorshipCase::class);
     }
 
     public function donationAlert(): HasMany
@@ -133,8 +133,8 @@ class User extends Authenticatable
         return $this->is_volunteer;
     }
 
-    public function isSponser()
+    public function isSponsor()
     {
-        return $this->is_sponser;
+        return $this->is_sponsor;
     }
 }

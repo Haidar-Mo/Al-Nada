@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
-use App\Notifications\NewCampaignNotification;
+use App\Notifications\Mobile\WalletChargeNotification;
 use App\Traits\NotificationTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -57,8 +57,8 @@ class WalletChargeController extends Controller
         $wallet->balance += $request->amount;
         $wallet->save();
 
-        ////Notification::send($user, new NewCampaignNotification($bill));
-        //$this->sendNotification($user->deviceToken, "محفظة الندى", "تم شحن محفظتك بمبلغ" . $request->amount);
+        Notification::send($user, new WalletChargeNotification($wallet_charge, $bill->amount));
+        $this->sendNotification($user->deviceToken, "محفظة الندى", "تم شحن محفظتك بمبلغ" . $request->amount);
 
         return response()->json($wallet_charge, 200);
     }

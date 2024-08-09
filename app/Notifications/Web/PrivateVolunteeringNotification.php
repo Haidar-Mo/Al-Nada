@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Web;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewCampaignNotification extends Notification
+class PrivateVolunteeringNotification extends Notification
 {
     use Queueable;
 
-    private $campaign;
+    protected $request;
     /**
      * Create a new notification instance.
      */
-    public function __construct($campaign)
+    public function __construct($request)
     {
-        $this->campaign = $campaign;
+        $this->request = $request;
     }
 
     /**
@@ -37,19 +37,17 @@ class NewCampaignNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-campaign';
+        return get_class($this->request);
     }
 
     /**
-     * Get the Database representation of the notification.
-     *
-     * @return array<string, mixed>
+     * Get the database representation of the notification.
      */
     public function toDatabase(object $notifiable): array
     {
         return [
-            'message' => 'تم إطلاق حملة جديدة : ' . $this->campaign->name,
-            'url' => route('mobile.show-campaign', $this->campaign->id)
+            'message' => 'طلب تطوع خاص جديد',
+            'model_id' => $this->request->id,
         ];
     }
 }

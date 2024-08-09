@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Volunteer;
 use App\Models\VolunteerInCampaign;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
@@ -77,16 +78,113 @@ class StatisticsController extends Controller
         ], 200);
     }
 
+    public function financialDonationsByDay(Request $request)
+    {
+        $date_1 = $request->input('first_date');
+        $date_2 = $request->input('second_date');
+
+        // Fetch donations within the specified date range and group by day
+        $donations = Donation::where('type', 'مالي')
+            ->whereBetween('created_at', [$date_1, $date_2])
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'), DB::raw('sum(amount) as total_amount'))
+            ->groupBy('date')
+            ->get();
+
+        // Process donations data
+        $donationsData = $donations->map(function ($item) {
+            return [
+                'date' => $item->date,
+                'total_donations' => $item->count,
+                'total_amount' => $item->total_amount,
+                'average_amount' => $item->count > 0 ? $item->total_amount / $item->count : 0,
+            ];
+        });
+
+        // Fetch donations to campaigns within the specified date range and group by day
+        $donationsToCampaigns = DonationToCampaign::where('type', 'مالي')
+            ->whereBetween('created_at', [$date_1, $date_2])
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'), DB::raw('sum(amount) as total_amount'))
+            ->groupBy('date')
+            ->get();
+
+        // Process donations to campaigns data
+        $donationsToCampaignsData = $donationsToCampaigns->map(function ($item) {
+            return [
+                'date' => $item->date,
+                'total_donations_to_campaigns' => $item->count,
+                'total_amount_to_campaigns' => $item->total_amount,
+                'average_amount_to_campaigns' => $item->count > 0 ? $item->total_amount / $item->count : 0,
+            ];
+        });
+
+        return response()->json([
+            'Donations by day' => $donationsData,
+            'Donations to campaigns by day' => $donationsToCampaignsData,
+        ], 200);
+    }
+
+    public function financialDonationsByWeek(Request $request)
+    {
+        $date_1 = $request->input('first_date');
+        $date_2 = $request->input('second_date');
+
+        // Fetch donations within the specified date range and group by week
+        $donations = Donation::where('type', 'مالي')
+            ->whereBetween('created_at', [$date_1, $date_2])
+            ->select(DB::raw('WEEK(created_at) as week'), DB::raw('count(*) as count'), DB::raw('sum(amount) as total_amount'))
+            ->groupBy('week')
+            ->get();
+
+        // Process donations data
+        $donationsData = $donations->map(function ($item) {
+            return [
+                'week' => $item->week,
+                'total_donations' => $item->count,
+                'total_amount' => $item->total_amount,
+                'average_amount' => $item->count > 0 ? $item->total_amount / $item->count : 0,
+            ];
+        });
+
+        // Fetch donations to campaigns within the specified date range and group by week
+        $donationsToCampaigns = DonationToCampaign::where('type', 'مالي')
+            ->whereBetween('created_at', [$date_1, $date_2])
+            ->select(DB::raw('WEEK(created_at) as week'), DB::raw('count(*) as count'), DB::raw('sum(amount) as total_amount'))
+            ->groupBy('week')
+            ->get();
+
+        // Process donations to campaigns data
+        $donationsToCampaignsData = $donationsToCampaigns->map(function ($item) {
+            return [
+                'week' => $item->week,
+                'total_donations_to_campaigns' => $item->count,
+                'total_amount_to_campaigns' => $item->total_amount,
+                'average_amount_to_campaigns' => $item->count > 0 ? $item->total_amount / $item->count : 0,
+            ];
+        });
+
+        return response()->json([
+            'Donations by week' => $donationsData,
+            'Donations to campaigns by week' => $donationsToCampaignsData,
+        ], 200);
+    }
+
     public function InkindDonations()
     {
         // TODO: Implement inkind donations statistics
     }
-    public function campaigns()
+    public function campaigns(Request $request)
     {
-        $campaigns = Campaign::all();
+        $year = $request->input('year');
+        $campaigns = Campaign::whereYear('created_at', $year);
         $campaign_count = $campaigns->count();
-        $number_of_Beneficiary_from_campaign = $campaigns->sum('number_of_Beneficiary');
+        $number_of_beneficiary_from_campaign = $campaigns->sum('number_of_Beneficiary');
         $total_cost_of_all_campaign = $campaigns->sum('cost');
+
+        return response()->json([
+            'Number of campaigns' => $campaign_count,
+            'Number of beneficiaries from campaigns' => $number_of_beneficiary_from_campaign,
+            'Total cost of all campaigns' => $total_cost_of_all_campaign,
+        ],200);
     }
 
     public function donationsByCampaign(Request $request)

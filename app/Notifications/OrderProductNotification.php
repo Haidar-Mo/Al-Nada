@@ -37,7 +37,7 @@ class OrderProductNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-Donation';
+        return get_class($this->order);
     }
     /**
      * Get the database representation of the notification.
@@ -46,7 +46,7 @@ class OrderProductNotification extends Notification
     {
         return [
             'message' => 'طلب شراء لمنتج',
-            'url' => route('web.order.show', $this->order->id)
+            'model_id'=>$this->order->id,
         ];
     }
 

@@ -17,7 +17,7 @@ class NotificationController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $notifications = $user->notifications()->orderBy('created_at', 'desc')->paginate(5);
+        $notifications = $user->notifications()->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($notifications, 200);
     }
 

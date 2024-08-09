@@ -21,12 +21,13 @@ class DonationFactory extends Factory
         return [
             'user_id' => fake()->randomElement($user_IDs),
             'type' => 'مالي',
+            'delivery_type' => 'الكتروني',
             'amount' => fake()->randomNumber(7),
             'description' => null,
             'phone_number' => fake()->phoneNumber(),
             'address' => fake()->address(),
             'status' => fake()->randomElement(['جديد', 'تم الاستلام', 'قيد المعالجة', 'ملغي']),
-
+            'created_at' => fake()->dateTimeBetween('2024-01-01', '2024-12-01')
         ];
     }
 }

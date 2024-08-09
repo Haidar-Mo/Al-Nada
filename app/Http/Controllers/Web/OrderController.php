@@ -49,16 +49,14 @@ class OrderController extends Controller
     public function statusChange(Request $request, string $id)
     {
         $order = Order::findOrfail($id);
-        $status = $request->input('status');
+        $status = $request->status;
         $order->update(['status' => $status]);
-        if ($status === 'مقبول') {
-            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'تم قبول طلبك <3');
-        } elseif ($status === 'مرفوض') {
-            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'عذراً , تم رفض طلبك');
-        } elseif ($status === 'جاري التوصيل') {
-            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'جاري توصيل طلبك - إستعد للاستلام :)');
-        } elseif ($status === 'تم التوصيل') {
-            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'تم تأكيد الإستلام , شكراً لك');
+        if ($status === 'قيد المعالجة') {
+            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'جاري معالجة - إستعد للاستلام :)');
+        } elseif ($status === 'تم الاستلام') {
+            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'تم التحقق من تسليم الطلب <3');
+        } elseif ($status === 'ملغي') {
+            $this->sendNotification($order->user->deviceToken, 'طلبات الندى', 'عذراً, تم إلغاء الطلب');
         }
         return response()->json($order, 200);
     }

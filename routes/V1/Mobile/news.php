@@ -11,5 +11,5 @@ Route::prefix('mobile/news')->middleware([
 ])->group(function () {
 
     Route::get('index', [NewsController::class, 'index']);
-    Route::get('show/{id}', [NewsController::class, 'show']);
+    Route::get('show/{id}', [NewsController::class, 'show'])->name('mobile.news.show');
 });

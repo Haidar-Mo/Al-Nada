@@ -78,16 +78,14 @@ class AuthController extends Controller
         return response()->json(['message' => 'تم تسجيل الخروج بنجاح'], 200);
     }
 
+    /**
+     * Display user profile including personal information with Wallet information
+     * @return JsonResponse
+     */
     public function profile()
     {
-        $user = User::with(['wallet', 'sposership.target'])->findOrfail(Auth::user()->id);
-        $total_private_donation = strval($user->donation()->where('type', 'مالي')->where('status', '!=', 'جديد')->sum('amount'));
-        $total_campaign_donation = strval($user->wallet->donationCampaign()->where('type', 'مالي')->sum('amount'));
-        return response()->json(array_merge([
-            'user' => $user,
-            'total donation ' => $total_private_donation,
-            'total campaign donation ' => $total_campaign_donation
-        ]), 200);
+        $user = User::with('wallet')->findOrfail(Auth::user()->id);
+        return response()->json($user, 200);
     }
 
     /**
@@ -96,16 +94,20 @@ class AuthController extends Controller
      * @param Request $code
      * @return JsonResponse
      */
-    protected function activateAccount($id, Request $code)
+    protected function activateAccount($id, Request $request)
     {
         $user = User::findOrFail($id);
-        if ($user->verification_code == null || $user->email_verified_at != null)
+        if ($user->verification_code === null || $user->email_verified_at != null)
             return response()->json(['message' => 'الحساب مفعل بالفعل'], 422);
-        if ($user->verification_code == $code->code) {
+        if ($user->verification_code === $request->code) {
             $user->email_verified_at = Carbon::now();
             $user->verification_code = null;
             $user->save();
-            return response()->json(['message' => 'تم تفعيل حسابك بنجاح', $user], 200);
+            $loginRequest = new MobileLoginRequest([
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
+            return $this->login($loginRequest);
         }
         return response()->json(['message' => 'عذراً, يرجى التأكد من الكود المرسل'], 422);
     }

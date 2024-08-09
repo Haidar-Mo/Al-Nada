@@ -71,7 +71,7 @@ class DonationToCampaignService
 
             // Create the donation
             $donationData = array_merge($validatedData, ['campaign_id' => $campaign->id]);
-            $donation = $user->donationCampaign()->create($donationData);
+            $donation = $user->donationToCampaign()->create($donationData);
 
             // Create a bill if necessary
             if ($validatedData['type'] === 'مالي' && $validatedData['delivery_type'] === 'الكتروني') {

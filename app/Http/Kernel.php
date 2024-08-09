@@ -57,7 +57,7 @@ class Kernel extends HttpKernel
         'type.web' => \App\Http\Middleware\UserTypeIsWebMiddleWare::class,
         'type.mobile' => \App\Http\Middleware\UserTypeIsMobileMiddleWare::class,
         'isActive' => \App\Http\Middleware\isActive::class,
-        'isSponser' => \App\Http\Middleware\isSponser::class,
+        'isSponsor' => \App\Http\Middleware\isSponsor::class,
         'isAdmin' => \App\Http\Middleware\isAdmin::class,
         
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

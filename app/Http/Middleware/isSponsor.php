@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isSponser
+class isSponsor
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class isSponser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && !Auth::user()->isSponser()) {
+        if (Auth::check() && !Auth::user()->isSponsor()) {
             return response()->json([
                 'message' => 'Your Sponsership is disable /n please contact with the moderators',
             ], 403);

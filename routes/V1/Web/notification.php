@@ -11,6 +11,9 @@ Route::prefix('web/notification')->middleware([
 ])->group(function () {
 
     Route::get('index', [NotificationController::class, 'index']);
+    Route::get('today-notification', [NotificationController::class, 'getTodayNotifications']);
+    Route::get('unread-notification', [NotificationController::class, 'getUnreadNotifications']);
+
     Route::post('mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
     Route::post('send-notification', [NotificationController::class, 'notifyUser']);

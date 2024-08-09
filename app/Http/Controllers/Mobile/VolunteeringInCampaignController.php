@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\VolunteeringInCampaignRequest as Vrequest;
+use App\Models\Administration;
 use App\Models\Campaign;
 use App\Models\User;
 use App\Models\VolunteeringInCampaignRequest;
+use App\Notifications\Web\CampaignVolunteeringNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class VolunteeringInCampaignController extends Controller
 {
@@ -59,6 +62,12 @@ class VolunteeringInCampaignController extends Controller
             'city_id' => 1,
             'campaign_id' => $campaign->id
         ]));
+
+        $volunteering_request->load('campaign');
+        $target = Administration::all();
+        Notification::send($target, new CampaignVolunteeringNotification($volunteering_request));
+
+
         return response()->json($volunteering_request, 201);
     }
 

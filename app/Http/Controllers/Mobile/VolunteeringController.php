@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\VolunteeringRequest as Vrequest;
+use App\Models\Administration;
 use App\Models\User;
 use App\Models\VolunteeringRequest;
+use App\Notifications\Web\PrivateVolunteeringNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class VolunteeringController extends Controller
@@ -24,7 +27,7 @@ class VolunteeringController extends Controller
     }
     /**
      * Store a newly created volunteering request in storage.
-     * @param VolunteeringRequest $request
+     * @param Vrequest $request
      * @return JsonResponse
      */
     public function store(Vrequest $request)
@@ -50,7 +53,7 @@ class VolunteeringController extends Controller
             // store the request    
             $id_card_path = $request->file('id_card_image')->store('Volunteering/Id_card_image', 'public');
             $personal_image_path = $request->file('personal_image')->store('Volunteering/Personal_image', 'public');
-            $volunteer = $user->volunteeringRequest()->create(array_merge($request->all(), [
+            $volunteering_request = $user->volunteeringRequest()->create(array_merge($request->all(), [
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'phone_number' => $user->phone_number,
@@ -60,8 +63,11 @@ class VolunteeringController extends Controller
                 'personal_image' => $personal_image_path,
                 'Status' => 'انتظار',
             ]));
+            $target = Administration::all();
+            Notification::send($target, new PrivateVolunteeringNotification($volunteering_request));
+
             DB::commit();
-            return response()->json($volunteer, 201);
+            return response()->json($volunteering_request, 201);
         } catch (\Exception $e) {
             DB::rollBack();
             if (Storage::exists("public/" . $id_card_path))

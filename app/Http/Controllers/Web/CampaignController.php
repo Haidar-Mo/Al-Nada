@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CreateCampaignRequest;
 use App\Models\Campaign;
 use App\Models\User;
-use App\Notifications\NewCampaignNotification;
+use App\Notifications\Mobile\NewCampaignNotification;
 use App\Traits\NotificationTrait;
 use App\Services\Web\FinishCampaignService;
 use Illuminate\Http\JsonResponse;

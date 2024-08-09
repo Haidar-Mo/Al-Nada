@@ -37,7 +37,7 @@ class SendDonationToCampaignNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-Donation-to-campaign';
+        return get_class($this->donation);
     }
 
     /**
@@ -48,7 +48,7 @@ class SendDonationToCampaignNotification extends Notification
         return [
             'message' => 'تبرع لحملة جديد',
             'type' => $this->donation->type,
-            'url' => route('web.show.donation.campaign', $this->donation->id)
+            'model_id'=>$this->donation->id,
         ];
     }
 

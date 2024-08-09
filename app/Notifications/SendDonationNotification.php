@@ -38,7 +38,7 @@ class SendDonationNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'new-Donation';
+        return get_class($this->donation);
     }
 
     /**
@@ -48,8 +48,8 @@ class SendDonationNotification extends Notification
     {
         return [
             'message' => 'تبرع خاص جديد',
-            'type'=> $this->donation->type,
-            'url' => route('web.show.donation', $this->donation->id)
+            'type' => $this->donation->type,
+            'model_id'=>$this->donation->id,
         ];
     }
 
