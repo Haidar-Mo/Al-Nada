@@ -14,6 +14,6 @@ Route::prefix('web/wallet')->middleware([
         Route::get('index', [WalletChargeController::class, 'index']);
         Route::get('show/{id}', [WalletChargeController::class, 'show']);
         Route::post('accept/{id}', [WalletChargeController::class, 'accept']);
-        Route::put('reject/{id}', [WalletChargeController::class, 'reject']);
+        Route::post('reject/{id}', [WalletChargeController::class, 'reject']);
     });
 });

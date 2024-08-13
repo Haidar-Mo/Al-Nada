@@ -41,6 +41,7 @@ class OrphanFamilyFactory extends Factory
             'value_rent' => $this->faker->optional()->randomFloat(2, 0, 1000),
             'zip_code' => $this->faker->postcode,
             'supervisor_name' => $this->faker->name,
+            'visible' => 1,
         ];
     }
 }

@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('case_id')->constrained('sponsorship_cases')->cascadeOnDelete();
-            $table->boolean('paid')->default(0);
+            $table->date('payment_month');
+            $table->enum('paid', ['0', '1', '2'])->default('0');
             $table->date('payment_date')->nullable();
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->integer('amount',false,true)->nullable();
             $table->timestamps();
         });
     }

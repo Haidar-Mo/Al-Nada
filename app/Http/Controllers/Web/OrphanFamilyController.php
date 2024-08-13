@@ -57,11 +57,10 @@ class OrphanFamilyController extends Controller
 
     /** STORE SECTION **/
 
-
     public function store(OrphanFamilyRequest $request)
     {
         $family = OrphanFamily::create($request->all());
-        $family->load('visible');
+        $family->makeVisible('visible');
         return response()->json($family, 201);
     }
 
@@ -78,17 +77,6 @@ class OrphanFamilyController extends Controller
         $statement =  $family->statement()->create($request->all());
         return response()->json($statement, 201);
     }
-
-    public function addStatusUpdate(Request $request, string $id)
-    {
-        $data = $request->validate([
-            'description' => ['required', 'string']
-        ]);
-        $family = OrphanFamily::findOrFail($id);
-        $update =  $family->statusUpdate()->create($data);
-        return response()->json($update, 201);
-    }
-
 
     /** UPDATE SECTION  **/
 
@@ -129,17 +117,6 @@ class OrphanFamilyController extends Controller
         $statement->update($request->all());
         return response()->json($statement, 200);
     }
-
-    public function updateStatusUpdate(Request $request,string $id)
-    {
-        $update = StatusUpdate::findOrFail($id);
-        $data = $request->validate([
-            'description' => ['required','string']
-        ]);
-        $update->update($data);
-        return response()->json($update, 200);
-    }
-
 
     /** DESTROY SECTION **/
 

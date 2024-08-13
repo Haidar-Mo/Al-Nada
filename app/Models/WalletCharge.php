@@ -20,6 +20,7 @@ class WalletCharge extends Model
         'wallet_id',
         'image',
         'status',
+        'reject_reason'
     ];
 
     /**

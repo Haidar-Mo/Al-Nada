@@ -25,6 +25,6 @@ class StatusUpdate extends Model
 
     public function sponsorshipable(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo('statusable');
     }
 }

@@ -17,7 +17,18 @@ class StatusUpdateFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'statusable_type' => fake()->randomElement([
+                'App\Models\OrphanFamilyChild',
+                //'App\Models\Student',
+                //'App\Models\chasteFamily',
+                //'App\Models\OldPeople',
+            ]),
+            'statusable_id' => function (array $attributes) {
+                $model = $attributes['statusable_type'];
+                return $model::inRandomOrder()->first()->id;
+            },
+            'description' => fake()->sentence(20)
+
         ];
     }
 }

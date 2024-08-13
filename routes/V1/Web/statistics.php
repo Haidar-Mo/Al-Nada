@@ -9,6 +9,7 @@ Route::prefix('web/statistics')->middleware([
     'type.web'
 ])->group(function () {
 
+    Route::get('section', [StatisticsController::class, 'sectionAndEmployee']);
     Route::get('employee', [StatisticsController::class, 'employee']);
     Route::get('volunteer', [StatisticsController::class, 'volunteer']);
 

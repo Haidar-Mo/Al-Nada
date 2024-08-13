@@ -18,9 +18,11 @@ class WalletChargeController extends Controller
      * Display a listing of the Wallet charge request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $wallet_charge = WalletCharge::with('wallet.user')->get();
+
+        $query = WalletCharge::query()->with('wallet.user');
+        $wallet_charge = $this->applyFilters($request, $query);
         return response()->json($wallet_charge, 200);
     }
 
@@ -31,7 +33,7 @@ class WalletChargeController extends Controller
      */
     public function show(string $id)
     {
-        $wallet_charge = WalletCharge::findOrFail($id);
+        $wallet_charge = WalletCharge::with('wallet.user')->findOrFail($id);
         return response()->json($wallet_charge, 200);
     }
 
@@ -68,10 +70,14 @@ class WalletChargeController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function reject(string $id)
+    public function reject(Request $request, string $id)
     {
+        $data = $request->validate(['reject_reason' => 'required']);
         $wallet_charge = WalletCharge::findOrFail($id);
-        $wallet_charge->update(['status' => 'ملغي']);
+        $wallet_charge->update([
+            'status' => 'ملغي',
+            'reject_reason' => $data['reject_reason']
+        ]);
 
         //$this->sendNotification($user->deviceToken, "محفظة الندى", "عذراً لم يتم قبول طلب شحن المحفظة... راجع الجمعية");
         return response()->json($wallet_charge, 200);

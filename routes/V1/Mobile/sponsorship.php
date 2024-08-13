@@ -2,18 +2,18 @@
 
 use App\Http\Controllers\Mobile\OrphanFamilyController;
 use App\Http\Controllers\Mobile\SponsorshipCaseController;
-use App\Http\Controllers\mobile\SponsorshipDocumentController;
+use App\Http\Controllers\Mobile\SponsorshipDocumentController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix('mobile/sponsership')->middleware([
+Route::prefix('mobile/sponsorship')->middleware([
     'auth:sanctum',
     'type.mobile'
 ])->group(function () {
 
     Route::prefix('document')->group(function () {
 
-        Route::get('show/{id}', [SponsorshipDocumentController::class, 'show']);
+        Route::get('show', [SponsorshipDocumentController::class, 'show']);
         Route::post('create', [SponsorshipDocumentController::class, 'store']);
         Route::post('update', [SponsorshipDocumentController::class, 'update']);
     });
@@ -22,14 +22,19 @@ Route::prefix('mobile/sponsership')->middleware([
 
         Route::get('index', [SponsorshipCaseController::class, 'index']);
         Route::get('show/{id}', [SponsorshipCaseController::class, 'show'])->name('mobile.case.show');
-        Route::get('list-status/{id}', [SponsorshipCaseController::class, 'listStatusUpdate']);
-        Route::get('last-status/{id}', [SponsorshipCaseController::class, 'lastStatusUpdate'])->name('mobile.case.status.show');
+        Route::get('list-status/{case}', [SponsorshipCaseController::class, 'listStatusUpdate']);
+        Route::get('last-status/{case}', [SponsorshipCaseController::class, 'lastStatusUpdate'])->name('mobile.case.status.show');
+
+        Route::post('payment/{id}', [SponsorshipCaseController::class, 'payment']);
+        Route::get('payment/last/{id}', [SponsorshipCaseController::class, 'lastPayment']);
     });
 
     Route::prefix('orphan-family')->group(function () {
 
         Route::get('index', [OrphanFamilyController::class, 'index']);
+        Route::get('index-child', [OrphanFamilyController::class, 'childIndex']);
         Route::get('show/{id}', [OrphanFamilyController::class, 'show']);
+        Route::get('show-child/{id}', [OrphanFamilyController::class, 'childShow']);
         Route::post('create-case/{id}', [OrphanFamilyController::class, 'createSponsorshipCase'])->middleware('isSponsor');
         Route::post('', []);
         Route::delete('', []);

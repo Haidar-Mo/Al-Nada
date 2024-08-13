@@ -24,61 +24,51 @@ class DonationToCampaignService
                 return ['message' => 'لايمكنك التبرع لهذه الحملة الآن', 'code' => 422];
             }
 
-            // Validate type of donation
-            $validatedData = $request->validate([
-                'type' => 'required|string',
-                'amount' => 'nullable|numeric|min:0.01',
-                'delivery_type' => 'nullable|string|in:الكتروني,مندوب توصيل',
-                'phone_number' => 'required|string',
-                'address' => 'nullable|string',
-                'description' => 'nullable|string',
-            ]);
-
             // Handle financial donation
-            if ($validatedData['type'] === 'مالي') {
-                if (!isset($validatedData['amount'])) {
+            if ($request['type'] === 'مالي') {
+                if (!isset($request['amount'])) {
                     return ['message' => 'المبلغ مطلوب للتبرع المالي', 'code' => 422];
                 }
 
-                if ($validatedData['amount'] < $campaign->min_limit_for_donation) {
+                if ($request['amount'] < $campaign->min_limit_for_donation) {
                     return ['message' => 'المبلغ يجب أن يكون أكبر من الحد الأدنى للتبرع المالي', 'code' => 422];
                 }
 
-                if ($validatedData['delivery_type'] === 'الكتروني') {
-                    if ($validatedData['amount'] > $user->wallet->balance) {
+                if ($request['delivery_type'] === 'الكتروني') {
+                    if ($request['amount'] > $user->wallet->balance) {
                         return ['message' => 'رصيدك لا يكفي لعملية التبرع', 'code' => 422];
                     }
-                    $validatedData['description'] = null;
-                    $validatedData['address'] = null;
-                    $validatedData['status'] = 'تم الاستلام';
-                    $user->wallet->decrement('balance', $validatedData['amount']);
-                } elseif ($validatedData['delivery_type'] === 'مندوب توصيل') {
-                    if (!isset($validatedData['address'])) {
+                    $request['description'] = null;
+                    $request['address'] = null;
+                    $request['status'] = 'تم الاستلام';
+                    $user->wallet->decrement('balance', $request['amount']);
+                } elseif ($request['delivery_type'] === 'مندوب توصيل') {
+                    if (!isset($request['address'])) {
                         return ['message' => 'العنوان مطلوب للتبرع عبر مندوب توصيل', 'code' => 422];
                     }
                 }
             } else {
                 // Handle other types of donations
-                if (!isset($validatedData['description'])) {
+                if (!isset($request['description'])) {
                     return ['message' => 'وصف التبرع مطلوب', 'code' => 422];
                 }
-                if (!isset($validatedData['address'])) {
+                if (!isset($request['address'])) {
                     return ['message' => 'العنوان مطلوب للتبرع عبر مندوب توصيل', 'code' => 422];
                 }
-                $validatedData['amount'] = null;
-                $validatedData['delivery_type'] = 'مندوب توصيل';
+                $request['amount'] = null;
+                $request['delivery_type'] = 'مندوب توصيل';
             }
 
             // Create the donation
-            $donationData = array_merge($validatedData, ['campaign_id' => $campaign->id]);
+            $donationData = array_merge($request->all(), ['campaign_id' => $campaign->id]);
             $donation = $user->donationToCampaign()->create($donationData);
 
             // Create a bill if necessary
-            if ($validatedData['type'] === 'مالي' && $validatedData['delivery_type'] === 'الكتروني') {
+            if ($request['type'] === 'مالي' && $request['delivery_type'] === 'الكتروني') {
                 $donation->bill()->create([
                     'wallet_id' => $donation->user->wallet->id,
                     'transaction_type' => 'سحب',
-                    'amount' => $validatedData['amount'],
+                    'amount' => $request['amount'],
                 ]);
             }
             DB::commit();

@@ -21,7 +21,7 @@ class CampaignController extends Controller
 
         $is_donateable_campaigns = Campaign::where('is_donateable', 1)
             ->where('end_date', null)
-            ->latest('updated_at')
+            ->latest()
             ->take(3)
             ->get()
             ->map(function ($campaign) use ($favoriteCampaignIds) {
@@ -56,6 +56,7 @@ class CampaignController extends Controller
 
         $is_donateable_campaigns = Campaign::where('is_donateable', 1)
             ->where('end_date', null)
+            ->latest()
             ->get()
             ->map(function ($campaign) use ($favoriteCampaignIds) {
                 $campaign->is_favorite = in_array($campaign->id, $favoriteCampaignIds);
@@ -78,6 +79,7 @@ class CampaignController extends Controller
         // Get the volunteerable campaigns and check if they are favorites
         $is_volunteerable_campaigns = Campaign::where('is_volunteerable', 1)
             ->where('end_date', null)
+            ->latest()
             ->get()
             ->map(function ($campaign) use ($favoriteCampaignIds) {
                 $campaign->is_favorite = in_array($campaign->id, $favoriteCampaignIds);

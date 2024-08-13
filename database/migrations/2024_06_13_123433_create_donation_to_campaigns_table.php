@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('delivery_type', ['مندوب توصيل', 'الكتروني']);
             $table->bigInteger('amount')->nullable();
             $table->text('description')->nullable();
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
             $table->string('address')->nullable();
             $table->enum('status', ['جديد', 'تم الاستلام', 'قيد المعالجة', 'ملغي'])->default('جديد');
             $table->string('reject_reason')->nullable();

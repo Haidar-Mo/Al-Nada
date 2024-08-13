@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\OrderRequest;
-use App\Http\Requests\Web\KitchenRequest;
 use App\Models\Administration;
 use App\Models\Kitchen;
 use App\Notifications\OrderDishNotification;

@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'image' => 'User/user.png',
             'deviceToken' => Str::random(50),
             'is_volunteer' => 0,
-            'is_sponser' => 0,
+            'is_sponsor' => 0,
             'is_active'=>1,
             'email_verified_at' => now(),
             'verification_code' => null,

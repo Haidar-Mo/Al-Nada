@@ -53,17 +53,6 @@ class OrphanFamily extends Model
         'visible'
     ];
 
-
-    public function case(): MorphMany
-    {
-        return $this->morphMany(SponsorshipCase::class, 'sponsorshipable');
-    }
-
-    public function statusUpdate(): MorphMany
-    {
-        return $this->morphMany(StatusUpdate::class, 'sponsorshipable');
-    }
-
     public function child(): HasMany
     {
         return $this->hasMany(OrphanFamilyChild::class, 'family_id');

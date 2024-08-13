@@ -5,9 +5,11 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Administration;
-use App\Models\BillingHistory;
-use App\Models\Campaign;
 use App\Models\City;
+use App\Models\Campaign;
+use App\Models\OrphanFamily;
+use App\Models\OrphanFamilyChild;
+
 use App\Models\Donation;
 use App\Models\DonationAlert;
 use App\Models\DonationCampaign;
@@ -28,6 +30,8 @@ use App\Models\VolunteeringInCampaign;
 use App\Models\VolunteerWorkPeriod;
 use App\Models\Wallet;
 use App\Models\WalletCharge;
+use App\Models\BillingHistory;
+use App\Models\OrphanFamilyStatement;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -114,13 +118,13 @@ class DatabaseSeeder extends Seeder
                 'id' => 1,
                 'employee_id' => 1,
                 'user_name' => 'mohammad',
-                'password' => bcrypt('password')
+                'password' => '$2y$12$TVMStTX9YS0ZNtj/0HYg0.1OTGKr56NncmQgK0xLFp8OB6pVuXBjG'
             ],
             [
                 'id' => 2,
                 'employee_id' => 2,
                 'user_name' => 'admin',
-                'password' => bcrypt('password')
+                'password' => '$2y$12$TVMStTX9YS0ZNtj/0HYg0.1OTGKr56NncmQgK0xLFp8OB6pVuXBjG'
             ]
         ]);
 
@@ -140,7 +144,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'min_limit_for_donation'=>100000,
+                'min_limit_for_donation' => 100000,
                 'image' => 'Campaign/سلات رمضان.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -155,7 +159,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'min_limit_for_donation'=>100000,
+                'min_limit_for_donation' => 100000,
                 'image' => 'Campaign/دفء الشتاء.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -170,7 +174,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 0,
-                'min_limit_for_donation'=>100000,
+                'min_limit_for_donation' => 100000,
                 'image' => 'Campaign/أضاحي العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -185,7 +189,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 1,
                 'is_volunteerable' => 1,
-                'min_limit_for_donation'=>100000,
+                'min_limit_for_donation' => 100000,
                 'image' => 'Campaign/حقيبة الأمل.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -200,7 +204,7 @@ class DatabaseSeeder extends Seeder
                 'number_of_Beneficiary' => '0',
                 'is_donateable' => 0,
                 'is_volunteerable' => 1,
-                'min_limit_for_donation'=>100000,
+                'min_limit_for_donation' => 100000,
                 'image' => 'Campaign/ملابس العيد.jpg',
                 'start_date' => '2024-06-13',
                 'end_date' => null,
@@ -360,6 +364,11 @@ class DatabaseSeeder extends Seeder
 
         //VolunteeringInCampaignRequest::factory(5)->create();
         VolunteerInCampaign::factory(5)->create();
+
+
+        OrphanFamily::factory(5)->create();
+        OrphanFamilyChild::factory(10)->create();
+        OrphanFamilyStatement::factory(10)->create();
 
         Report::factory(5)->create();
         Product::factory(5)->create();

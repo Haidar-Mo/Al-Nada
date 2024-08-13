@@ -47,8 +47,7 @@ class OrphanFamilyRequest extends FormRequest
             'value_rent' => 'nullable|numeric|min:0',
             'zip_code' => 'required|string|max:10',
             'supervisor_name' => 'required|string',
-            'visible' => 'boolean'
-
+            'visible' => 'boolean',
         ];
     }
 }

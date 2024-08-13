@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class OrphanFamilyChild extends Model
 {
@@ -20,7 +23,9 @@ class OrphanFamilyChild extends Model
         'name',
         'birth_date',
         'academic_level',
-        'is_supported'
+        'is_supported',
+        'visible',
+        'min_sponsorship_payment',
     ];
 
     /**
@@ -31,9 +36,34 @@ class OrphanFamilyChild extends Model
     protected $hidden = [];
 
 
-    public function orphanFamily(): BelongsTo
+    /**
+     * The accessors to append to the model's array form.
+     * 
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'age',
+    ];
+
+    public function family(): BelongsTo
     {
         return $this->belongsTo(OrphanFamily::class, 'family_id');
     }
-    
+
+    public function case(): MorphMany
+    {
+        return $this->morphMany(SponsorshipCase::class, 'sponsorshipable');
+    }
+
+    public function statusUpdate(): MorphMany
+    {
+        return $this->morphMany(StatusUpdate::class, 'statusable');
+    }
+
+    /** Appends Attributes */
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->birth_date)->diffInYears();
+    }
 }

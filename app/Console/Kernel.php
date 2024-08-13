@@ -15,8 +15,10 @@ class Kernel extends ConsoleKernel
         Commands\DeleteUnverifiedUser::class,
         Commands\DeleteDonationCampaignAlert::class,
         Commands\CheckIfOrphanStillSupported::class,
-        Commands\CreateSponsorshipPaidCase::class,
         Commands\SendSponsorshipAlerts::class,
+        
+        
+        //Commands\CreateSponsorshipPaidCase::class,
     ];
     /**
      * Define the application's command schedule.
@@ -28,8 +30,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('alerts:send-donation-alerts')->daily();
         $schedule->command('alerts:send-donation-campaign-alerts')->daily();
         $schedule->command('app:check-still-supported')->monthly();
-        $schedule->command('app:create-sponsorship-payment-case')->monthly();
         $schedule->command('app:send-sponsorship-alerts')->monthlyOn(15, '12:00');
+        
+        
+        // $schedule->command('app:create-sponsorship-payment-case')->monthly();
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\KitchenRequest;
-use App\Models\kitchen;
+use App\Models\Kitchen;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +24,9 @@ class KitchenController extends Controller
         $filter = $request->input('filter', 'id');
         $search  = $request->input('search');
 
-        $dishes = kitchen::where($filter, 'LIKE', '%' . $search . '%')->orderBy($orderBy, $order)->paginate($perPage);
+        $dishes = Kitchen::where($filter, 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy, $order)
+            ->paginate($perPage);
         return response()->json($dishes, 200);
     }
 
@@ -35,7 +37,7 @@ class KitchenController extends Controller
      */
     public function show(string $id)
     {
-        $dish = kitchen::findOrFail($id);
+        $dish = Kitchen::findOrFail($id);
         return response()->json($dish, 200);
     }
 
@@ -48,8 +50,8 @@ class KitchenController extends Controller
     public function store(KitchenRequest $request)
     {
         DB::beginTransaction();
+        $path = '';
         try {
-            $path = '';
             if ($request->file('image'))
                 $path = $request->file('image')->store('Kitchen', 'public');
             $dish = Kitchen::create([
@@ -79,7 +81,7 @@ class KitchenController extends Controller
     {
         DB::beginTransaction();
         try {
-            $dish = kitchen::findOrFail($id);
+            $dish = Kitchen::findOrFail($id);
             $dish->update([
                 'is_available' => true,
             ]);

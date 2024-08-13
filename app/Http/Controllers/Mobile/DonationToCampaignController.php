@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Mobile\DonationRequest;
 use App\Models\Administration;
 use App\Models\User;
 use App\Notifications\SendDonationToCampaignNotification;
@@ -43,7 +44,7 @@ class DonationToCampaignController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function store(Request $request, string $id)
+    public function store(DonationRequest $request, string $id)
     {
         $user = User::find(Auth::id());
         $donation_service = new DonationToCampaignService;

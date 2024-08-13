@@ -24,6 +24,8 @@ class OrphanFamilyChildFactory extends Factory
             'birth_date' => fake()->dateTimeBetween('2010-01-01', 'now'),
             'academic_level' => fake()->randomElement(['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']),
             'is_supported' => fake()->boolean(),
+            'visible' => 1,
+            'min_sponsorship_payment' => fake()->randomFloat(0, 500000, 1000000),
             'created_at' => now(),
             'updated_at' => now(),
         ];

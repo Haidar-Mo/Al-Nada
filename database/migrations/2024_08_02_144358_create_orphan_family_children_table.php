@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
             $table->boolean('is_supported');
             $table->unique(['family_id', 'name'], 'unique_child');
+            $table->boolean('visible')->default(0);
+            $table->integer('min_sponsorship_payment', false, true);
             $table->timestamps();
         });
     }

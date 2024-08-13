@@ -7,6 +7,7 @@ use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\DonationToCampaign;
 use App\Models\Employee;
+use App\Models\Section;
 use App\Models\Volunteer;
 use App\Models\VolunteerInCampaign;
 use Illuminate\Http\Request;
@@ -29,6 +30,12 @@ class StatisticsController extends Controller
 
         $totalEmployees = $employyes->where('date_end_working', null)->get()->count();
         return response()->json(['Employees count' => $totalEmployees], 200);
+    }
+
+    public function sectionAndEmployee()
+    {
+        $sections = Section::withCount('employee')->get();
+        return $sections;
     }
 
     public function volunteer()
@@ -184,7 +191,7 @@ class StatisticsController extends Controller
             'Number of campaigns' => $campaign_count,
             'Number of beneficiaries from campaigns' => $number_of_beneficiary_from_campaign,
             'Total cost of all campaigns' => $total_cost_of_all_campaign,
-        ],200);
+        ], 200);
     }
 
     public function donationsByCampaign(Request $request)

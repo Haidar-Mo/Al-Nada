@@ -38,7 +38,7 @@ class User extends Authenticatable
      * 
      * @var array<int, string>
      */
-    protected $appends = [];
+    protected $appends = [ ];
 
 
     /**
@@ -88,9 +88,14 @@ class User extends Authenticatable
         return $this->hasOne(sponsorshipDocument::class);
     }
 
-    public function sponsorshipCases(): HasMany
+    public function sponsorshipCase(): HasMany
     {
         return $this->hasMany(SponsorshipCase::class);
+    }
+
+    public function sponsorshipPayment(): HasMany
+    {
+        return $this->hasMany(SponsorshipPaymentCase::class);
     }
 
     public function donationAlert(): HasMany
@@ -136,5 +141,10 @@ class User extends Authenticatable
     public function isSponsor()
     {
         return $this->is_sponsor;
+    }
+
+    public function getHasSponsorshipDocumentAttribute()
+    {
+        return $this->sponsorshipDocument()->exists();
     }
 }

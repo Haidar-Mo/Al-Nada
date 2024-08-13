@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('status_updates', function (Blueprint $table) {
             $table->id();
-            $table->morphs('sponsorshipable');
+            $table->morphs('statusable');
             $table->text('description');
             $table->timestamps();
         });

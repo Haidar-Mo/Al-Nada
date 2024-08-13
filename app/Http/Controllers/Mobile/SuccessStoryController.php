@@ -14,7 +14,7 @@ class SuccessStoryController extends Controller
      */
     public function index()
     {
-        $stories = SuccessStory::latest()->paginate(5);
+        $stories = SuccessStory::latest()->get();
         return response()->json($stories, 200);
     }
 
@@ -24,7 +24,7 @@ class SuccessStoryController extends Controller
      */
     public function getLadyStory()
     {
-        $stories = SuccessStory::where('type', 1)->latest()->paginate(5);
+        $stories = SuccessStory::where('type', 1)->latest()->get();
         return response()->json($stories, 200);
     }
 
@@ -34,7 +34,7 @@ class SuccessStoryController extends Controller
      */
     public function getStudentStory()
     {
-        $stories = SuccessStory::where('type', 2)->latest()->paginate(5);
+        $stories = SuccessStory::where('type', 2)->latest()->get();
         return response()->json($stories, 200);
     }
     /**

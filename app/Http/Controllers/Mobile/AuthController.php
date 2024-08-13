@@ -84,7 +84,7 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        $user = User::with('wallet')->findOrfail(Auth::user()->id);
+        $user = User::with('wallet')->findOrfail(Auth::user()->id)->append('has_sponsorship_document');
         return response()->json($user, 200);
     }
 
