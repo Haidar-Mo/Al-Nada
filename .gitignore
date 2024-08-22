@@ -18,4 +18,5 @@ yarn-error.log
 /.vscode
 NOTE.txt
 NOTE.STATISTICS.txt
+INSERT.txt
 .htaccess

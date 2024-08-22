@@ -20,20 +20,13 @@ class OrphanFamilyController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
+        $query = OrphanFamily::query();
 
-        $families = OrphanFamily::where($filter, 'LIKE', $search)
-            ->orderBy($orderBy, $order)
-            ->paginate($perPage)
+        $families = $this->applyFilters($request, $query)
             ->through(function ($family) {
                 $family->makeVisible('visible');
                 return $family;
-            });
-
+            });;
         return response()->json($families, 200);
     }
 

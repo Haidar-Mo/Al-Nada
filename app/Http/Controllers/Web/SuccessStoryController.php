@@ -19,16 +19,8 @@ class SuccessStoryController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
-
         $query = SuccessStory::query();
-        if ($search)
-            $query->where($filter, 'LIKE', '%' . $search . '%');
-        $stories = $query->orderBy($orderBy, $order)->paginate($perPage);
+        $stories  = $this->applyFilters($request, $query);
         return response()->json($stories, 200);
     }
 

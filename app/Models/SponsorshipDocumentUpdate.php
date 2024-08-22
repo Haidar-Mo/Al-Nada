@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SponsorshipDocument extends Model
+class SponsorshipDocumentUpdate extends Model
 {
     use HasFactory;
 
@@ -18,6 +17,7 @@ class SponsorshipDocument extends Model
      */
     protected $fillable = [
         'user_id',
+        'document_id',
         'fixed_phone_number',
         'address',
         'academic_level',
@@ -30,26 +30,16 @@ class SponsorshipDocument extends Model
         'communicate_with_the_sponsered_person',
         'participate_in_activities',
         'recognizing_way',
-        'active',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'date:Y/m/d',
-        'updated_at' => 'date:Y/m/d',
+        'status'
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
-    public function updateDocument(): HasMany
+    
+    public function document():BelongsTo
     {
-        return $this->hasMany(SponsorshipDocumentUpdate::class, 'document_id');
+        return $this->belongsTo(SponsorshipDocument::class,'document_id');
     }
 }

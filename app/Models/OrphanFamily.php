@@ -62,4 +62,9 @@ class OrphanFamily extends Model
     {
         return $this->hasMany(OrphanFamilyStatement::class, 'family_id');
     }
+
+    public function assistance(): MorphMany
+    {
+        return $this->morphMany(AssistanceProvided::class, 'assistanceable');
+    }
 }

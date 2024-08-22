@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class SponsorshipPatment.
  */
-class SponsorshipPatmentService
+class SponsorshipPaymentService
 {
 
     protected $payment;

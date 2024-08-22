@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('family_id')->constrained('orphan_families')->onDelete('cascade');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->date('birth_date');
             $table->enum('academic_level', ['غير محدد', 'ابتدائي', 'اعدادي', 'ثانوي', 'جامعي']);
-            $table->boolean('is_supported');
             $table->unique(['family_id', 'name'], 'unique_child');
+            $table->boolean('is_supported');
             $table->boolean('visible')->default(0);
             $table->integer('min_sponsorship_payment', false, true);
             $table->timestamps();

@@ -15,7 +15,8 @@ Route::prefix('mobile/sponsorship')->middleware([
 
         Route::get('show', [SponsorshipDocumentController::class, 'show']);
         Route::post('create', [SponsorshipDocumentController::class, 'store']);
-        Route::post('update', [SponsorshipDocumentController::class, 'update']);
+        Route::post('update-request', [SponsorshipDocumentController::class, 'update']);
+
     });
 
     Route::prefix('case')->middleware('isSponsor')->group(function () {
@@ -26,7 +27,7 @@ Route::prefix('mobile/sponsorship')->middleware([
         Route::get('last-status/{case}', [SponsorshipCaseController::class, 'lastStatusUpdate'])->name('mobile.case.status.show');
 
         Route::post('payment/{id}', [SponsorshipCaseController::class, 'payment']);
-        Route::get('payment/last/{id}', [SponsorshipCaseController::class, 'lastPayment']);
+        Route::get('payment/last/{id}', [SponsorshipCaseController::class, 'lastYearPayment']);
     });
 
     Route::prefix('orphan-family')->group(function () {

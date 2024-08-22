@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/al-nada.css') }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('logo/al-nada.png') }}">
 </head>
 <body>
     <div class="flex-center position-ref full-height">
@@ -35,9 +37,11 @@
                 <a href="{{ url('/contact') }}">Contact</a>
             </div>
             <div class="m-b-md">
-                <p>Al-Nada is dedicated to improving the lives of underprivileged communities through education, healthcare, and sustainable development projects. Join us in making a difference.</p>
+                <p>Al-Nada is dedicated to improving the lives of underprivileged communities through education,
+                    healthcare, and sustainable development projects. Join us in making a difference.</p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

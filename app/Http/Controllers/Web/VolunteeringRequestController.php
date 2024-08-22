@@ -19,17 +19,9 @@ class VolunteeringRequestController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
-
-        $volunteer_request = VolunteeringRequest::with('user', 'city')
-            ->where($filter, 'LIKE', "%{$search}%")
-            ->orderBy($orderBy, $order)
-            ->paginate($perPage);
-        return response()->json($volunteer_request, 200);
+        $query = VolunteeringRequest::with('user', 'city');
+        $requests  = $this->applyFilters($request, $query);
+        return response()->json($requests, 200);
     }
 
     /**

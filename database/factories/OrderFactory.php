@@ -30,8 +30,8 @@ class OrderFactory extends Factory
             'address' => $this->faker->address,
             'note' => $this->faker->sentence,
             'status' => $this->faker->randomElement(['ملغي', 'تم الاستلام', 'قيد المعالجة', 'جديد']),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => fake()->dateTimeBetween('-1 years', '-1 months'),
+            'updated_at' => fake()->dateTimeBetween('-1 months', 'now'),
         ];
     }
 }

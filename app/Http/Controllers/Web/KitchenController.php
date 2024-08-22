@@ -18,15 +18,8 @@ class KitchenController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
-
-        $dishes = Kitchen::where($filter, 'LIKE', '%' . $search . '%')
-            ->orderBy($orderBy, $order)
-            ->paginate($perPage);
+        $query = Kitchen::query();
+        $dishes = $this->applyFilters($request, $query);
         return response()->json($dishes, 200);
     }
 

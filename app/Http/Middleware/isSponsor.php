@@ -18,7 +18,7 @@ class isSponsor
     {
         if (Auth::check() && !Auth::user()->isSponsor()) {
             return response()->json([
-                'message' => 'Your Sponsership is disable /n please contact with the moderators',
+                'message' => 'Your Sponsership is disable \n please contact with the moderators',
             ], 403);
         }
         return $next($request);

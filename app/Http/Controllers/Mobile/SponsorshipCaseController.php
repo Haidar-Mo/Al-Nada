@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\SponsorshipCase;
-use App\Models\StatusUpdate;
-use App\Services\Mobile\SponsorshipPatmentService;
+use App\Services\Mobile\SponsorshipPaymentService;
 use Illuminate\Http\Request;
 
 class SponsorshipCaseController extends Controller
@@ -16,7 +15,7 @@ class SponsorshipCaseController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $cases = $user->sponsorshipCase()->with('sponsorshipable')->where('status', 'مقبول')->get();
+        $cases = $user->sponsorshipCase()->with('sponsorshipable')->where('active', 1)->get();
         return response()->json($cases, 200);
     }
 
@@ -37,7 +36,7 @@ class SponsorshipCaseController extends Controller
     public function listStatusUpdate(string $id)
     {
         $case = SponsorshipCase::findOrfail($id);
-        $status = $case->sponsorshipable->statusUpdate()->latest();
+        $status = $case->sponsorshipable->statusUpdate()->latest()->get();
         return response()->json($status, 200);
     }
 
@@ -48,11 +47,15 @@ class SponsorshipCaseController extends Controller
         return response()->json($status, 200);
     }
 
-    public function lastPayment(string $id)
+    public function lastYearPayment(string $id)
     {
         $user = auth()->user();
         $case = $user->sponsorshipCase()->findOrFail($id);
-        $payment = $case->payment()->where('paid','1')->latest()->first();
+        $payment = $case->payment()
+            ->latest()
+            ->take(12)
+            ->orderBy('payment_month')
+            ->get();
         return response()->json($payment, 200);
     }
 
@@ -60,7 +63,25 @@ class SponsorshipCaseController extends Controller
     {
         $user = auth()->user();
         $payment = $user->sponsorshipPayment()->findOrFail($id);
-        $service = new SponsorshipPatmentService($payment);
+        $case = $payment->case;
+
+        // get the last 12 month ( last year )
+        $year_payment = $case->payment()
+            ->latest()
+            ->take(12)
+            ->orderBy('payment_month')
+            ->get();
+
+        // check if the current payment is the first payment of the year (unpaid)
+        $currentIndex = $year_payment->search(function ($year_payment) use ($id) {
+            return $year_payment->id == $id;
+        });
+        $hasUnpaidBefore = $year_payment->slice(0, $currentIndex)->contains('paid', 0);
+        if ($hasUnpaidBefore) {
+            return response()->json(['message' => 'Cannot pay because there are unpaid previous payments.'], 400);
+        }
+
+        $service = new SponsorshipPaymentService($payment);
         $resault =  $service->pay($request);
         return response()->json($resault['message'], $resault['code']);
     }

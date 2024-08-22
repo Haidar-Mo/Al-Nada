@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\web;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\SponsorshipDocument;
+use App\Models\SponsorshipDocumentUpdate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,17 +18,8 @@ class SponsorshipDocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
-
-        $documents = SponsorshipDocument::with('user')
-            ->where($filter, 'LIKE', '%' . $search . '%')
-            ->orderBy($orderBy, $order)
-            ->paginate($perPage);
-
+        $query = SponsorshipDocument::with('user');
+        $documents  = $this->applyFilters($request, $query);
         return response()->json($documents);
     }
 
@@ -74,7 +66,7 @@ class SponsorshipDocumentController extends Controller
             $user->update(['is_sponsor' => 0]);
 
             // Stop all active Sponsorships of the user and update their end_reason and end_date.
-            $activated_sponsorships = $user->sponsorships()->where('active', 1)->get();
+            $activated_sponsorships = $user->sponsorshipDocument()->where('active', 1)->get();
             $activated_sponsorships->each(function ($sponsorship) {
                 $sponsorship->update([
                     'active' => 0,
@@ -84,7 +76,7 @@ class SponsorshipDocumentController extends Controller
             });
 
             // Reject all requested sponsorships of the user and update their status and reject_reason
-            $unaccepted_sponsorships = $user->sponsorships()->where('status', 'انتظار')->get();
+            $unaccepted_sponsorships = $user->sponsorshipCase()->where('status', 'انتظار')->get();
             $unaccepted_sponsorships->each(function ($sponsorship) {
                 $sponsorship->update([
                     'status' => 'مرفوض',
@@ -102,11 +94,56 @@ class SponsorshipDocumentController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SponsorshipDocument $sponsorshipDocument)
+
+
+    public function indexUpdateRequest(Request $request)
     {
-        //
+
+        $query = SponsorshipDocumentUpdate::with('user');
+        $documents = $this->applyFilters($request, $query);
+        return response()->json($documents, 200);
+    }
+
+    public function showUpdateRequest(string $id)
+    {
+        $document = SponsorshipDocumentUpdate::with('user', 'document')->findOrFail($id);
+        return response()->json($document, 200);
+    }
+
+    public function acceptDocumentUpdate(string $id)
+    {
+        DB::beginTransaction();
+        try {
+
+            $update_document = SponsorshipDocumentUpdate::with('user', 'document')->findOrFail($id);
+            $document = $update_document->document;
+            $document->update($update_document->only([
+                'fixed_phone_number',
+                'address',
+                'academic_level',
+                'job',
+                'job_address',
+                'available',
+                'communicate_by_phone',
+                'communicate_by_text_messages',
+                'communicate_by_email',
+                'communicate_with_the_sponsered_person',
+                'participate_in_activities',
+                'recognizing_way',
+            ]));
+            $update_document->update(['status' => 'مقبول']);
+            DB::commit();
+            return  response()->json($document, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function rejectDocumentUpdate(string $id)
+    {
+        $update_document = SponsorshipDocumentUpdate::with('user', 'document')->findOrFail($id);
+        $update_document->update(['status' => 'مرفوض']);
+        return  response()->json($update_document, 200);
     }
 }

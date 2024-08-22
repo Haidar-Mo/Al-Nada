@@ -14,10 +14,11 @@ class SponsorshipCaseController extends Controller
      * List all Sponsorship cases
      * @return JsonRespone
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $cases = SponsorshipCase::with(['user', 'sponsorshipable'])->paginate();
+        $query = SponsorshipCase::with(['user', 'sponsorshipable']);
+        $cases = $this->applyFilters($request, $query);
         return response()->json($cases, 200);
     }
 

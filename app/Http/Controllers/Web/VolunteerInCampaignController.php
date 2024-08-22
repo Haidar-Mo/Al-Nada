@@ -17,16 +17,8 @@ class VolunteerInCampaignController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $orderBy = $request->input('order_by', 'id');
-        $order = $request->input('order', 'asc');
-        $filter = $request->input('filter', 'id');
-        $search  = $request->input('search');
-
-        $campaigns = VolunteerInCampaign::with(['request', 'campaign', 'city'])
-            ->where($filter, 'LIKE', "%{$search}%")
-            ->orderBy($orderBy, $order)
-            ->paginate($perPage);
+        $query = VolunteerInCampaign::with(['request', 'campaign', 'city']);
+        $campaigns  = $this->applyFilters($request, $query);
         return response()->json($campaigns);
     }
 

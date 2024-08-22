@@ -18,10 +18,10 @@ class StatusUpdateFactory extends Factory
     {
         return [
             'statusable_type' => fake()->randomElement([
-                'App\Models\OrphanFamilyChild',
-                //'App\Models\Student',
+                //'App\Models\OrphanFamilyChild',
+                'App\Models\Student',
                 //'App\Models\chasteFamily',
-                //'App\Models\OldPeople',
+                'App\Models\OldPeople',
             ]),
             'statusable_id' => function (array $attributes) {
                 $model = $attributes['statusable_type'];

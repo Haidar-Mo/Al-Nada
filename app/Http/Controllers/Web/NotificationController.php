@@ -99,13 +99,12 @@ class NotificationController extends Controller
 
     /**
      * Send a Custom Notificcation to specific user
-     * @param Request $request Device-Token , title and Body of Notification
+     * @param Request $request title and Body of Notification
      * @return JsonResponse
      */
     public function notifyUser(Request $request, string $id)
     {
         $request->validate([
-            'device_token' => ['required'],
             'title' => ['required'],
             'body' => ['required'],
         ]);

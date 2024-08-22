@@ -28,6 +28,7 @@ class User extends Authenticatable
         'birth_date',
         'image',
         'deviceToken',
+        'verification_code',
         'is_volunteer',
         'is_sponsor',
         'is_active'

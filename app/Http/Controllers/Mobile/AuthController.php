@@ -35,14 +35,18 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $code = $this->generateVerificationCode();
-            $user = User::create(array_merge($request->all(), ['verification_code' => $code]));
-            $wallet = $user->wallet()->create();
+            $user = User::create(array_merge(
+                $request->all(),
+                ['verification_code' => $code]
+            ));
+            $user->wallet()->create();
             $this->sendVerificationEmail($user);
             DB::commit();
 
-            //$this->subscribeToTopic($user->deviceToken, 'mobile_user');
+            $this->subscribeToTopic($user->deviceToken, 'mobile_user');
             return response()->json([
-                'message' => "تم إنشاء الحساب بنجاح, تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل", 'user' => $user
+                'message' => "تم إنشاء الحساب بنجاح, تحقق من بريدلك الإلكتروني لإستلام رمز التفعيل",
+                'user' => $user
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -84,7 +88,10 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        $user = User::with('wallet')->findOrfail(Auth::user()->id)->append('has_sponsorship_document');
+        $user = auth()->user()->with('wallet')
+            ->get()
+            ->first()
+            ->append('has_sponsorship_document');
         return response()->json($user, 200);
     }
 

@@ -16,5 +16,5 @@ Route::prefix('web/notification')->middleware([
 
     Route::post('mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
-    Route::post('send-notification', [NotificationController::class, 'notifyUser']);
+    Route::post('send-notification/{id}', [NotificationController::class, 'notifyUser']);
 });
